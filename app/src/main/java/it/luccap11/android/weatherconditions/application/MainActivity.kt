@@ -1,4 +1,4 @@
-package it.luccap11.android.myapplication
+package it.luccap11.android.weatherconditions.application
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

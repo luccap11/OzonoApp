@@ -1,4 +1,4 @@
-package it.luccap11.android.myapplication
+package it.luccap11.android.weatherconditions
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
