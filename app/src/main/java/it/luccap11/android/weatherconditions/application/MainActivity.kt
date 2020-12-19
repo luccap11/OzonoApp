@@ -1,13 +1,22 @@
 package it.luccap11.android.weatherconditions.application
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.appcompat.widget.SearchView
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import it.luccap11.android.weatherconditions.R
+import kotlinx.coroutines.launch
+import org.json.JSONException
+
 
 /**
  * @author Luca Capitoli
@@ -36,6 +45,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
                 return false
             }
+
             override fun onQueryTextChange(queryString: String?): Boolean {
                 if (queryString.isNullOrBlank())
                     cities.visibility = View.GONE
