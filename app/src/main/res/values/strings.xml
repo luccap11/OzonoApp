@@ -1,3 +1,22 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Weather Condition</string>
+    <string name="owm_api_key">7d85604d75067f7a0da53ac8f70c5364</string>
+
+
+    <string name="city_label">City</string>
+
+    <array name="bestCities">
+        <item>Ancara</item>
+        <item>Berlin</item>
+        <item>Istanbul</item>
+        <item>Lahore</item>
+        <item>London</item>
+        <item>Lisbon</item>
+        <item>Osaka</item>
+        <item>Rome</item>
+        <item>Tokyo</item>
+        <item>Toronto</item>
+        <item>Sydney</item>
+        <item>Washington</item>
+    </array>
 </resources>
