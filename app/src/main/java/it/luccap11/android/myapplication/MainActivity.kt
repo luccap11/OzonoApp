@@ -4,13 +4,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
 
 /**
  * @author Luca Capitoli
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+    private lateinit var searchView : SearchView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -20,12 +24,15 @@ class MainActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, bestCities)
         val cities = findViewById<ListView>(R.id.citiesListView)
         cities.adapter = adapter
+        cities.onItemClickListener = this
 
-        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView = findViewById(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(queryString: String?): Boolean {
-                if (bestCities.contains(queryString))
+                if (bestCities.contains(queryString)) {
                     adapter.filter.filter(queryString)
+                }
+                cities.visibility = View.GONE
 
                 return false
             }
@@ -39,5 +46,10 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
+    }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        view as TextView
+        searchView.setQuery(view.text, true)
     }
 }
