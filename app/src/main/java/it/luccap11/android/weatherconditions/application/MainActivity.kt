@@ -2,7 +2,6 @@ package it.luccap11.android.weatherconditions.application
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -10,23 +9,25 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
+import androidx.lifecycle.Observer
 import it.luccap11.android.weatherconditions.R
-import kotlinx.coroutines.launch
-import org.json.JSONException
+import it.luccap11.android.weatherconditions.model.WeatherData
+import it.luccap11.android.weatherconditions.model.WeatherViewModel
 
 
 /**
  * @author Luca Capitoli
  */
-class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
-    private lateinit var searchView : SearchView
+class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
+    Observer<WeatherData> {
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val viewModel: WeatherViewModel by viewModels()
+        viewModel.liveData.observe(this, this)
 
         val bestCities = applicationContext.resources.getStringArray(R.array.bestCities)
 
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
                     adapter.filter.filter(queryString)
                 }
                 cities.visibility = View.GONE
+                viewModel.getData(queryString!!)
 
                 return false
             }
@@ -61,5 +63,15 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         view as TextView
         searchView.setQuery(view.text, true)
+    }
+
+    override fun onChanged(weatherData: WeatherData?) {
+        val resultTV = findViewById<TextView>(R.id.result)
+        if (weatherData == null) {
+            // TODO
+            resultTV.text = "Nothing to display"
+        } else {
+            resultTV.text = weatherData.location + " - " + weatherData.descr + " - " + weatherData.temp + " - " + weatherData.icon
+        }
     }
 }
