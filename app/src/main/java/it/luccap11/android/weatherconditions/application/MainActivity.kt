@@ -3,14 +3,12 @@ package it.luccap11.android.weatherconditions.application
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import it.luccap11.android.weatherconditions.R
+import it.luccap11.android.weatherconditions.model.Resource
 import it.luccap11.android.weatherconditions.model.WeatherData
 import it.luccap11.android.weatherconditions.model.WeatherViewModel
 
@@ -19,7 +17,7 @@ import it.luccap11.android.weatherconditions.model.WeatherViewModel
  * @author Luca Capitoli
  */
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
-    Observer<WeatherData> {
+    Observer<Resource<WeatherData>> {
     private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,13 +63,21 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
         searchView.setQuery(view.text, true)
     }
 
-    override fun onChanged(weatherData: WeatherData?) {
+    override fun onChanged(weatherData: Resource<WeatherData>) {
         val resultTV = findViewById<TextView>(R.id.result)
-        if (weatherData == null) {
+        val progressBar = findViewById<ProgressBar>(R.id.progressLoading)
+        if (weatherData.data == null && weatherData.message.isNullOrBlank()) {
+            progressBar.visibility = View.VISIBLE
+            resultTV.visibility = View.GONE
+        } else if (weatherData.data == null) {
             // TODO
-            resultTV.text = "Nothing to display"
+            progressBar.visibility = View.GONE
+            resultTV.visibility = View.VISIBLE
+            resultTV.text = weatherData.message
         } else {
-            resultTV.text = weatherData.location + " - " + weatherData.descr + " - " + weatherData.temp + " - " + weatherData.icon
+            progressBar.visibility = View.GONE
+            resultTV.visibility = View.VISIBLE
+            resultTV.text = weatherData.data.location + " - " + weatherData.data.descr + " - " + weatherData.data.temp + " - " + weatherData.data.icon
         }
     }
 }
