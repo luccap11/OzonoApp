@@ -70,33 +70,24 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener,
     override fun onChanged(weatherData: Resource<List<WeatherData>>) {
         val results = findViewById<RecyclerView>(R.id.listWeatherData)
         results.layoutManager = LinearLayoutManager(this)
-
-        // initialize an instance of divider item decoration
-        DividerItemDecoration(
-            this, LinearLayoutManager.HORIZONTAL
-        ).apply {
-            // add divider item decoration to recycler view
-            // this will show divider line between items
-            results.addItemDecoration(this)
-        }
-
-//        results.addItemDecoration(
-//            DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL)
-//        )
+        val text = findViewById<TextView>(R.id.text)
         val progressBar = findViewById<ProgressBar>(R.id.progressLoading)
         if (weatherData.data == null && weatherData.message.isNullOrBlank()) {
             progressBar.visibility = View.VISIBLE
             results.visibility = View.GONE
+            text.visibility = View.GONE
         } else if (weatherData.data == null) {
             // TODO
             progressBar.visibility = View.GONE
-            results.visibility = View.VISIBLE
+            results.visibility = View.GONE
+            text.visibility = View.VISIBLE
+            text.text = weatherData.message
         } else {
             progressBar.visibility = View.GONE
+            text.visibility = View.GONE
             results.visibility = View.VISIBLE
             val weatherAdapter = WeatherAdapter(weatherData.data)
             results.adapter = weatherAdapter
-            //results.text = weatherData.data[0].location + " - " + weatherData.data[0].descr + " - " + weatherData.data[0].temp + " - " + weatherData.data[0].icon
         }
     }
 }
