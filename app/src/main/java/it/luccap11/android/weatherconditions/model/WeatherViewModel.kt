@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  * @author Luca Capitoli
  */
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
-    val liveData = MutableLiveData<Resource<WeatherData>>()
+    val liveData = MutableLiveData<Resource<List<WeatherData>>>()
 
     fun getData(selectedCity: String) {
         liveData.postValue(Resource.Loading())
@@ -26,13 +26,18 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
 //
                 val requestQueue = Volley.newRequestQueue(getApplication())
                 val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
-                        Log.d("TAG", response.toString())
-                        val city = response!!.getJSONObject("city").getString("name")
+                    val city = response!!.getJSONObject("city").getString("name")
+                    val listOfDays = response.getJSONArray("list")
+                    val result = arrayListOf<WeatherData>()
+                    for (i in 0 until listOfDays.length() step 8) {
+                        val descr = listOfDays.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("main")
+                        val date = listOfDays.getJSONObject(i).getString("dt_txt")
+                        val icon = listOfDays.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon")
+                        val temp = listOfDays.getJSONObject(i).getJSONObject("main").getDouble("temp")
+                        result.add(WeatherData(city, descr, temp.toFloat(), date, icon))
+                    }
 
-                        val descr = response.getJSONArray("list").getJSONObject(0).getJSONArray("weather").getJSONObject(0).getString("main")
-                        val icon = response.getJSONArray("list").getJSONObject(0).getJSONArray("weather").getJSONObject(0).getString("icon")
-                        val temp = response.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("temp")
-                        liveData.postValue(Resource.Success(WeatherData(city, descr, temp.toFloat(), icon)))
+                    liveData.postValue(Resource.Success(result))
                     }) { error ->
                         Log.e("TAG", error.toString())
                         liveData.postValue(Resource.Error("Nothing to display"))
