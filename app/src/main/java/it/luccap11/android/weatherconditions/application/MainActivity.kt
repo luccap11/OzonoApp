@@ -5,15 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.model.Resource
-import it.luccap11.android.weatherconditions.model.WeatherData
+import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.WeatherViewModel
 
 

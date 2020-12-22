@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.model.WeatherData
+import it.luccap11.android.weatherconditions.model.data.WeatherData
 
 /**
  * @author Luca Capitoli
