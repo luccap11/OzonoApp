@@ -4,6 +4,7 @@
 
 
     <string name="city_label">City</string>
+    <string name="error_label">Nothing to display</string>
 
     <array name="bestCities">
         <item>Ancara</item>
