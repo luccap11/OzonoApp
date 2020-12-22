@@ -1,5 +1,6 @@
 package it.luccap11.android.weatherconditions.model.builder
 
+import androidx.annotation.NonNull
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import org.json.JSONObject
 
@@ -7,7 +8,7 @@ import org.json.JSONObject
  * @author Luca Capitoli
  */
 object WeatherDataBuilder {
-    fun getWeatherLiveData(json: JSONObject): List<WeatherData> {
+    fun getWeatherLiveData(@NonNull json: JSONObject): List<WeatherData> {
         val listOfDays = json.getJSONArray("list")
         val result = mutableListOf<WeatherData>()
         for (i in 0 until listOfDays.length() step 8) {

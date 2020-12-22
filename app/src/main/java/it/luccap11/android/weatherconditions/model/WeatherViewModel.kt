@@ -2,6 +2,7 @@ package it.luccap11.android.weatherconditions.model
 
 import android.app.Application
 import android.util.Log
+import androidx.annotation.NonNull
 import androidx.lifecycle.*
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
     val liveData = MutableLiveData<Resource<List<WeatherData>>>()
 
-    fun getData(selectedCity: String) {
+    fun getData(@NonNull selectedCity: String) {
         liveData.postValue(Resource.Loading())
         if (selectedCity.isNotBlank()) {
             viewModelScope.launch(Dispatchers.IO) {
