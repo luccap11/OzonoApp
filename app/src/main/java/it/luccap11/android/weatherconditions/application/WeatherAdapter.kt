@@ -41,7 +41,10 @@ class WeatherAdapter(private val dataSet: List<WeatherData>) :
         viewHolder.date.text = dataSet[position].date.subSequence(0, 10)
         viewHolder.descr.text = dataSet[position].descr
         viewHolder.temp.text = String.format("%d °F", dataSet[position].temp.toInt())
-        val imgUrl = String.format("https://openweathermap.org/img/wn/%s@2x.png", dataSet[position].icon)
+        val imgUrl = String.format(
+            "https://openweathermap.org/img/wn/%s@2x.png",
+            dataSet[position].icon
+        )
         Glide.with(context).load(imgUrl)
             .placeholder(R.drawable.ic_baseline_image_not_supported_24)
             .circleCrop().into(viewHolder.img)

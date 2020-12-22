@@ -27,7 +27,6 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
                     resource.getString(R.string.owm_api_key))
                 val requestQueue = Volley.newRequestQueue(getApplication())
                 val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
-                    val city = response!!.getJSONObject("city").getString("name")
                     val listOfDays = response.getJSONArray("list")
                     val result = arrayListOf<WeatherData>()
                     for (i in 0 until listOfDays.length() step 8) {
@@ -35,7 +34,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
                         val date = listOfDays.getJSONObject(i).getString("dt_txt")
                         val icon = listOfDays.getJSONObject(i).getJSONArray("weather").getJSONObject(0).getString("icon")
                         val temp = listOfDays.getJSONObject(i).getJSONObject("main").getDouble("temp")
-                        result.add(WeatherData(city, descr, temp.toFloat(), date, icon))
+                        result.add(WeatherData(descr, temp.toFloat(), date, icon))
                     }
 
                     liveData.postValue(Resource.Success(result))
