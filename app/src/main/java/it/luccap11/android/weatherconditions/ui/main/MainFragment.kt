@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.application.WeatherAdapter
 import it.luccap11.android.weatherconditions.model.Resource
 import it.luccap11.android.weatherconditions.model.WeatherViewModel
 import it.luccap11.android.weatherconditions.model.data.WeatherData

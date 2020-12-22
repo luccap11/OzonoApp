@@ -1,4 +1,4 @@
-package it.luccap11.android.weatherconditions.application
+package it.luccap11.android.weatherconditions.ui.main
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Android_start_project"
         android:fullBackupContent="false">
-        <activity android:name="it.luccap11.android.weatherconditions.application.MainActivity">
+        <activity android:name="it.luccap11.android.weatherconditions.ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
