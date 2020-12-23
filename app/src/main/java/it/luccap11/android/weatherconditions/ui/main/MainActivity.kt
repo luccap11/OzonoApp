@@ -3,7 +3,6 @@ package it.luccap11.android.weatherconditions.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.ui.main.MainFragment
 
 
 /**
