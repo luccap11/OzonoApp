@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.Nullable
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,6 +45,7 @@ class MainFragment : Fragment(), AdapterView.OnItemClickListener, SearchView.OnQ
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         results = view.findViewById(R.id.listWeatherData)
+        results.layoutManager = LinearLayoutManager(context)
         text = view.findViewById(R.id.text)
         progressBar = view.findViewById(R.id.progressLoading)
 
@@ -69,24 +71,27 @@ class MainFragment : Fragment(), AdapterView.OnItemClickListener, SearchView.OnQ
         searchView.setQuery(view.text, true)
     }
 
-    override fun onChanged(weatherData: Resource<List<WeatherData>>) {
-        results.layoutManager = LinearLayoutManager(context)
-        if (weatherData.data == null && weatherData.message.isNullOrBlank()) {
-            progressBar.visibility = View.VISIBLE
-            results.visibility = View.GONE
-            text.visibility = View.GONE
-        } else if (weatherData.data == null) {
-            // TODO
-            progressBar.visibility = View.GONE
-            results.visibility = View.GONE
-            text.visibility = View.VISIBLE
-            text.text = weatherData.message
-        } else {
-            progressBar.visibility = View.GONE
-            text.visibility = View.GONE
-            results.visibility = View.VISIBLE
-            val weatherAdapter = WeatherAdapter(weatherData.data)
-            results.adapter = weatherAdapter
+    override fun onChanged(@Nullable weatherData: Resource<List<WeatherData>>) {
+        when (weatherData) {
+            is Resource.Loading -> {
+                progressBar.visibility = View.VISIBLE
+                results.visibility = View.GONE
+                text.visibility = View.GONE
+            }
+
+            is Resource.Error -> {
+                progressBar.visibility = View.GONE
+                results.visibility = View.GONE
+                text.visibility = View.VISIBLE
+                text.text = weatherData.message
+            }
+
+            is Resource.Success -> {
+                progressBar.visibility = View.GONE
+                text.visibility = View.GONE
+                results.visibility = View.VISIBLE
+                results.adapter = WeatherAdapter(weatherData.data!!)
+            }
         }
     }
 

@@ -4,14 +4,17 @@
 
 
     <string name="city_label">City</string>
-    <string name="error_label">Nothing to display</string>
+    <string name="error_label">Something went wrong</string>
 
     <array name="bestCities">
         <item>Ancara</item>
         <item>Berlin</item>
         <item>Copenhagen</item>
         <item>Denver</item>
+        <item>Edimburgh</item>
         <item>Florence</item>
+        <item>Forlì</item>
+        <item>Genk</item>
         <item>Istanbul</item>
         <item>Lahore</item>
         <item>London</item>
