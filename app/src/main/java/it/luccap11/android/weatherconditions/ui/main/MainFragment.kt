@@ -91,12 +91,13 @@ class MainFragment : Fragment(), AdapterView.OnItemClickListener, SearchView.OnQ
     }
 
     override fun onQueryTextSubmit(queryString: String?): Boolean {
-        if (bestCities.contains(queryString)) {
-            adapter.filter.filter(queryString)
+        if (!queryString.isNullOrBlank()) {
+            if (bestCities.contains(queryString)) {
+                adapter.filter.filter(queryString)
+            }
+            viewModel.getData(queryString)
         }
         cities.visibility = View.GONE
-        viewModel.getData(queryString!!)
-
         return false
     }
 
