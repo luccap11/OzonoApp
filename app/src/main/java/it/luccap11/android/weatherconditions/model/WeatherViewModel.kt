@@ -10,7 +10,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.model.data.WeatherDataBuilder
+import it.luccap11.android.weatherconditions.model.data.WeatherDataParser
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
                 val requestQueue = Volley.newRequestQueue(getApplication())
                 val jsonObjectRequest =
                     JsonObjectRequest(Request.Method.GET, url, null, { response ->
-                        val result = WeatherDataBuilder.getWeatherLiveData(response)
+                        val result = WeatherDataParser.getWeatherLiveData(response)
                         liveData.postValue(Resource.Success(result))
                     }) { error ->
                         Log.e("TAG", error.toString())

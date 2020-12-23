@@ -6,7 +6,7 @@ import org.json.JSONObject
 /**
  * @author Luca Capitoli
  */
-object WeatherDataBuilder {
+object WeatherDataParser {
     private const val NUM_OF_DETECTIONS_PER_DAY = 8
 
     fun getWeatherLiveData(@NonNull json: JSONObject): List<WeatherData> {
