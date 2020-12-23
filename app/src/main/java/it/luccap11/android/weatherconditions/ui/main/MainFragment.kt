@@ -19,17 +19,20 @@ import it.luccap11.android.weatherconditions.model.data.WeatherData
 /**
  * @author Luca Capitoli
  */
-class MainFragment : Fragment(), AdapterView.OnItemClickListener,
+class MainFragment : Fragment(), AdapterView.OnItemClickListener, SearchView.OnQueryTextListener,
     Observer<Resource<List<WeatherData>>> {
     private lateinit var searchView: SearchView
     private lateinit var results: RecyclerView
     private lateinit var text: TextView
     private lateinit var progressBar: ProgressBar
+    private lateinit var cities: ListView
+    private lateinit var viewModel: WeatherViewModel
+    private lateinit var bestCities: Array<String>
+    private lateinit var adapter: ArrayAdapter<String>
+
     companion object {
         fun newInstance() = MainFragment()
     }
-
-    private lateinit var viewModel: WeatherViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,35 +47,15 @@ class MainFragment : Fragment(), AdapterView.OnItemClickListener,
         text = view.findViewById(R.id.text)
         progressBar = view.findViewById(R.id.progressLoading)
 
-        val bestCities = requireContext().resources.getStringArray(R.array.bestCities)
+        bestCities = requireContext().resources.getStringArray(R.array.bestCities)
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, bestCities)
-        val cities = view.findViewById<ListView>(R.id.citiesListView)
+        adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, bestCities)
+        cities = view.findViewById(R.id.citiesListView)
         cities.adapter = adapter
         cities.onItemClickListener = this
 
         searchView = view.findViewById(R.id.searchView)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(queryString: String?): Boolean {
-                if (bestCities.contains(queryString)) {
-                    adapter.filter.filter(queryString)
-                }
-                cities.visibility = View.GONE
-                viewModel.getData(queryString!!)
-
-                return false
-            }
-
-            override fun onQueryTextChange(queryString: String?): Boolean {
-                if (queryString.isNullOrBlank())
-                    cities.visibility = View.GONE
-                else {
-                    cities.visibility = View.VISIBLE
-                    adapter.filter.filter(queryString)
-                }
-                return false
-            }
-        })
+        searchView.setOnQueryTextListener(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -107,4 +90,23 @@ class MainFragment : Fragment(), AdapterView.OnItemClickListener,
         }
     }
 
+    override fun onQueryTextSubmit(queryString: String?): Boolean {
+        if (bestCities.contains(queryString)) {
+            adapter.filter.filter(queryString)
+        }
+        cities.visibility = View.GONE
+        viewModel.getData(queryString!!)
+
+        return false
+    }
+
+    override fun onQueryTextChange(queryString: String?): Boolean {
+        if (queryString.isNullOrBlank()) {
+            cities.visibility = View.GONE
+        } else {
+            cities.visibility = View.VISIBLE
+            adapter.filter.filter(queryString)
+        }
+        return false
+    }
 }
