@@ -28,7 +28,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
             viewModelScope.launch(Dispatchers.IO) {
                 val resource = getApplication<Application>().resources
                 val url = String.format(
-                    "https://api.openweathermap.org/data/2.5/forecast?q=%s&APPID=%s", selectedCity,
+                    "https://api.openweathermap.org/data/2.5/forecast?q=%s&APPID=%s&units=metric", selectedCity,
                     resource.getString(R.string.owm_api_key)
                 )
                 val requestQueue = Volley.newRequestQueue(getApplication())

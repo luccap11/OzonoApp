@@ -40,7 +40,7 @@ class WeatherAdapter(private val dataSet: List<WeatherData>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.date.text = dataSet[position].date.subSequence(0, 10)
         viewHolder.descr.text = dataSet[position].descr
-        viewHolder.temp.text = String.format("%d °F", dataSet[position].temp.toInt())
+        viewHolder.temp.text = String.format("%d °C", dataSet[position].temp.toInt())
         val imgUrl = String.format(
             "https://openweathermap.org/img/wn/%s@2x.png",
             dataSet[position].icon
