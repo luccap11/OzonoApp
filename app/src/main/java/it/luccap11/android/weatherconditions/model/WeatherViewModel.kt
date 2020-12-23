@@ -3,7 +3,9 @@ package it.luccap11.android.weatherconditions.model
 import android.app.Application
 import android.util.Log
 import androidx.annotation.NonNull
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
