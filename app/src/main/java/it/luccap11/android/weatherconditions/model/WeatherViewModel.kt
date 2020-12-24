@@ -2,7 +2,6 @@ package it.luccap11.android.weatherconditions.model
 
 import androidx.lifecycle.*
 import it.luccap11.android.weatherconditions.model.data.WeatherData
-import it.luccap11.android.weatherconditions.service.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -12,7 +11,7 @@ import kotlinx.coroutines.launch
  */
 class WeatherViewModel : ViewModel() {
     val liveData = MutableLiveData<Resource<List<WeatherData>>>()
-    private val repository = Repository()
+    private val repository = WeatherRepository()
 
     fun updateWeatherData(selectedCity: String) {
         liveData.postValue(Resource.Loading())

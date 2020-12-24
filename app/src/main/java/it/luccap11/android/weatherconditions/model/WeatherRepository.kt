@@ -1,4 +1,4 @@
-package it.luccap11.android.weatherconditions.service
+package it.luccap11.android.weatherconditions.model
 
 import android.util.Log
 import com.android.volley.Request
@@ -6,14 +6,13 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import it.luccap11.android.weatherconditions.WeatherConditionApp
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.model.Resource
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.data.WeatherDataParser
 
 /**
  * @author Luca Capitoli
  */
-class Repository {
+class WeatherRepository {
     private val baseUrl = "https://api.openweathermap.org/data/2.5/forecast"
 
     fun fetchWeatherData(selectedCity: String, completion: (Resource<List<WeatherData>>) -> Unit) {
