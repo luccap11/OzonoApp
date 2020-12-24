@@ -99,7 +99,7 @@ class MainFragment : Fragment(), AdapterView.OnItemClickListener, SearchView.OnQ
             if (bestCities.contains(queryString)) {
                 adapter.filter.filter(queryString)
             }
-            viewModel.getData(queryString)
+            viewModel.updateWeatherData(queryString)
         }
         cities.visibility = View.GONE
         return false

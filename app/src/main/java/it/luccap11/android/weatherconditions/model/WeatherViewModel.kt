@@ -12,13 +12,13 @@ import kotlinx.coroutines.launch
  */
 class WeatherViewModel : ViewModel() {
     val liveData = MutableLiveData<Resource<List<WeatherData>>>()
+    private val repository = Repository()
 
-    fun getData(selectedCity: String) {
+    fun updateWeatherData(selectedCity: String) {
         liveData.postValue(Resource.Loading())
-        val repository = Repository()
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getRepositories(selectedCity) { repos ->
-                liveData.value = repos
+            repository.fetchWeatherData(selectedCity) { weatherData ->
+                liveData.postValue(weatherData)
             }
         }
     }

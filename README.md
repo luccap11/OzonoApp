@@ -29,3 +29,5 @@ Follow this [instructions](https://developer.android.com/studio/run)
 1. use latest Android Components, like ViewModel and LiveData.
 1. keep Activity only responsible for UI related code
 1. ViewModel provides data required by the UI class
+1. Repository Layer provides data to ViewModel classes. (single source of truth)
+1. unit tests for testing the main logic.
