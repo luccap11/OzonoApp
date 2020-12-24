@@ -3,8 +3,12 @@ Good app display next 5 days weather conditions
 example: http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d85604d75067f7a0da53ac8f70c5364
 
 ## Notes
-1. For sake of simplicity I omitted the Repository class, like suggested in Google documentation
-1. I can improve the app introducing cached data with Repository pattern 
+I can improve the app:
+1. introducing cached data with Repository pattern 
+1. introducing dagger2 for DI
+1. change Volley to Retrofit lib
+1. Introducing RxJava
+1. Introducing DataBinding
 
 ### Build & run the app
 #### From command line
@@ -15,6 +19,7 @@ Follow this [instructions](https://developer.android.com/studio/run)
 
 ### Run tests
 `./gradlew test` command to run unit tests
+
 `./gradlew connectedAndroidTest` command to run instrumented tests
   
 
