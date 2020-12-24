@@ -8,11 +8,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-
+/**
+ * @author Luca Capitoli
+ */
 @RunWith(JUnit4::class)
 class WeatherDataParserTest {
     private lateinit var jsonResponse: String
-    val weatherDataParser = WeatherDataParser
+    private val weatherDataParser = WeatherDataParser
 
     @Before
     fun before() {
