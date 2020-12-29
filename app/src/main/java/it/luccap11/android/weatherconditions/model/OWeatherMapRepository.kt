@@ -16,17 +16,22 @@ class OWeatherMapRepository: WeatherRepository {
     private val baseUrl = "https://api.openweathermap.org/data/2.5/forecast"
 
     override fun fetchWeatherData(selectedCity: String, completion: (Resource<List<WeatherData>>) -> Unit) {
-        val resource = WeatherConditionApp.instance.resources
-        val url = String.format("%s?q=%s&APPID=%s&units=metric", baseUrl, selectedCity, resource.getString(R.string.owm_api_key))
-        val requestQueue = Volley.newRequestQueue(WeatherConditionApp.instance)
-        val jsonObjectRequest =
-            JsonObjectRequest(Request.Method.GET, url, null, { response ->
-                val result = WeatherDataParser.getWeatherLiveData(response)
-                completion(Resource.Success(result))
-            }) { error ->
-                Log.e("TAG", error.toString())
-                completion(Resource.Error(resource.getString(R.string.error_label)))
-            }
-        requestQueue.add(jsonObjectRequest)
+        val cachedData = SimpleWeatherDataCache.cachedWeatherData
+        if (cachedData.containsKey(selectedCity)) {
+            completion(Resource.Success(cachedData.getValue(selectedCity)))
+        } else {
+            val resource = WeatherConditionApp.instance.resources
+            val url = String.format("%s?q=%s&APPID=%s&units=metric", baseUrl, selectedCity, resource.getString(R.string.owm_api_key))
+            val requestQueue = Volley.newRequestQueue(WeatherConditionApp.instance)
+            val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
+                    val result = WeatherDataParser.getWeatherLiveData(response)
+                    cachedData[selectedCity] = result
+                    completion(Resource.Success(result))
+                }) { error ->
+                    Log.e("TAG", error.toString())
+                    completion(Resource.Error(resource.getString(R.string.error_label)))
+                }
+            requestQueue.add(jsonObjectRequest)
+        }
     }
 }
