@@ -1,11 +1,7 @@
 package it.luccap11.android.weatherconditions.model
 
-import android.util.Log
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import it.luccap11.android.weatherconditions.WeatherConditionApp
 import it.luccap11.android.weatherconditions.R
+import it.luccap11.android.weatherconditions.WeatherConditionApp
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.data.WeatherDataParser
 
@@ -13,25 +9,25 @@ import it.luccap11.android.weatherconditions.model.data.WeatherDataParser
  * @author Luca Capitoli
  */
 class OWeatherMapRepository: WeatherRepository {
-    private val baseUrl = "https://api.openweathermap.org/data/2.5/forecast"
 
     override fun fetchWeatherData(selectedCity: String, completion: (Resource<List<WeatherData>>) -> Unit) {
         val cachedData = SimpleWeatherDataCache.cachedWeatherData
         if (cachedData.containsKey(selectedCity)) {
             completion(Resource.Success(cachedData.getValue(selectedCity)))
         } else {
-            val resource = WeatherConditionApp.instance.resources
-            val url = String.format("%s?q=%s&APPID=%s&units=metric", baseUrl, selectedCity, resource.getString(R.string.owm_api_key))
-            val requestQueue = Volley.newRequestQueue(WeatherConditionApp.instance)
-            val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
-                    val result = WeatherDataParser.getWeatherLiveData(response)
-                    cachedData[selectedCity] = result
-                    completion(Resource.Success(result))
-                }) { error ->
-                    Log.e("TAG", error.toString())
-                    completion(Resource.Error(resource.getString(R.string.error_label)))
+            RemoteWeatherDataSource.fetchOWeatherMapData(selectedCity) { remoteResponse ->
+                when (remoteResponse) {
+                    is Resource.Success -> {
+                        val result = WeatherDataParser.getWeatherLiveData(remoteResponse.data!!)
+                        cachedData[selectedCity] = result
+                        completion(Resource.Success(result))
+                    }
+
+                    is Resource.Error -> {
+                        completion(Resource.Error(WeatherConditionApp.instance.resources.getString(R.string.error_label)))
+                    }
                 }
-            requestQueue.add(jsonObjectRequest)
+            }
         }
     }
 }
