@@ -11,15 +11,15 @@ import it.luccap11.android.weatherconditions.model.data.WeatherDataParser
 class OWeatherMapRepository: WeatherRepository {
 
     override fun fetchWeatherData(selectedCity: String, completion: (Resource<List<WeatherData>>) -> Unit) {
-        val cachedData = SimpleWeatherDataCache.cachedWeatherData
-        if (cachedData.containsKey(selectedCity)) {
-            completion(Resource.Success(cachedData.getValue(selectedCity)))
+        val isCachedData = SimpleWeatherDataCache.isWeatherDataInCache(selectedCity)
+        if (isCachedData) {
+            completion(Resource.Success(SimpleWeatherDataCache.getCachedWeatherData(selectedCity)!!))
         } else {
             RemoteWeatherDataSource.fetchOWeatherMapData(selectedCity) { remoteResponse ->
                 when (remoteResponse) {
                     is Resource.Success -> {
                         val result = WeatherDataParser.getWeatherLiveData(remoteResponse.data!!)
-                        cachedData[selectedCity] = result
+                        SimpleWeatherDataCache.addCachedWeatherData(result)
                         completion(Resource.Success(result))
                     }
 
