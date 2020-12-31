@@ -15,6 +15,7 @@ object WeatherDataParser {
         val result = mutableListOf<WeatherData>()
 
         try {
+            val city = json.getJSONObject("city").getString("name")
             val listOfDays = json.getJSONArray("list")
             for (i in 0 until listOfDays.length() step NUM_OF_DETECTIONS_PER_DAY) {
                 val dayWeatherData = listOfDays.getJSONObject(i)
@@ -23,7 +24,7 @@ object WeatherDataParser {
                 val date = dayWeatherData.getString("dt_txt")
                 val icon = weatherObject.getString("icon")
                 val temp = dayWeatherData.getJSONObject("main").getDouble("temp")
-                result.add(WeatherData(descr, temp.toFloat(), date, icon))
+                result.add(WeatherData(city, descr, temp.toFloat(), date, icon))
             }
         } catch (exception: JSONException) {
             Log.e("TAG", exception.toString())
