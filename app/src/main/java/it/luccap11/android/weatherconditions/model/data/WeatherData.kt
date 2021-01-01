@@ -8,7 +8,8 @@ data class WeatherData(
     val descr: String,
     val temp: Float,
     val date: String,
-    val icon: String
+    val icon: String,
+    val timeInMillis: Long
 ) {
 
 }

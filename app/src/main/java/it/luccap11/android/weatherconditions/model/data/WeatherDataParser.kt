@@ -22,9 +22,10 @@ object WeatherDataParser {
                 val weatherObject = dayWeatherData.getJSONArray("weather").getJSONObject(0)
                 val descr = weatherObject.getString("main")
                 val date = dayWeatherData.getString("dt_txt")
+                val dt = dayWeatherData.getLong("dt") * 1000
                 val icon = weatherObject.getString("icon")
                 val temp = dayWeatherData.getJSONObject("main").getDouble("temp")
-                result.add(WeatherData(city, descr, temp.toFloat(), date, icon))
+                result.add(WeatherData(city, descr, temp.toFloat(), date, icon, dt))
             }
         } catch (exception: JSONException) {
             Log.e("TAG", exception.toString())

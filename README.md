@@ -26,6 +26,7 @@ Follow this [instructions](https://developer.android.com/studio/run)
 ## Tech Stack
 - MVVM (new for me)
 - Glide - for image loading.
+- LruCache - for caching data
 - LiveData - use LiveData to see UI update with data changes.
 - Espresso for instrumented tests (new for me)
 
