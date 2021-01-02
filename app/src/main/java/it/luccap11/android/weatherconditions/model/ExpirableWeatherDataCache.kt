@@ -40,6 +40,7 @@ object ExpirableWeatherDataCache {
         }
     }
 
+    @NonNull
     private fun isItemExpired(weatherDataTime: Long): Boolean {
         val threeHoursInMillis = 60 * 60 * 1000 * 3
         val expiringTime = weatherDataTime + threeHoursInMillis - 1
