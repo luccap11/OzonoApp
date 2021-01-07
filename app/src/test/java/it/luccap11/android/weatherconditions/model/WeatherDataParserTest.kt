@@ -15,10 +15,11 @@ import org.junit.runners.JUnit4
 class WeatherDataParserTest {
     private lateinit var jsonResponse: String
     private val weatherDataParser = WeatherDataParser
+    private val currentTime = System.currentTimeMillis() / 1000
 
     @Before
     fun before() {
-        jsonResponse = JsonResponseExample.fetchJson()
+        jsonResponse = JsonResponseExample.fetchJson(currentTime)
     }
 
     @Test
@@ -31,7 +32,7 @@ class WeatherDataParserTest {
         Assert.assertEquals("2020-12-24 12:00:00", weatherData[0].date)
         Assert.assertEquals("03d", weatherData[0].icon)
         Assert.assertEquals(277.93f, weatherData[0].temp)
-        Assert.assertEquals(1608811200 * 1000L, weatherData[0].timeInMillis)
+        Assert.assertEquals(currentTime * 1000, weatherData[0].timeInMillis)
     }
 
     @Test

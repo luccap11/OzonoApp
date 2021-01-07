@@ -1,14 +1,14 @@
 package it.luccap11.android.weatherconditions.model
 
 object JsonResponseExample {
-    fun fetchJson(): String {
+    fun fetchJson(timeInSecs: Long): String {
         return "{\n" +
                 "   \"cod\":\"200\",\n" +
                 "   \"message\":0,\n" +
                 "   \"cnt\":40,\n" +
                 "   \"list\":[\n" +
                 "      {\n" +
-                "         \"dt\":1608811200,\n" +
+                "         \"dt\":"+ timeInSecs +",\n" +
                 "         \"main\":{\n" +
                 "            \"temp\":277.93,\n" +
                 "            \"feels_like\":271.73,\n" +
@@ -43,7 +43,7 @@ object JsonResponseExample {
                 "         \"dt_txt\":\"2020-12-24 12:00:00\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "         \"dt\":1608822000,\n" +
+                "         \"dt\":"+ timeInSecs +",\n" +
                 "         \"main\":{\n" +
                 "            \"temp\":278.62,\n" +
                 "            \"feels_like\":271.87,\n" +

@@ -47,17 +47,14 @@ class ExpirableWeatherDataCacheTest {
 
     @Test
     fun isWeatherDataInCache_ItemIsExpired() {
-        val weatherData = getWeatherData(null)
+        val weatherData = getWeatherData(0)
         ExpirableWeatherDataCache.addCachedWeatherData(weatherData)
         Assert.assertEquals(false, ExpirableWeatherDataCache.isWeatherDataInCache("London"))
     }
 
-    private fun getWeatherData(timeInMillis: Long?): List<WeatherData> {
-        val jsonResponse = JsonResponseExample.fetchJson()
+    private fun getWeatherData(timeInMillis: Long): List<WeatherData> {
+        val jsonResponse = JsonResponseExample.fetchJson(timeInMillis / 1000)
         val jsonObject = JSONObject(jsonResponse)
-        val weatherData = WeatherDataParser.getWeatherLiveData(jsonObject)
-        if (timeInMillis != null)
-            weatherData[0].timeInMillis = timeInMillis//update old timestamp
-        return  weatherData
+        return WeatherDataParser.getWeatherLiveData(jsonObject)
     }
 }
