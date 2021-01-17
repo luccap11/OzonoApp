@@ -10,6 +10,4 @@ data class WeatherData(
     val date: String,
     val icon: String,
     val timeInMillis: Long
-) {
-
-}
+)

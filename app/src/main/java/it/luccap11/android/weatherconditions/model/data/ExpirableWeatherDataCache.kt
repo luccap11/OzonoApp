@@ -1,8 +1,7 @@
-package it.luccap11.android.weatherconditions.model
+package it.luccap11.android.weatherconditions.model.data
 
 import androidx.annotation.NonNull
 import androidx.collection.LruCache
-import it.luccap11.android.weatherconditions.model.data.WeatherData
 
 /**
  * @author Luca Capitoli

@@ -2,6 +2,7 @@ package it.luccap11.android.weatherconditions.model
 
 import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.WeatherConditionApp
+import it.luccap11.android.weatherconditions.model.data.ExpirableWeatherDataCache
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.data.WeatherDataParser
 
