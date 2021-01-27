@@ -1,4 +1,4 @@
-package it.luccap11.android.weatherconditions.model
+package it.luccap11.android.weatherconditions.model.viewmodels
 
 import androidx.lifecycle.*
 import it.luccap11.android.weatherconditions.infrastructure.OWeatherMapRepository
