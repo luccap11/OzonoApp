@@ -1,4 +1,4 @@
-package it.luccap11.android.weatherconditions.model
+package it.luccap11.android.weatherconditions.infrastructure
 
 import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.WeatherConditionApp

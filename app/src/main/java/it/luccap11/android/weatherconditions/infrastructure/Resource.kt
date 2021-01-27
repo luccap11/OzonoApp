@@ -1,4 +1,4 @@
-package it.luccap11.android.weatherconditions.model
+package it.luccap11.android.weatherconditions.infrastructure
 
 /**
  * @author Luca Capitoli

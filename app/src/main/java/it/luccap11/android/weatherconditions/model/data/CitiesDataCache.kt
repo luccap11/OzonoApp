@@ -28,7 +28,7 @@ object CitiesDataCache {
     }
 
     @NonNull
-    fun isWeatherDataInCache(@NonNull queryKey: String): Boolean {
+    fun isDataInCache(@NonNull queryKey: String): Boolean {
         return getCachedCitiesData(queryKey).isNotEmpty()
     }
 }

@@ -25,7 +25,7 @@ class MainFragmentTest {
     fun checkAllViews() {
         onView(withId(R.id.searchView)).check(matches(isDisplayed()))
         onView(withId(R.id.progressLoading))
-        onView(withId(R.id.citiesListView))
+        onView(withId(R.id.citiesList))
         onView(withId(R.id.text))
         onView(withId(R.id.listWeatherData))
     }
