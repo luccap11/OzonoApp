@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.model.data.CityData
 
@@ -14,7 +13,7 @@ import it.luccap11.android.weatherconditions.model.data.CityData
  * @author Luca Capitoli
  * @since 13/jan/2021
  */
-class CitiesAdapter(private val dataSet: List<CityData>) :
+class CitiesAdapter(private val dataSet: List<CityData>, private val listener: OnItemClickListener) :
     RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
     private lateinit var context : Context
 
@@ -34,7 +33,10 @@ class CitiesAdapter(private val dataSet: List<CityData>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.cityDescr.text = String.format("%s, %s", dataSet[position].name, dataSet[position].country)
+        viewHolder.cityDescr.text = String.format("%s, %s", dataSet[position].name, dataSet[position].country.name)
+        viewHolder.itemView.setOnClickListener {
+            listener.onItemClick(dataSet[position])
+        }
     }
 
     override fun getItemCount() = dataSet.size
