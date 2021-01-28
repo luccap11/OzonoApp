@@ -20,9 +20,8 @@ class WorldCitiesRepository {
             RemoteWCitiesDataSource.fetchBack4AppData(userQuery) { remoteResponse ->
                 when (remoteResponse) {
                     is Resource.Success -> {
-//                        val result = WeatherDataParser.getWeatherLiveData()
-//                        CitiesDataCache.addCachedCityData(userQuery, remoteResponse)
-                        completion(Resource.Success(remoteResponse.data!!))
+                        CitiesDataCache.addCachedCityData(userQuery, remoteResponse.data!!)
+                        completion(Resource.Success(remoteResponse.data))
                     }
 
                     is Resource.Error -> {

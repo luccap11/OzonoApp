@@ -16,6 +16,7 @@ import it.luccap11.android.weatherconditions.infrastructure.Resource
 import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.viewmodels.WeatherViewModel
+import java.util.*
 
 /**
  * @author Luca Capitoli
@@ -65,7 +66,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
                 is Resource.Loading -> {
                     listProgressBar.visibility = View.VISIBLE
                     weatherResults.visibility = View.GONE
-//                    text.visibility = View.GONE
+//                    text.visibility = View.GONE TODO: Have I to add a text view? Or a Empty view?
                 }
 
                 is Resource.Error -> {
@@ -122,7 +123,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
             citiesResults.visibility = View.GONE
         } else {
             citiesResults.visibility = View.VISIBLE
-            viewModel.updateCityData(queryString)
+            viewModel.updateCityData(queryString.trim().split(" ").joinToString(" "){ it.capitalize(Locale.getDefault())})
         }
         return false
     }

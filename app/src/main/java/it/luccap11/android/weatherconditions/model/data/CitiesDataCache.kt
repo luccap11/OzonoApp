@@ -19,12 +19,12 @@ object CitiesDataCache {
     @NonNull
     fun getCachedCitiesData(@NonNull queryKey: String): List<CityData> {
         val cacheData = cachedCitiesData[queryKey]
-        return cacheData?.filter { it -> it.name.startsWith(queryKey ,true) } ?: emptyList()
+        return cacheData?.sortedByDescending { it.population } ?: emptyList()//TODO: improve this part (maybe with a db I can sorted a city list in a better way)
     }
 
-    fun addCachedCityData(@NonNull queryKey: String, @NonNull cityData: CityData) {
+    fun addCachedCityData(@NonNull queryKey: String, @NonNull citiesData: List<CityData>) {
         val cities = getCachedCitiesData(queryKey)
-        cachedCitiesData.put(queryKey, cities.plus(cityData))
+        cachedCitiesData.put(queryKey, cities.plus(citiesData))
     }
 
     @NonNull
