@@ -26,6 +26,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     private lateinit var weatherResults: RecyclerView
     private lateinit var text: TextView
     private lateinit var progressBar: ProgressBar
+    private lateinit var listProgressBar: ProgressBar
     private lateinit var citiesResults: RecyclerView
     private lateinit var viewModel: WeatherViewModel
 
@@ -47,6 +48,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         text = view.findViewById(R.id.text)
         progressBar = view.findViewById(R.id.progressLoading)
 
+        listProgressBar = view.findViewById(R.id.listLoading)
         citiesResults = view.findViewById(R.id.citiesList)
         citiesResults.layoutManager = LinearLayoutManager(context)
 
@@ -60,15 +62,21 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         viewModel.weatherLiveData.observe(viewLifecycleOwner, this)
         viewModel.citiesLiveData.observe(viewLifecycleOwner, Observer { citiesData ->
             when (citiesData) {
+                is Resource.Loading -> {
+                    listProgressBar.visibility = View.VISIBLE
+                    weatherResults.visibility = View.GONE
+//                    text.visibility = View.GONE
+                }
+
                 is Resource.Error -> {
-                    //progressBar.visibility = View.GONE
+                    listProgressBar.visibility = View.GONE
                     citiesResults.visibility = View.GONE
                     //text.visibility = View.VISIBLE
                     //text.text = citiesData.message
                 }
 
                 is Resource.Success -> {
-                    //progressBar.visibility = View.GONE
+                    listProgressBar.visibility = View.GONE
                     //text.visibility = View.GONE
                     citiesResults.visibility = View.VISIBLE
                     citiesResults.adapter = CitiesAdapter(citiesData.data!!.take(3), this)
@@ -121,5 +129,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onItemClick(cityData: CityData) {
         searchView.setQuery(cityData.name, true)
+        listProgressBar.visibility = View.GONE
+        citiesResults.visibility = View.GONE
     }
 }
