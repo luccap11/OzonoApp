@@ -4,9 +4,7 @@ example: http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d8560
 
 ## Notes
 I can improve the app:
-1. introducing cached data with Repository pattern 
 1. introducing dagger2 for DI
-1. change Volley to Retrofit lib
 1. Introducing RxJava
 1. Introducing DataBinding
 
@@ -25,6 +23,8 @@ Follow this [instructions](https://developer.android.com/studio/run)
 
 ## Tech Stack
 - MVVM (new for me)
+- Volley and Retrofit - as HTTP client
+- Room - for persistence layer
 - Glide - for image loading.
 - LruCache - for caching data
 - LiveData - use LiveData to see UI update with data changes.
