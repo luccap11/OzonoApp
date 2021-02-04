@@ -31,8 +31,14 @@ class WeatherViewModel : ViewModel() {
     fun updateCityData(userQuery: String) {
         citiesLiveData.postValue(Resource.Loading())
         viewModelScope.launch(Dispatchers.IO) {
-            cityRepository.fetchCitiesData(userQuery) { worldCities ->
-                citiesLiveData.postValue(worldCities)
+            cityRepository.fetchLocalCitiesData(userQuery) { worldCities ->
+                if (worldCities is Resource.Success) {
+                    citiesLiveData.postValue(worldCities)
+                } else {
+                    cityRepository.fetchRemoteCitiesData(userQuery) {
+                        citiesLiveData.postValue(it)
+                    }
+                }
             }
         }
     }

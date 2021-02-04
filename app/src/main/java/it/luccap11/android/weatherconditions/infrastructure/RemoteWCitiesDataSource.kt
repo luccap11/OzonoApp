@@ -1,6 +1,5 @@
 package it.luccap11.android.weatherconditions.infrastructure
 
-import android.util.Log
 import it.luccap11.android.weatherconditions.infrastructure.RetrofitClientInstance.retrofitInstance
 import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WorldCitiesData
@@ -18,7 +17,7 @@ object RemoteWCitiesDataSource {
 
     fun fetchBack4AppData(selectedCity: String, completion: (Resource<List<CityData>>) -> Unit) {
         val service: WorldCitiesWS = retrofitInstance!!.create(WorldCitiesWS::class.java)
-        var where = URLEncoder.encode("""
+        val where = URLEncoder.encode("""
     {
         "name": {
             "${'$'}gte": "$selectedCity"
@@ -34,14 +33,10 @@ object RemoteWCitiesDataSource {
         val call: Call<WorldCitiesData> = service.getCities(where)
         call.enqueue(object : Callback<WorldCitiesData> {
             override fun onResponse(call: Call<WorldCitiesData>, response: Response<WorldCitiesData>) {
-                val ok = response.isSuccessful
-                Log.d("AAA", response.message())
-                Log.e("AAA", response.errorBody().toString())
                 completion(Resource.Success(response.body()!!.cities.distinctBy { Pair(it.name, it.country.name) }.sortedByDescending { it.population }))
             }
 
             override fun onFailure(call: Call<WorldCitiesData>, t: Throwable?) {
-                Log.e("AAA", t.toString())
                 completion(Resource.Error(""))
             }
         })

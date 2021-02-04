@@ -14,8 +14,11 @@ import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEn
 @Dao
 interface CitiesDao {
     @Query("SELECT * FROM cities WHERE name = :name AND country_name = :country")
-    fun getCity(@NonNull name: String, @NonNull country: String): CityEntity
+    suspend fun getCity(@NonNull name: String, @NonNull country: String): CityEntity
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCity(vararg city: CityEntity)
+    @Query("SELECT * FROM cities WHERE name LIKE :startName ORDER BY population DESC LIMIT 3")
+    suspend fun getCitiesStartWith(@NonNull startName: String): List<CityEntity>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertCities(vararg city: CityEntity): List<Long>
 }

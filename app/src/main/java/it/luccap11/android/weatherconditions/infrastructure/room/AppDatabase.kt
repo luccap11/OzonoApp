@@ -5,6 +5,7 @@ import androidx.annotation.NonNull
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import it.luccap11.android.weatherconditions.WeatherConditionApp
 import it.luccap11.android.weatherconditions.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEntity
 
@@ -17,20 +18,21 @@ import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEn
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
-        const val DB_NAME = "app name"
-        private var INSTANCE: AppDatabase? = null
+        private const val DB_NAME = "ozono"
+        @Volatile private var instance: AppDatabase? = null
 
         @NonNull
-        fun getDatabase(context: Context): AppDatabase? {
-            if (INSTANCE == null) {
-                synchronized(AppDatabase::class.java) {
-                    if (INSTANCE == null) {
-                        // Create database here
-                        INSTANCE = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DB_NAME).build()
-                    }
-                }
+        fun getInstance(): AppDatabase {
+            return instance ?: synchronized(this) {
+                instance ?: buildDatabase().also { instance = it }
             }
-            return INSTANCE
+        }
+
+        // Create and pre-populate the database. See this article for more details:
+        // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
+        private fun buildDatabase(): AppDatabase {
+            val context = WeatherConditionApp.instance
+            return Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
         }
     }
 
