@@ -80,7 +80,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
                     listProgressBar.visibility = View.GONE
                     //text.visibility = View.GONE
                     citiesResults.visibility = View.VISIBLE
-                    citiesResults.adapter = CitiesAdapter(citiesData.data!!.take(3), this)
+                    citiesResults.adapter = CitiesAdapter(citiesData.data!!.take(resources.getInteger(R.integer.num_of_cities_result)), this)
                 }
             }
         })
