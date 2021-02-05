@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Weather Condition</string>
     <string name="owm_api_key">7d85604d75067f7a0da53ac8f70c5364</string>
+    <string name="error_log_tag">WCTApp</string>
 
 
     <string name="city_label">City</string>
