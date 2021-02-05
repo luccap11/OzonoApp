@@ -1,5 +1,8 @@
 package it.luccap11.android.weatherconditions.infrastructure
 
+import android.util.Log
+import it.luccap11.android.weatherconditions.R
+import it.luccap11.android.weatherconditions.WeatherConditionApp
 import it.luccap11.android.weatherconditions.infrastructure.RetrofitClientInstance.retrofitInstance
 import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WorldCitiesData
@@ -33,7 +36,15 @@ object RemoteWCitiesDataSource {
         val call: Call<WorldCitiesData> = service.getCities(where)
         call.enqueue(object : Callback<WorldCitiesData> {
             override fun onResponse(call: Call<WorldCitiesData>, response: Response<WorldCitiesData>) {
-                completion(Resource.Success(response.body()!!.cities.distinctBy { Pair(it.name, it.country.name) }.sortedByDescending { it.population }))
+                val body = response.body()
+                if (body != null) {
+                    completion(Resource.Success(response.body()!!.cities))
+                } else{
+                    Log.e(WeatherConditionApp.instance.getString(R.string.error_log_tag), response.message())
+                    if (response.errorBody() != null)
+                        Log.e(WeatherConditionApp.instance.getString(R.string.error_log_tag), response.errorBody().toString())
+                    completion(Resource.Error(""))
+                }
             }
 
             override fun onFailure(call: Call<WorldCitiesData>, t: Throwable?) {
