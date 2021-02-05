@@ -1,6 +1,5 @@
 package it.luccap11.android.weatherconditions.infrastructure.room
 
-import android.content.Context
 import androidx.annotation.NonNull
 import androidx.room.Database
 import androidx.room.Room
@@ -18,7 +17,7 @@ import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEn
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
-        private const val DB_NAME = "ozono"
+        private const val DB_NAME = "ozono.db"
         @Volatile private var instance: AppDatabase? = null
 
         @NonNull
