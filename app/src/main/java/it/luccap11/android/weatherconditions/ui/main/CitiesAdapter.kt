@@ -33,7 +33,7 @@ class CitiesAdapter(private val dataSet: List<CityData>, private val listener: O
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.cityDescr.text = String.format("%s, %s", dataSet[position].name, dataSet[position].country.name)
+        viewHolder.cityDescr.text = String.format("%s, %s, %s", dataSet[position].name, dataSet[position].adminCode, dataSet[position].country.name)
         viewHolder.itemView.setOnClickListener {
             listener.onItemClick(dataSet[position])
         }

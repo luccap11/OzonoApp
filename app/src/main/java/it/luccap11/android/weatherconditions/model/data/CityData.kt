@@ -10,9 +10,10 @@ import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEn
 data class CityData(@SerializedName("name") val name: String,
                     @SerializedName("country") val country: Country,
                     @SerializedName("population") val population: Int,
+                    @SerializedName("adminCode") val adminCode: String,
                     @SerializedName("location") val location: Location)
 
-data class WorldCitiesData (@SerializedName("results") var cities: Set<CityData> = emptySet())
+data class WorldCitiesData (@SerializedName("results") var cities: List<CityData> = emptyList())
 
 data class Country(@SerializedName("name") val name: String)
 
@@ -23,7 +24,8 @@ class CityDataBuilder {
     fun cityDataBuilder(citiesEntity: List<CityEntity>): List<CityData> {
         val result = mutableListOf<CityData>()
         citiesEntity.forEach { cityEntity ->
-            val data = CityData(cityEntity.name, Country(cityEntity.country), cityEntity.population, Location(cityEntity.latitude, cityEntity.longitude))
+            val data = CityData(cityEntity.name, Country(cityEntity.country), cityEntity.population, cityEntity.adminCode,
+                Location(cityEntity.latitude, cityEntity.longitude))
             result.add(data)
         }
         return result
