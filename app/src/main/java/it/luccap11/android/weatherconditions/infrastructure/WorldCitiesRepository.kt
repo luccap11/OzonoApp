@@ -3,7 +3,6 @@ package it.luccap11.android.weatherconditions.infrastructure
 import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.WeatherConditionApp
 import it.luccap11.android.weatherconditions.infrastructure.room.AppDatabase
-import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEntity
 import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEntityBuilder
 import it.luccap11.android.weatherconditions.model.data.*
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +17,8 @@ import kotlin.coroutines.CoroutineContext
  */
 class WorldCitiesRepository: CoroutineScope {
     private var job: Job = Job()
+    private val resources = WeatherConditionApp.instance.resources
+    private val numbOfResults = resources.getInteger(R.integer.num_of_cities_result)
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + job
@@ -27,17 +28,16 @@ class WorldCitiesRepository: CoroutineScope {
         if (isCachedData) {
             completion(Resource.Success(CitiesDataCache.getCachedCitiesData(userQuery)))
         } else {
-            var dbCities = emptyList<CityEntity>()
             launch {
-                dbCities = AppDatabase.getInstance().citiesDao().getCitiesStartWith(userQuery+"%")
-            }
+                val dbCities = AppDatabase.getInstance().citiesDao().getCitiesStartWith("$userQuery%", numbOfResults)
 
-            if (dbCities.isNotEmpty()) {
-                val cities = CityDataBuilder().cityDataBuilder(dbCities)
-                CitiesDataCache.addCachedCityData(userQuery, cities)
-                completion(Resource.Success(cities))
-            } else {
-               completion(Resource.Error(""))
+                if (dbCities.isNotEmpty() && dbCities.size >= resources.getInteger(R.integer.num_of_cities_result)) {
+                    val cities = CityDataBuilder().cityDataBuilder(dbCities)
+                    CitiesDataCache.addCachedCityData(userQuery, cities)
+                    completion(Resource.Success(cities))
+                } else {
+                    completion(Resource.Error(""))
+                }
             }
         }
     }
@@ -46,18 +46,20 @@ class WorldCitiesRepository: CoroutineScope {
         RemoteWCitiesDataSource.fetchBack4AppData(userQuery) { remoteResponse ->
             when (remoteResponse) {
                 is Resource.Success -> {
-                    CitiesDataCache.addCachedCityData(userQuery, remoteResponse.data!!)
-                    val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteResponse.data)
+                    CitiesDataCache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
+                    val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteResponse.data!!)
                     launch {
-                        AppDatabase.getInstance().citiesDao().insertCities(*citiesEntity)
+                        val db = AppDatabase.getInstance().citiesDao()
+                        db.insertCities(*citiesEntity)
+                        val dbCitiesEntity = db.getCitiesStartWith("$userQuery%", numbOfResults)
+                        val dbData = CityDataBuilder().cityDataBuilder(dbCitiesEntity)
+                        completion(Resource.Success(dbData))
                     }
-                    completion(Resource.Success(remoteResponse.data))
+                    completion(Resource.Loading())
                 }
 
                 is Resource.Error -> {
-                    completion(Resource.Error(WeatherConditionApp.instance.resources.getString(
-                        R.string.error_label
-                    )))
+                    completion(Resource.Error(resources.getString(R.string.error_label)))
                 }
             }
         }

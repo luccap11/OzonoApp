@@ -16,8 +16,8 @@ interface CitiesDao {
     @Query("SELECT * FROM cities WHERE name = :name AND country_name = :country")
     suspend fun getCity(@NonNull name: String, @NonNull country: String): CityEntity
 
-    @Query("SELECT * FROM cities WHERE name LIKE :startName ORDER BY population DESC LIMIT 3")
-    suspend fun getCitiesStartWith(@NonNull startName: String): List<CityEntity>
+    @Query("SELECT * FROM cities WHERE name LIKE :startName ORDER BY population DESC LIMIT :numbOfResult")
+    suspend fun getCitiesStartWith(@NonNull startName: String, numbOfResult: Int): List<CityEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertCities(vararg city: CityEntity): List<Long>
