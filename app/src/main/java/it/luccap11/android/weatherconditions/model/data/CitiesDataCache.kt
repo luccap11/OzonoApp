@@ -19,12 +19,21 @@ object CitiesDataCache {
     @NonNull
     fun getCachedCitiesData(@NonNull queryKey: String): List<CityData> {
         val cacheData = cachedCitiesData[queryKey]
-        return cacheData?.sortedByDescending { it.population } ?: emptyList()//TODO: improve this part (maybe with a db I can sorted a city list in a better way)
+        return cacheData?: emptyList()
     }
 
     fun addCachedCityData(@NonNull queryKey: String, @NonNull citiesData: List<CityData>) {
         val cities = getCachedCitiesData(queryKey)
         cachedCitiesData.put(queryKey, cities.plus(citiesData))
+    }
+
+    /**
+     * Delete every key starts with @param key
+     */
+    fun deleteMultipleCachedCityData(@NonNull key: String) {
+        for (i in key.indices.reversed()) {
+            cachedCitiesData.remove(key.substring(0..i))
+        }
     }
 
     @NonNull
