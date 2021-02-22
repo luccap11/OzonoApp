@@ -2,7 +2,7 @@ package it.luccap11.android.weatherconditions.infrastructure
 
 import android.util.Log
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.WeatherConditionApp
+import it.luccap11.android.weatherconditions.OzonoAppl
 import it.luccap11.android.weatherconditions.infrastructure.RetrofitClientInstance.retrofitInstance
 import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WorldCitiesData
@@ -55,11 +55,11 @@ object RemoteWCitiesDataSource {
 
     private fun findErrorsInBodyResponse(response: Response<WorldCitiesData>, body: WorldCitiesData?): Boolean {
         return if (body == null) {
-            Log.e(WeatherConditionApp.instance.getString(R.string.error_log_tag), response.message())
+            Log.e(OzonoAppl.instance.getString(R.string.error_log_tag), response.message())
 
             val errorBody = response.errorBody()
             if (errorBody != null) {
-                Log.e(WeatherConditionApp.instance.getString(R.string.error_log_tag), errorBody.toString())
+                Log.e(OzonoAppl.instance.getString(R.string.error_log_tag), errorBody.toString())
             }
             true
         } else {

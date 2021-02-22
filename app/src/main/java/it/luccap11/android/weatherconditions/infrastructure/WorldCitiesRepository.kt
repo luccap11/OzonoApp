@@ -1,7 +1,7 @@
 package it.luccap11.android.weatherconditions.infrastructure
 
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.WeatherConditionApp
+import it.luccap11.android.weatherconditions.OzonoAppl
 import it.luccap11.android.weatherconditions.infrastructure.room.AppDatabase
 import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEntityBuilder
 import it.luccap11.android.weatherconditions.model.data.*
@@ -17,7 +17,7 @@ import kotlin.coroutines.CoroutineContext
  */
 class WorldCitiesRepository: CoroutineScope {
     private var job: Job = Job()
-    private val resources = WeatherConditionApp.instance.resources
+    private val resources = OzonoAppl.instance.resources
     private val numbOfResults = resources.getInteger(R.integer.num_of_cities_result)
 
     override val coroutineContext: CoroutineContext

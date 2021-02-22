@@ -4,7 +4,7 @@ import androidx.annotation.NonNull
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import it.luccap11.android.weatherconditions.WeatherConditionApp
+import it.luccap11.android.weatherconditions.OzonoAppl
 import it.luccap11.android.weatherconditions.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEntity
 
@@ -30,7 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(): AppDatabase {
-            val context = WeatherConditionApp.instance
+            val context = OzonoAppl.instance
             return Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
         }
     }

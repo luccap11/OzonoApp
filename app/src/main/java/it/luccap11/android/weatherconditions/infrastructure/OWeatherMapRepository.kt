@@ -1,7 +1,7 @@
 package it.luccap11.android.weatherconditions.infrastructure
 
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.WeatherConditionApp
+import it.luccap11.android.weatherconditions.OzonoAppl
 import it.luccap11.android.weatherconditions.model.data.ExpirableWeatherDataCache
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.data.WeatherDataParser
@@ -25,7 +25,7 @@ class OWeatherMapRepository: WeatherRepository {
                     }
 
                     is Resource.Error -> {
-                        completion(Resource.Error(WeatherConditionApp.instance.resources.getString(R.string.error_label)))
+                        completion(Resource.Error(OzonoAppl.instance.resources.getString(R.string.error_label)))
                     }
                 }
             }
