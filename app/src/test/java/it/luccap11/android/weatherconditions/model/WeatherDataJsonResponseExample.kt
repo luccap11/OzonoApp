@@ -1,6 +1,6 @@
 package it.luccap11.android.weatherconditions.model
 
-object JsonResponseExample {
+object WeatherDataJsonResponseExample {
     fun fetchJson(timeInSecs: Long): String {
         return """
          {

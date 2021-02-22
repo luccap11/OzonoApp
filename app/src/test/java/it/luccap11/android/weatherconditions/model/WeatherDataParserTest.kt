@@ -19,7 +19,7 @@ class WeatherDataParserTest {
 
     @Before
     fun before() {
-        jsonResponse = JsonResponseExample.fetchJson(currentTime)
+        jsonResponse = WeatherDataJsonResponseExample.fetchJson(currentTime)
     }
 
     @Test

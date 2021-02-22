@@ -54,7 +54,7 @@ class ExpirableWeatherDataCacheTest {
     }
 
     private fun getWeatherData(timeInMillis: Long): List<WeatherData> {
-        val jsonResponse = JsonResponseExample.fetchJson(timeInMillis / 1000)
+        val jsonResponse = WeatherDataJsonResponseExample.fetchJson(timeInMillis / 1000)
         val jsonObject = JSONObject(jsonResponse)
         return WeatherDataParser.getWeatherLiveData(jsonObject)
     }
