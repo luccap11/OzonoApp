@@ -1,5 +1,5 @@
 # Ozono App
-![GitHub branch checks state](https://img.shields.io/github/checks-status/luccap11/WeatherConditions/main)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/luccap11/WeatherConditions/master)
 ![GitHub issues](https://img.shields.io/github/issues/luccap11/WeatherConditions)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/luccap11/WeatherConditions)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/luccap11/WeatherConditions)
