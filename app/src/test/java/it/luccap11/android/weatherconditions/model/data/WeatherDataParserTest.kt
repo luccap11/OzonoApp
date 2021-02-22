@@ -1,6 +1,6 @@
-package it.luccap11.android.weatherconditions.model
+package it.luccap11.android.weatherconditions.model.data
 
-import it.luccap11.android.weatherconditions.model.data.WeatherDataParser
+import it.luccap11.android.weatherconditions.model.WeatherDataJsonResponseExample
 import org.json.JSONObject
 import org.junit.Assert
 import org.junit.Before
