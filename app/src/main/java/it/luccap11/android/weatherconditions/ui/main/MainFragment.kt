@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.Nullable
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,8 +27,8 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     private lateinit var searchView: SearchView
     private lateinit var weatherResults: RecyclerView
     private lateinit var text: TextView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var listProgressBar: ProgressBar
+    private lateinit var weatherProgressBar: ProgressBar
+    private lateinit var citiesProgressBar: ProgressBar
     private lateinit var citiesResults: RecyclerView
     private lateinit var viewModel: WeatherViewModel
 
@@ -47,9 +48,9 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         weatherResults = view.findViewById(R.id.listWeatherData)
         weatherResults.layoutManager = LinearLayoutManager(context)
         text = view.findViewById(R.id.text)
-        progressBar = view.findViewById(R.id.progressLoading)
+        weatherProgressBar = view.findViewById(R.id.weatherDataLoading)
 
-        listProgressBar = view.findViewById(R.id.listLoading)
+        citiesProgressBar = view.findViewById(R.id.citiesDataLoading)
         citiesResults = view.findViewById(R.id.citiesList)
         citiesResults.layoutManager = LinearLayoutManager(context)
 
@@ -64,21 +65,17 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         viewModel.citiesLiveData.observe(viewLifecycleOwner, Observer { citiesData ->
             when (citiesData) {
                 is Resource.Loading -> {
-                    listProgressBar.visibility = View.VISIBLE
+                    citiesProgressBar.visibility = View.VISIBLE
                     weatherResults.visibility = View.GONE
-//                    text.visibility = View.GONE TODO: Have I to add a text view? Or a Empty view?
                 }
 
                 is Resource.Error -> {
-                    listProgressBar.visibility = View.GONE
+                    citiesProgressBar.visibility = View.GONE
                     citiesResults.visibility = View.GONE
-                    //text.visibility = View.VISIBLE
-                    //text.text = citiesData.message
                 }
 
                 is Resource.Success -> {
-                    listProgressBar.visibility = View.GONE
-                    //text.visibility = View.GONE
+                    citiesProgressBar.visibility = View.GONE
                     citiesResults.visibility = View.VISIBLE
                     citiesResults.adapter = CitiesAdapter(citiesData.data!!.take(resources.getInteger(R.integer.num_of_cities_result)), this)
                 }
@@ -89,20 +86,20 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     override fun onChanged(@Nullable weatherData: Resource<List<WeatherData>>) {
         when (weatherData) {
             is Resource.Loading -> {
-                progressBar.visibility = View.VISIBLE
+                weatherProgressBar.visibility = View.VISIBLE
                 weatherResults.visibility = View.GONE
                 text.visibility = View.GONE
             }
 
             is Resource.Error -> {
-                progressBar.visibility = View.GONE
+                weatherProgressBar.visibility = View.GONE
                 weatherResults.visibility = View.GONE
                 text.visibility = View.VISIBLE
                 text.text = weatherData.message
             }
 
             is Resource.Success -> {
-                progressBar.visibility = View.GONE
+                weatherProgressBar.visibility = View.GONE
                 text.visibility = View.GONE
                 weatherResults.visibility = View.VISIBLE
                 weatherResults.adapter = WeatherAdapter(weatherData.data!!)
@@ -114,7 +111,6 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         if (!queryString.isNullOrBlank()) {
             viewModel.updateWeatherData(queryString)
         }
-        citiesResults.visibility = View.GONE
         return false
     }
 
@@ -122,15 +118,21 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         if (queryString.isNullOrBlank()) {
             citiesResults.visibility = View.GONE
         } else {
-            citiesResults.visibility = View.VISIBLE
-            viewModel.updateCityData(queryString.trim().split(" ").joinToString(" "){ it.capitalize(Locale.getDefault())})
+            if (searchView.isIconified) {
+                searchView.isIconified = false
+            } else {
+                citiesResults.visibility = View.VISIBLE
+                viewModel.updateCityData(queryString.trim().split(" ").joinToString(" "){ it.capitalize(Locale.getDefault())})
+            }
         }
         return false
     }
 
     override fun onItemClick(cityData: CityData) {
+        searchView.isIconified = true //text is cleared
+        searchView.isIconified = true //keyboard and search view get closed
         searchView.setQuery(cityData.name, true)
-        listProgressBar.visibility = View.GONE
+        citiesProgressBar.visibility = View.GONE
         citiesResults.visibility = View.GONE
     }
 }
