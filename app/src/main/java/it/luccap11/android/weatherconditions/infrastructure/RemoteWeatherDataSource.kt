@@ -16,9 +16,9 @@ object RemoteWeatherDataSource {
     private const val BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
     fun fetchOWeatherMapData(selectedCity: String, completion: (Resource<JSONObject>) -> Unit) {
-        val resource = OzonoAppl.instance.resources
+        val resource = OzonoAppl.resources
         val url = String.format("%s?q=%s&APPID=%s&units=metric", BASE_URL, selectedCity, resource.getString(R.string.owm_api_key))
-        val requestQueue = Volley.newRequestQueue(OzonoAppl.instance)
+        val requestQueue = Volley.newRequestQueue(OzonoAppl)
         val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
             completion(Resource.Success(response))
         }) { error ->

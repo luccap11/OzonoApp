@@ -55,11 +55,11 @@ object RemoteWCitiesDataSource {
 
     private fun findErrorsInBodyResponse(response: Response<WorldCitiesData>, body: WorldCitiesData?): Boolean {
         return if (body == null) {
-            Log.e(OzonoAppl.instance.getString(R.string.error_log_tag), response.message())
+            Log.e(OzonoAppl.getString(R.string.error_log_tag), response.message())
 
             val errorBody = response.errorBody()
             if (errorBody != null) {
-                Log.e(OzonoAppl.instance.getString(R.string.error_log_tag), errorBody.toString())
+                Log.e(OzonoAppl.getString(R.string.error_log_tag), errorBody.toString())
             }
             true
         } else {
