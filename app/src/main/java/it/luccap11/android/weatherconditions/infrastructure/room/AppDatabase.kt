@@ -30,7 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
         // Create and pre-populate the database. See this article for more details:
         // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
         private fun buildDatabase(): AppDatabase {
-            return Room.databaseBuilder(OzonoAppl, AppDatabase::class.java, DB_NAME).build()
+            return Room.databaseBuilder(OzonoAppl.instance, AppDatabase::class.java, DB_NAME).build()
         }
     }
 

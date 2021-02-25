@@ -17,7 +17,7 @@ import kotlin.coroutines.CoroutineContext
  */
 class WorldCitiesRepository: CoroutineScope {
     private var job: Job = Job()
-    private val resources = OzonoAppl.resources
+    private val resources = OzonoAppl.instance.resources
     private val numbOfResults = resources.getInteger(R.integer.num_of_cities_result)
 
     override val coroutineContext: CoroutineContext

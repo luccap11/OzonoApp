@@ -25,7 +25,7 @@ class OWeatherMapRepository: WeatherRepository {
                     }
 
                     is Resource.Error -> {
-                        completion(Resource.Error(OzonoAppl.resources.getString(R.string.error_label)))
+                        completion(Resource.Error(OzonoAppl.instance.resources.getString(R.string.error_label)))
                     }
                 }
             }
