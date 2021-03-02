@@ -6,6 +6,7 @@
     <!-- Labels -->
     <string name="city_label">City</string>
     <string name="error_label">Something went wrong</string>
+    <string name="empty_label">No item yet…</string>
 
     <!-- Shared Prefereces -->
     <string name="preference_file_key">it.luccap11.android.ozono.PREFERENCE_FILE_KEY</string>

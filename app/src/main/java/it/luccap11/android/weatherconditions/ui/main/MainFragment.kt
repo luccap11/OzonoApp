@@ -17,6 +17,7 @@ import it.luccap11.android.weatherconditions.infrastructure.Resource
 import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.viewmodels.WeatherViewModel
+import it.luccap11.android.weatherconditions.utils.PreferencesManager
 import java.util.*
 
 /**
@@ -26,11 +27,12 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<Resource<List<WeatherData>>>, OnItemClickListener {
     private lateinit var searchView: SearchView
     private lateinit var weatherResults: RecyclerView
-    private lateinit var text: TextView
+    private lateinit var weatherMessage: TextView
     private lateinit var weatherProgressBar: ProgressBar
     private lateinit var citiesProgressBar: ProgressBar
     private lateinit var citiesResults: RecyclerView
     private lateinit var viewModel: WeatherViewModel
+    private val prefs = PreferencesManager()
 
     companion object {
         fun newInstance() = MainFragment()
@@ -47,7 +49,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         super.onViewCreated(view, savedInstanceState)
         weatherResults = view.findViewById(R.id.listWeatherData)
         weatherResults.layoutManager = LinearLayoutManager(context)
-        text = view.findViewById(R.id.text)
+        weatherMessage = view.findViewById(R.id.weatherMessage)
         weatherProgressBar = view.findViewById(R.id.weatherDataLoading)
 
         citiesProgressBar = view.findViewById(R.id.citiesDataLoading)
@@ -62,7 +64,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
         viewModel.weatherLiveData.observe(viewLifecycleOwner, this)
-        viewModel.citiesLiveData.observe(viewLifecycleOwner, Observer { citiesData ->
+        viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
             when (citiesData) {
                 is Resource.Loading -> {
                     citiesProgressBar.visibility = View.VISIBLE
@@ -81,6 +83,13 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
                 }
             }
         })
+
+        viewModel.getLastCitySearched()
+        viewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
+            if (lastCitySearched != null) {
+                searchView.setQuery(lastCitySearched.name, true)
+            }
+        })
     }
 
     override fun onChanged(@Nullable weatherData: Resource<List<WeatherData>>) {
@@ -88,19 +97,19 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
             is Resource.Loading -> {
                 weatherProgressBar.visibility = View.VISIBLE
                 weatherResults.visibility = View.GONE
-                text.visibility = View.GONE
+                weatherMessage.visibility = View.GONE
             }
 
             is Resource.Error -> {
                 weatherProgressBar.visibility = View.GONE
                 weatherResults.visibility = View.GONE
-                text.visibility = View.VISIBLE
-                text.text = weatherData.message
+                weatherMessage.visibility = View.VISIBLE
+                weatherMessage.text = weatherData.message
             }
 
             is Resource.Success -> {
                 weatherProgressBar.visibility = View.GONE
-                text.visibility = View.GONE
+                weatherMessage.visibility = View.GONE
                 weatherResults.visibility = View.VISIBLE
                 weatherResults.adapter = WeatherAdapter(weatherData.data!!)
             }
@@ -134,5 +143,11 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         searchView.setQuery(cityData.name, true)
         citiesProgressBar.visibility = View.GONE
         citiesResults.visibility = View.GONE
+        savePreference(cityData)
+    }
+
+    private fun savePreference(cityData: CityData) {
+        prefs.saveLastSearchedCityLatit(cityData.location.latitude)
+        prefs.saveLastSearchedCityLongit(cityData.location.longitude)
     }
 }

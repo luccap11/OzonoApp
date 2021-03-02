@@ -9,7 +9,7 @@ import it.luccap11.android.weatherconditions.R
  * @since 24/feb/2021
  */
 class PreferencesManager {
-    private val context = OzonoAppl
+    private val context = OzonoAppl.instance
     private val sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE)
 
     fun saveLastSearchedCityLatit(latit: Float) {

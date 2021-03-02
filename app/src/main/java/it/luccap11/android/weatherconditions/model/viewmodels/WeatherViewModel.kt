@@ -6,8 +6,7 @@ import it.luccap11.android.weatherconditions.infrastructure.Resource
 import it.luccap11.android.weatherconditions.infrastructure.WorldCitiesRepository
 import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WeatherData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * The ViewModel triggers the network request when the user clicks, for example, on a button
@@ -16,6 +15,7 @@ import kotlinx.coroutines.launch
 class WeatherViewModel : ViewModel() {
     val weatherLiveData = MutableLiveData<Resource<List<WeatherData>>>()
     val citiesLiveData = MutableLiveData<Resource<List<CityData>>>()
+    val lastCitySearched = MutableLiveData<CityData>()
     private val weatherRepository = OWeatherMapRepository()
     private val cityRepository = WorldCitiesRepository()
 
@@ -40,6 +40,12 @@ class WeatherViewModel : ViewModel() {
                     }
                 }
             }
+        }
+    }
+
+    fun getLastCitySearched() {
+        cityRepository.getLastCitySearched {
+            lastCitySearched.postValue(it)
         }
     }
 

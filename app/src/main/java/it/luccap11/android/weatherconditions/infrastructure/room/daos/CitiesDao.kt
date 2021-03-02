@@ -19,6 +19,9 @@ interface CitiesDao {
     @Query("SELECT * FROM cities WHERE name LIKE :startName ORDER BY population DESC LIMIT :numbOfResult")
     suspend fun getCitiesStartWith(@NonNull startName: String, numbOfResult: Int): List<CityEntity>
 
+    @Query("SELECT * FROM cities WHERE latitude = :latitude AND longitude = :longitude")
+    suspend fun getCityByCoords(@NonNull latitude: Float, longitude: Float): CityEntity?
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertCities(vararg city: CityEntity): List<Long>
 }
