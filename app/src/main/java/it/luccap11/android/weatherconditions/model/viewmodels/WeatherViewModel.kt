@@ -12,12 +12,11 @@ import kotlinx.coroutines.*
  * The ViewModel triggers the network request when the user clicks, for example, on a button
  * @author Luca Capitoli
  */
-class WeatherViewModel : ViewModel() {
+class WeatherViewModel(private val cityRepository: WorldCitiesRepository,
+                       private val weatherRepository: OWeatherMapRepository) : ViewModel() {
     val weatherLiveData = MutableLiveData<Resource<List<WeatherData>>>()
     val citiesLiveData = MutableLiveData<Resource<List<CityData>>>()
     val lastCitySearched = MutableLiveData<CityData>()
-    private val weatherRepository = OWeatherMapRepository()
-    private val cityRepository = WorldCitiesRepository()
 
     fun updateWeatherData(selectedCity: String) {
         weatherLiveData.postValue(Resource.Loading())
@@ -49,4 +48,9 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
+}
+
+class WeatherViewModelFactory(private val cityRepository: WorldCitiesRepository,
+                              private val weatherRepository: OWeatherMapRepository): ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = WeatherViewModel(cityRepository, weatherRepository) as T
 }

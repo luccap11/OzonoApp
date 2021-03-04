@@ -9,14 +9,18 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.luccap11.android.weatherconditions.R
+import it.luccap11.android.weatherconditions.infrastructure.OWeatherMapRepository
 import it.luccap11.android.weatherconditions.infrastructure.Resource
+import it.luccap11.android.weatherconditions.infrastructure.WorldCitiesRepository
 import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.viewmodels.WeatherViewModel
+import it.luccap11.android.weatherconditions.model.viewmodels.WeatherViewModelFactory
 import it.luccap11.android.weatherconditions.utils.PreferencesManager
 import java.util.*
 
@@ -31,7 +35,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     private lateinit var weatherProgressBar: ProgressBar
     private lateinit var citiesProgressBar: ProgressBar
     private lateinit var citiesResults: RecyclerView
-    private lateinit var viewModel: WeatherViewModel
+    private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(WorldCitiesRepository(), OWeatherMapRepository()) }
     private val prefs = PreferencesManager()
 
     companion object {
@@ -62,7 +66,6 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
         viewModel.weatherLiveData.observe(viewLifecycleOwner, this)
         viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
             when (citiesData) {
