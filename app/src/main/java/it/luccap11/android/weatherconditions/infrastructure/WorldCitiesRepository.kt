@@ -32,7 +32,7 @@ class WorldCitiesRepository: CoroutineScope {
             completion(Resource.Success(CitiesDataCache.getCachedCitiesData(userQuery)))
         } else {
             launch {
-                val dbCities = citiesDao.getCitiesStartWith("$userQuery%", numbOfResults)
+                val dbCities = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
 
                 if (dbCities.isNotEmpty() && dbCities.size >= numbOfResults) {
                     val cities = CityDataBuilder().cityDataBuilder(dbCities)
@@ -53,7 +53,7 @@ class WorldCitiesRepository: CoroutineScope {
                     val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteResponse.data!!)
                     launch {
                         citiesDao.insertCities(*citiesEntity)
-                        val dbCitiesEntity = citiesDao.getCitiesStartWith("$userQuery%", numbOfResults)
+                        val dbCitiesEntity = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
                         val dbData = CityDataBuilder().cityDataBuilder(dbCitiesEntity)
                         completion(Resource.Success(dbData))
                     }
@@ -74,7 +74,7 @@ class WorldCitiesRepository: CoroutineScope {
         if (!lastLatitSearched.equals(AppUtils.NOT_SET.toFloat()) && !lastLongitSearched.equals(
                 AppUtils.NOT_SET.toFloat())) {
             launch {
-                val cityEntity = citiesDao.getCityByCoords(lastLatitSearched, lastLongitSearched)
+                val cityEntity = citiesDao.findCityByCoords(lastLatitSearched, lastLongitSearched)
                 if (cityEntity == null) {
                     completion(null)
                 } else {
