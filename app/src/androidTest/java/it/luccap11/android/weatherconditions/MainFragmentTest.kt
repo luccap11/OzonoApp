@@ -43,6 +43,14 @@ class MainFragmentTest {
         onView(withId(R.id.searchView)).perform(typeSearchViewText("London"), pressKey(KeyEvent.KEYCODE_ENTER))
     }
 
+    @Test
+    fun checkEmptySearchView() {
+        onView(withId(R.id.searchView)).check(matches(isDisplayed()))
+        onView(withId(R.id.searchView)).perform(click())
+        onView(withId(R.id.searchView)).perform(typeSearchViewText(""), pressKey(KeyEvent.KEYCODE_ENTER))
+        onView(withId(R.id.searchView)).perform(typeSearchViewText("London"), pressKey(KeyEvent.KEYCODE_ENTER))
+    }
+
     fun typeSearchViewText(text: String): ViewAction {
         return object : ViewAction {
             override fun getDescription(): String {
