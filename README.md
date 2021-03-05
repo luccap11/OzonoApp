@@ -25,16 +25,22 @@ Follow this [instructions](https://developer.android.com/studio/build/building-c
 #### From Android Studio
 Follow this [instructions](https://developer.android.com/studio/run)
 
-### Run tests
+### Tests
+#### Unit Tests
 `./gradlew test` command to run unit tests
 
+
+#### Instrumented Tests
+##### Set up
+Before launching instrumented test you have to set up you test environment as described here: [Google developers guide](https://developer.android.com/training/testing/espresso/setup#set-up-environment)
 `./gradlew connectedAndroidTest` command to run instrumented tests
   
 
 ## Tech Stack
-- Kotlin
+- Kotlin (Coroutines, completion handler)
 - MVVM
-- Volley and Retrofit - as HTTP client
+- Dependency Injection
+- Retrofit2 and Volley - as HTTP client
 - Room - for persistence layer
 - Glide - for image loading.
 - LruCache - for caching data
