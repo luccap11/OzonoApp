@@ -30,7 +30,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<Resource<List<WeatherData>>>, OnItemClickListener {
     private lateinit var searchView: SearchView
     private lateinit var weatherResults: RecyclerView
-    private lateinit var weatherMessage: TextView
+    private lateinit var emptyWeatherData: ImageView
     private lateinit var weatherProgressBar: ProgressBar
     private lateinit var citiesProgressBar: ProgressBar
     private lateinit var citiesResults: RecyclerView
@@ -52,7 +52,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         super.onViewCreated(view, savedInstanceState)
         weatherResults = view.findViewById(R.id.listWeatherData)
         weatherResults.layoutManager = LinearLayoutManager(context)
-        weatherMessage = view.findViewById(R.id.weatherMessage)
+        emptyWeatherData = view.findViewById(R.id.emptyWeatherImage)
         weatherProgressBar = view.findViewById(R.id.weatherDataLoading)
 
         citiesProgressBar = view.findViewById(R.id.citiesDataLoading)
@@ -99,19 +99,18 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
             is Resource.Loading -> {
                 weatherProgressBar.visibility = View.VISIBLE
                 weatherResults.visibility = View.GONE
-                weatherMessage.visibility = View.GONE
+                emptyWeatherData.visibility = View.GONE
             }
 
             is Resource.Error -> {
                 weatherProgressBar.visibility = View.GONE
                 weatherResults.visibility = View.GONE
-                weatherMessage.visibility = View.VISIBLE
-                weatherMessage.text = weatherData.message
+                emptyWeatherData.visibility = View.VISIBLE
             }
 
             is Resource.Success -> {
                 weatherProgressBar.visibility = View.GONE
-                weatherMessage.visibility = View.GONE
+                emptyWeatherData.visibility = View.GONE
                 weatherResults.visibility = View.VISIBLE
                 weatherResults.adapter = WeatherAdapter(weatherData.data!!)
             }
