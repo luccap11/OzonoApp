@@ -32,7 +32,7 @@ class MainFragmentTest {
         onView(withId(R.id.searchView)).check(matches(isDisplayed()))
         onView(withId(R.id.weatherDataLoading))
         onView(withId(R.id.citiesList))
-        onView(withId(R.id.weatherMessage))
+        onView(withId(R.id.emptyWeatherImage))
         onView(withId(R.id.listWeatherData))
     }
 

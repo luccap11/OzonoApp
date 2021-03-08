@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">Weather Condition</string>
+    <string name="app_name">Ozono App</string>
     <string name="owm_api_key">7d85604d75067f7a0da53ac8f70c5364</string>
     <string name="error_log_tag">WCTApp</string>
 
     <!-- Labels -->
     <string name="city_label">City</string>
     <string name="error_label">Something went wrong</string>
-    <string name="empty_label">No item yet…</string>
 
     <!-- Shared Prefereces -->
     <string name="preference_file_key">it.luccap11.android.ozono.PREFERENCE_FILE_KEY</string>
