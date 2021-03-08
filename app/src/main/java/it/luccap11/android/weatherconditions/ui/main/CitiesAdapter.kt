@@ -1,6 +1,5 @@
 package it.luccap11.android.weatherconditions.ui.main
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import it.luccap11.android.weatherconditions.model.data.CityData
  */
 class CitiesAdapter(private val dataSet: List<CityData>, private val listener: OnItemClickListener) :
     RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
-    private lateinit var context : Context
 
     /**
      * Provide a reference to the type of views that you are using
@@ -26,7 +24,6 @@ class CitiesAdapter(private val dataSet: List<CityData>, private val listener: O
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        context = viewGroup.context
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.city_row_item, viewGroup, false)
 
         return ViewHolder(view)
