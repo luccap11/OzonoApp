@@ -1,13 +1,14 @@
 package it.luccap11.android.weatherconditions.ui.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import it.luccap11.android.weatherconditions.model.viewmodels.WeatherViewModelFa
 import it.luccap11.android.weatherconditions.utils.PreferencesManager
 import java.util.*
 
+
 /**
  * @author Luca Capitoli
  */
@@ -34,7 +36,10 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     private lateinit var weatherProgressBar: ProgressBar
     private lateinit var citiesProgressBar: ProgressBar
     private lateinit var citiesResults: RecyclerView
-    private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(WorldCitiesRepository(), OWeatherMapRepository()) }
+    private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(
+        WorldCitiesRepository(),
+        OWeatherMapRepository()
+    ) }
     private val prefs = PreferencesManager()
 
     companion object {
@@ -60,7 +65,10 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         citiesResults.layoutManager = LinearLayoutManager(context)
 
         searchView = view.findViewById(R.id.searchView)
+        searchView.setIconifiedByDefault(false)
         searchView.setOnQueryTextListener(this)
+        val tf = ResourcesCompat.getFont(requireContext(), R.font.poppins)
+        searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text).typeface = tf
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -81,7 +89,13 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
                 is Resource.Success -> {
                     citiesProgressBar.visibility = View.GONE
                     citiesResults.visibility = View.VISIBLE
-                    citiesResults.adapter = CitiesAdapter(citiesData.data!!.take(resources.getInteger(R.integer.num_of_cities_result)), this)
+                    citiesResults.adapter = CitiesAdapter(
+                        citiesData.data!!.take(
+                            resources.getInteger(
+                                R.integer.num_of_cities_result
+                            )
+                        ), this
+                    )
                 }
             }
         })
@@ -132,7 +146,11 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
                 searchView.isIconified = false
             } else {
                 citiesResults.visibility = View.VISIBLE
-                viewModel.updateCityData(queryString.trim().split(" ").joinToString(" "){ it.capitalize(Locale.getDefault())})
+                viewModel.updateCityData(queryString.trim().split(" ").joinToString(" ") {
+                    it.capitalize(
+                        Locale.getDefault()
+                    )
+                })
             }
         }
         return false
