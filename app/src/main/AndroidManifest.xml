@@ -11,14 +11,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Android_start_project"
+        android:theme="@style/Theme.Android_Ozono"
         android:fullBackupContent="false">
-        <activity android:name="it.luccap11.android.weatherconditions.ui.main.MainActivity">
+        <activity android:name="it.luccap11.android.weatherconditions.ui.main.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 
