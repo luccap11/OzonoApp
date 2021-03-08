@@ -1,6 +1,5 @@
 package it.luccap11.android.weatherconditions.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
