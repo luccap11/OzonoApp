@@ -11,6 +11,10 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_rectangle"
+        android:backgroundTint="@color/background_dark_color_elements"
+        android:padding="@dimen/element_padding_small"
+        android:layout_margin="@dimen/element_padding_small"
         app:queryHint="@string/city_label"
         android:elevation="30dp"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -37,6 +41,7 @@
         android:id="@+id/emptyWeatherImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/empty_content_descr"
         android:src="@drawable/ic_eyes_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
