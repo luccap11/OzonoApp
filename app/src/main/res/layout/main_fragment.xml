@@ -11,6 +11,7 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:foregroundTint="@color/blue"
         android:background="@drawable/round_rectangle"
         android:backgroundTint="@color/background_dark_color_elements"
         android:padding="@dimen/element_padding_small"
@@ -24,7 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:background="@color/light_grey"
+        android:background="@color/background_dark_color_elements"
+        android:layout_marginStart="@dimen/element_padding_small"
+        android:layout_marginEnd="@dimen/element_padding_small"
         android:elevation="30dp"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
@@ -32,9 +35,14 @@
         android:id="@+id/citiesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:background="@color/light_grey"
+        android:background="@drawable/round_rectangle"
+        android:backgroundTint="@color/background_dark_color_elements"
         android:elevation="30dp"
+        android:padding="@dimen/element_padding_small"
+        android:layout_marginStart="@dimen/element_padding_small"
+        android:layout_marginEnd="@dimen/element_padding_small"
+        app:layout_constraintEnd_toEndOf="@+id/searchView"
+        app:layout_constraintStart_toStartOf="@+id/searchView"
         app:layout_constraintTop_toBottomOf="@+id/citiesDataLoading" />
 
     <ImageView
@@ -46,8 +54,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="TODO" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data_label"
+        android:layout_marginTop="@dimen/element_padding_medium"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emptyWeatherImage" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listWeatherData"

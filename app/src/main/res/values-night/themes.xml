@@ -4,9 +4,10 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <item name="colorAccent">@color/blue</item>
 
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/background_night_color</item>
+        <item name="android:fontFamily">@font/poppins</item>
     </style>
 </resources>
