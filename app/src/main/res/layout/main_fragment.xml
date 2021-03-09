@@ -35,6 +35,7 @@
         android:id="@+id/citiesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:background="@drawable/round_rectangle"
         android:backgroundTint="@color/background_dark_color_elements"
         android:elevation="30dp"

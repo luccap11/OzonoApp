@@ -9,5 +9,6 @@
         <!-- Customize your theme here. -->
         <item name="android:colorBackground">@color/background_night_color</item>
         <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textSize">18sp</item>
     </style>
 </resources>

@@ -26,7 +26,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/element_padding_small"
-        android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintStart_toEndOf="@+id/locationImage"
         app:layout_constraintBottom_toBottomOf="parent" />
