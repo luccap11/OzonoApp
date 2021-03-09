@@ -1,5 +1,6 @@
 package it.luccap11.android.weatherconditions.ui.main
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,8 +68,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         searchView = view.findViewById(R.id.searchView)
         searchView.setIconifiedByDefault(false)
         searchView.setOnQueryTextListener(this)
-        val tf = ResourcesCompat.getFont(requireContext(), R.font.poppins)
-        searchView.findViewById<TextView>(androidx.appcompat.R.id.search_src_text).typeface = tf
+        searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)?.setBackgroundColor(Color.TRANSPARENT)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
