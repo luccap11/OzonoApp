@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "it.luccap11.android.weatherconditions"
+        applicationId "it.luccap11.android.ozono"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
@@ -50,7 +50,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     // volley
-    api 'com.android.volley:volley:1.1.1'
+    api 'com.android.volley:volley:1.2.0'
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -71,7 +71,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.2'
 
     // Tests
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.json:json:20201115'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
 

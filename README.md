@@ -5,6 +5,7 @@
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/luccap11/WeatherConditions)
 ![GitHub milestones](https://img.shields.io/github/milestones/open/luccap11/WeatherConditions)
 ![GitHub milestones](https://img.shields.io/github/milestones/closed/luccap11/WeatherConditions)
+<a href="https://ktlint.github.io/"><img src="https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg" alt="ktlint" /></a>
 [![GitHub Workflow Status](https://github.com/luccap11/WeatherConditions/actions/workflows/android.yml/badge.svg)](https://github.com/luccap11/WeatherConditions/actions)
 
 
