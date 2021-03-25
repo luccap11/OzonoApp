@@ -18,6 +18,8 @@ I can improve the app:
 1. Introducing RxJava
 1. Introducing DataBinding
 1. Design dark/light mode (Only dark mode was considered).
+2. memory management, performance tuning and profiling tools (LeakCanary, AndroidProfiler)
+3. 
 
 ### Build & run the app
 #### From command line
