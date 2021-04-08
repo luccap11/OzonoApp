@@ -5,16 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.annotation.Nullable
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import it.luccap11.android.weatherconditions.R
+import it.luccap11.android.weatherconditions.databinding.MainFragmentBinding
 import it.luccap11.android.weatherconditions.infrastructure.OWeatherMapRepository
 import it.luccap11.android.weatherconditions.infrastructure.Resource
 import it.luccap11.android.weatherconditions.infrastructure.WorldCitiesRepository
@@ -31,17 +29,13 @@ import java.util.*
  */
 class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<Resource<List<WeatherData>>>, OnItemClickListener {
-    private lateinit var searchView: SearchView
-    private lateinit var weatherResults: RecyclerView
-    private lateinit var emptyWeatherData: ImageView
-    private lateinit var weatherProgressBar: ProgressBar
-    private lateinit var citiesProgressBar: ProgressBar
-    private lateinit var citiesResults: RecyclerView
     private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(
         WorldCitiesRepository(),
         OWeatherMapRepository()
     ) }
     private val prefs = PreferencesManager()
+    private var _binding: MainFragmentBinding? = null
+    private val binding get() = _binding!!
 
     companion object {
         fun newInstance() = MainFragment()
@@ -51,45 +45,37 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        _binding = MainFragmentBinding.inflate(inflater, container, false)
+
+        binding.listWeatherData.layoutManager = LinearLayoutManager(context)
+        binding.citiesList.layoutManager = LinearLayoutManager(context)
+
+        binding.searchView.setIconifiedByDefault(false)
+        binding.searchView.setOnQueryTextListener(this)
+        binding.searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)?.setBackgroundColor(Color.TRANSPARENT)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        weatherResults = view.findViewById(R.id.listWeatherData)
-        weatherResults.layoutManager = LinearLayoutManager(context)
-        emptyWeatherData = view.findViewById(R.id.emptyWeatherImage)
-        weatherProgressBar = view.findViewById(R.id.weatherDataLoading)
 
-        citiesProgressBar = view.findViewById(R.id.citiesDataLoading)
-        citiesResults = view.findViewById(R.id.citiesList)
-        citiesResults.layoutManager = LinearLayoutManager(context)
-
-        searchView = view.findViewById(R.id.searchView)
-        searchView.setIconifiedByDefault(false)
-        searchView.setOnQueryTextListener(this)
-        searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)?.setBackgroundColor(Color.TRANSPARENT)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel.weatherLiveData.observe(viewLifecycleOwner, this)
         viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
             when (citiesData) {
                 is Resource.Loading -> {
-                    citiesProgressBar.visibility = View.VISIBLE
-                    weatherResults.visibility = View.GONE
+                    binding.citiesDataLoading.visibility = View.VISIBLE
+                    binding.listWeatherData.visibility = View.GONE
                 }
 
                 is Resource.Error -> {
-                    citiesProgressBar.visibility = View.GONE
-                    citiesResults.visibility = View.GONE
+                    binding.citiesDataLoading.visibility = View.GONE
+                    binding.citiesList.visibility = View.GONE
                 }
 
                 is Resource.Success -> {
-                    citiesProgressBar.visibility = View.GONE
-                    citiesResults.visibility = View.VISIBLE
-                    citiesResults.adapter = CitiesAdapter(
+                    binding.citiesDataLoading.visibility = View.GONE
+                    binding.citiesList.visibility = View.VISIBLE
+                    binding.citiesList.adapter = CitiesAdapter(
                         citiesData.data!!.take(
                             resources.getInteger(
                                 R.integer.num_of_cities_result
@@ -103,30 +89,35 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         viewModel.getLastCitySearched()
         viewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
             if (lastCitySearched != null) {
-                searchView.setQuery(lastCitySearched.name, true)
+                binding.searchView.setQuery(lastCitySearched.name, true)
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onChanged(@Nullable weatherData: Resource<List<WeatherData>>) {
         when (weatherData) {
             is Resource.Loading -> {
-                weatherProgressBar.visibility = View.VISIBLE
-                weatherResults.visibility = View.GONE
-                emptyWeatherData.visibility = View.GONE
+                binding.weatherDataLoading.visibility = View.VISIBLE
+                binding.listWeatherData.visibility = View.GONE
+                binding.emptyWeatherImage.visibility = View.GONE
             }
 
             is Resource.Error -> {
-                weatherProgressBar.visibility = View.GONE
-                weatherResults.visibility = View.GONE
-                emptyWeatherData.visibility = View.VISIBLE
+                binding.weatherDataLoading.visibility = View.GONE
+                binding.listWeatherData.visibility = View.GONE
+                binding.emptyWeatherImage.visibility = View.VISIBLE
             }
 
             is Resource.Success -> {
-                weatherProgressBar.visibility = View.GONE
-                emptyWeatherData.visibility = View.GONE
-                weatherResults.visibility = View.VISIBLE
-                weatherResults.adapter = WeatherAdapter(weatherData.data!!)
+                binding.weatherDataLoading.visibility = View.GONE
+                binding.emptyWeatherImage.visibility = View.GONE
+                binding.listWeatherData.visibility = View.VISIBLE
+                binding.listWeatherData.adapter = WeatherAdapter(weatherData.data!!)
             }
         }
     }
@@ -140,12 +131,12 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onQueryTextChange(queryString: String?): Boolean {
         if (queryString.isNullOrBlank()) {
-            citiesResults.visibility = View.GONE
+            binding.citiesList.visibility = View.GONE
         } else {
-            if (searchView.isIconified) {
-                searchView.isIconified = false
+            if (binding.searchView.isIconified) {
+                binding.searchView.isIconified = false
             } else {
-                citiesResults.visibility = View.VISIBLE
+                binding.citiesList.visibility = View.VISIBLE
                 viewModel.updateCityData(queryString.trim().split(" ").joinToString(" ") {
                     it.capitalize(
                         Locale.getDefault()
@@ -157,11 +148,11 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     }
 
     override fun onItemClick(cityData: CityData) {
-        searchView.isIconified = true //text is cleared
-        searchView.isIconified = true //keyboard and search view get closed
-        searchView.setQuery(cityData.name, true)
-        citiesProgressBar.visibility = View.GONE
-        citiesResults.visibility = View.GONE
+        binding.searchView.isIconified = true //text is cleared
+        binding.searchView.isIconified = true //keyboard and search view get closed
+        binding.searchView.setQuery(cityData.name, true)
+        binding.citiesDataLoading.visibility = View.GONE
+        binding.citiesList.visibility = View.GONE
         savePreference(cityData)
     }
 
