@@ -1,6 +1,5 @@
 package it.luccap11.android.weatherconditions.model.data
 
-import androidx.annotation.NonNull
 import androidx.collection.LruCache
 
 /**
@@ -16,16 +15,15 @@ object ExpirableWeatherDataCache {
         }
     }
 
-    fun getCachedWeatherData(@NonNull selectedCity: String): List<WeatherData>? {
+    fun getCachedWeatherData(selectedCity: String): List<WeatherData>? {
         return cachedWeatherData[selectedCity]
     }
 
-    fun addCachedWeatherData(@NonNull weatherData: List<WeatherData>) {
+    fun addCachedWeatherData(weatherData: List<WeatherData>) {
         cachedWeatherData.put(weatherData[0].city, weatherData)
     }
 
-    @NonNull
-    fun isWeatherDataInCache(@NonNull selectedCity: String): Boolean {
+    fun isWeatherDataInCache(selectedCity: String): Boolean {
         val weatherData = cachedWeatherData[selectedCity]
         return if (weatherData.isNullOrEmpty()) {
             false
@@ -39,7 +37,6 @@ object ExpirableWeatherDataCache {
         }
     }
 
-    @NonNull
     private fun isItemExpired(weatherDataTime: Long): Boolean {
         val threeHoursInMillis = 60 * 60 * 1000 * 3
         val expiringTime = weatherDataTime + threeHoursInMillis - 1

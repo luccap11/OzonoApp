@@ -1,6 +1,5 @@
 package it.luccap11.android.weatherconditions.infrastructure.room
 
-import androidx.annotation.NonNull
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -20,7 +19,6 @@ abstract class AppDatabase : RoomDatabase() {
         private const val DB_NAME = "ozono.db"
         @Volatile private var instance: AppDatabase? = null
 
-        @NonNull
         fun getInstance(): AppDatabase {
             return instance ?: synchronized(this) {
                 instance ?: buildDatabase().also { instance = it }

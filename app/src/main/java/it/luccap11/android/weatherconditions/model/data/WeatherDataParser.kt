@@ -1,7 +1,6 @@
 package it.luccap11.android.weatherconditions.model.data
 
 import android.util.Log
-import androidx.annotation.NonNull
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -11,7 +10,7 @@ import org.json.JSONObject
 object WeatherDataParser {
     private const val NUM_OF_DETECTIONS_PER_DAY = 8
 
-    fun getWeatherLiveData(@NonNull json: JSONObject): List<WeatherData> {
+    fun getWeatherLiveData(json: JSONObject): List<WeatherData> {
         val result = mutableListOf<WeatherData>()
 
         try {

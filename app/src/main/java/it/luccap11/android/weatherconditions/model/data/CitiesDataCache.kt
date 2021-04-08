@@ -1,6 +1,5 @@
 package it.luccap11.android.weatherconditions.model.data
 
-import androidx.annotation.NonNull
 import androidx.collection.LruCache
 
 /**
@@ -16,13 +15,12 @@ object CitiesDataCache {
         }
     }
 
-    @NonNull
-    fun getCachedCitiesData(@NonNull queryKey: String): List<CityData> {
+    fun getCachedCitiesData(queryKey: String): List<CityData> {
         val cacheData = cachedCitiesData[queryKey]
         return cacheData?: emptyList()
     }
 
-    fun addCachedCityData(@NonNull queryKey: String, @NonNull citiesData: List<CityData>) {
+    fun addCachedCityData(queryKey: String, citiesData: List<CityData>) {
         val cities = getCachedCitiesData(queryKey)
         cachedCitiesData.put(queryKey, cities.plus(citiesData))
     }
@@ -30,14 +28,13 @@ object CitiesDataCache {
     /**
      * Delete every key starts with @param key
      */
-    fun deleteMultipleCachedCityData(@NonNull key: String) {
+    fun deleteMultipleCachedCityData(key: String) {
         for (i in key.indices.reversed()) {
             cachedCitiesData.remove(key.substring(0..i))
         }
     }
 
-    @NonNull
-    fun isDataInCache(@NonNull queryKey: String): Boolean {
+    fun isDataInCache(queryKey: String): Boolean {
         return getCachedCitiesData(queryKey).isNotEmpty()
     }
 }

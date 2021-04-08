@@ -99,7 +99,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         _binding = null
     }
 
-    override fun onChanged(@Nullable weatherData: Resource<List<WeatherData>>) {
+    override fun onChanged(weatherData: Resource<List<WeatherData>>) {
         when (weatherData) {
             is Resource.Loading -> {
                 binding.weatherDataLoading.visibility = View.VISIBLE

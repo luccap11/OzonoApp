@@ -1,6 +1,5 @@
 package it.luccap11.android.weatherconditions.infrastructure.room.daos
 
-import androidx.annotation.NonNull
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -15,10 +14,10 @@ import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEn
 interface CitiesDao {
 
     @Query("SELECT * FROM cities WHERE name LIKE :startName ORDER BY population DESC LIMIT :numbOfResult")
-    fun findCitiesStartWith(@NonNull startName: String, numbOfResult: Int): List<CityEntity>
+    fun findCitiesStartWith(startName: String, numbOfResult: Int): List<CityEntity>
 
     @Query("SELECT * FROM cities WHERE latitude = :latitude AND longitude = :longitude")
-    fun findCityByCoords(@NonNull latitude: Float, longitude: Float): CityEntity?
+    fun findCityByCoords(latitude: Float, longitude: Float): CityEntity?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertCities(vararg city: CityEntity): List<Long>
