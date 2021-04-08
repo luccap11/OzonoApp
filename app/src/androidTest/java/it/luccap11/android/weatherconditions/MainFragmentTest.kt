@@ -51,7 +51,7 @@ class MainFragmentTest {
         onView(withId(R.id.searchView)).perform(typeSearchViewText("London"), pressKey(KeyEvent.KEYCODE_ENTER))
     }
 
-    fun typeSearchViewText(text: String): ViewAction {
+    private fun typeSearchViewText(text: String): ViewAction {
         return object : ViewAction {
             override fun getDescription(): String {
                 return "Change view text"

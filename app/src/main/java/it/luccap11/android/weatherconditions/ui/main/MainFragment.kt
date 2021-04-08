@@ -68,6 +68,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
         searchView = view.findViewById(R.id.searchView)
         searchView.setIconifiedByDefault(false)
         searchView.setOnQueryTextListener(this)
+        searchView.isQueryRefinementEnabled = true
         searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)?.setBackgroundColor(Color.TRANSPARENT)
     }
 
@@ -157,8 +158,6 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     }
 
     override fun onItemClick(cityData: CityData) {
-        searchView.isIconified = true //text is cleared
-        searchView.isIconified = true //keyboard and search view get closed
         searchView.setQuery(cityData.name, true)
         citiesProgressBar.visibility = View.GONE
         citiesResults.visibility = View.GONE

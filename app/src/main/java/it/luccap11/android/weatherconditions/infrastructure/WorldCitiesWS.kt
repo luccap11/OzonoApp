@@ -19,5 +19,5 @@ interface WorldCitiesWS {
         "X-Parse-REST-API-Key: BgTfYWFcm26lRVn6ccCvyrZzZdZwhmvv0OzycDmv"
     )
     @GET("Continentscountriescities_City?count=1&limit=9&order=name,country&include=country&keys=name,country,country.name,country.continent,population,location,cityId,adminCode")
-    fun getCities(@Query("where", encoded = true) where: String): Call<WorldCitiesData>
+    suspend fun getCities(@Query("where", encoded = true) where: String): Call<WorldCitiesData>
 }

@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import it.luccap11.android.weatherconditions.OtherActivity
 import it.luccap11.android.weatherconditions.R
+import it.luccap11.android.weatherconditions.SearchableActivity
 
 /**
  * @author Luca Capitoli

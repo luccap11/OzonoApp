@@ -30,15 +30,14 @@ class WeatherViewModel(private val cityRepository: WorldCitiesRepository,
     fun updateCityData(userQuery: String) {
         citiesLiveData.postValue(Resource.Loading())
         viewModelScope.launch(Dispatchers.IO) {
-            cityRepository.fetchLocalCitiesData(userQuery) { worldCities ->
-                if (worldCities is Resource.Success) {
-                    citiesLiveData.postValue(worldCities)
-                } else {
-                    cityRepository.fetchRemoteCitiesData(userQuery) {
-                        citiesLiveData.postValue(it)
-                    }
-                }
-            }
+//            cityRepository.fetchLocalCitiesData(userQuery) { worldCities ->
+//                if (worldCities is Resource.Success) {
+//                    citiesLiveData.postValue(worldCities)
+//                } else {
+                    val result = cityRepository.fetchRemoteCitiesData(userQuery)
+                    citiesLiveData.postValue(Resource.Success(result))
+//                }
+//            }
         }
     }
 
