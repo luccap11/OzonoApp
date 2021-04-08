@@ -1,13 +1,12 @@
 package it.luccap11.android.weatherconditions.model.data
 
-import junit.framework.Assert.assertEquals
-import org.junit.Before
-import org.junit.Ignore
+import junit.framework.Assert.assertFalse
+import junit.framework.Assert.assertTrue
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.Is.`is`
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
-import org.mockito.Mockito.lenient
 import org.mockito.junit.MockitoJUnitRunner
 
 
@@ -24,25 +23,25 @@ class CitiesDataCacheTest {
 
     @Test
     fun getCachedCitiesData_EmptyCache() {
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("xxx"))
+        assertThat("List should be empty", cache.getCachedCitiesData("xxx"), `is`(emptyList()))
     }
 
     @Test
     fun getCachedCitiesData_FilledCache() {
         val city = "Umea"
         cache.addCachedCityData(city, listOf(cityData, cityData2))
-        assertEquals("List should contain 2 cities", listOf(cityData, cityData2), cache.getCachedCitiesData(city))
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("xxx"))
+        assertThat("List should contain 2 cities", cache.getCachedCitiesData(city), `is`(listOf(cityData, cityData2)))
+        assertThat("List should be empty", cache.getCachedCitiesData("xxx"), `is`(emptyList()))
     }
 
     @Test
     fun addCachedCityDataTest() {
         val city = "Madrid"
         cache.addCachedCityData(city, listOf(cityData, cityData2))
-        assertEquals("List should contain 2 cities", listOf(cityData, cityData2), cache.getCachedCitiesData(city))
+        assertThat("List should contain 2 cities", cache.getCachedCitiesData(city), `is`(listOf(cityData, cityData2)))
 
         cache.addCachedCityData(city, listOf(cityData, cityData2))
-        assertEquals("List should contain 4 cities", listOf(cityData, cityData2, cityData, cityData2), cache.getCachedCitiesData(city))
+        assertThat("List should contain 4 cities", cache.getCachedCitiesData(city), `is`(listOf(cityData, cityData2, cityData, cityData2)))
     }
 
     @Test
@@ -51,7 +50,7 @@ class CitiesDataCacheTest {
         cache.addCachedCityData(city, listOf(cityData, cityData2))
         cache.deleteMultipleCachedCityData(city)
 
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData(city))
+        assertThat("List should be empty", cache.getCachedCitiesData(city), `is`(emptyList()))
     }
 
     @Test
@@ -71,23 +70,23 @@ class CitiesDataCacheTest {
 
         //non mi convincono i test. Se cambio il metodo testato, loro passano comunque...
 
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("U"))
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("Um"))
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("Ume"))
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("Umea"))
+        assertThat("List should be empty", cache.getCachedCitiesData("U"), `is`(emptyList()))
+        assertThat("List should be empty", cache.getCachedCitiesData("Um"), `is`(emptyList()))
+        assertThat("List should be empty", cache.getCachedCitiesData("Ume"), `is`(emptyList()))
+        assertThat("List should be empty", cache.getCachedCitiesData("Umea"), `is`(emptyList()))
 
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("R"))
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("Ro"))
-        assertEquals("List should be empty", emptyList<CityData>(), cache.getCachedCitiesData("Rom"))
-        assertEquals("List should contain 2 cities", listOf(cityData, cityData2), cache.getCachedCitiesData("Rome"))
+        assertThat("List should be empty", cache.getCachedCitiesData("R"), `is`(emptyList()))
+        assertThat("List should be empty", cache.getCachedCitiesData("Ro"), `is`(emptyList()))
+        assertThat("List should be empty", cache.getCachedCitiesData("Rom"), `is`(emptyList()))
+        assertThat("List should contain 2 cities", cache.getCachedCitiesData("Rome"), `is`(listOf(cityData, cityData2)))
     }
 
     @Test
     fun isDataInCacheTest() {
         val city = "Edimburgh"
         cache.addCachedCityData(city, listOf(cityData, cityData2))
-        assertEquals(true, cache.isDataInCache(city))
-        assertEquals(false, cache.isDataInCache("xxx"))
+        assertTrue(cache.isDataInCache(city))
+        assertFalse(cache.isDataInCache("xxx"))
     }
 
 }

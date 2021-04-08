@@ -1,8 +1,9 @@
 package it.luccap11.android.weatherconditions.model.data
 
 import it.luccap11.android.weatherconditions.model.WeatherDataJsonResponseExample
+import org.hamcrest.core.Is.`is`
 import org.json.JSONObject
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -17,8 +18,8 @@ class ExpirableWeatherDataCacheTest {
     fun getCachedWeatherData_EmptyCache() {
         val selectedCity = "London"
         val weatherData = ExpirableWeatherDataCache.getCachedWeatherData(selectedCity)
-        Assert.assertEquals(null, weatherData)
-        Assert.assertEquals(false, ExpirableWeatherDataCache.isWeatherDataInCache(selectedCity))
+        assertEquals(null, weatherData)
+        assertFalse(ExpirableWeatherDataCache.isWeatherDataInCache(selectedCity))
     }
 
     @Test
@@ -28,27 +29,27 @@ class ExpirableWeatherDataCacheTest {
 
         ExpirableWeatherDataCache.addCachedWeatherData(weatherData)
         val weatherDataCached = ExpirableWeatherDataCache.getCachedWeatherData(selectedCity)
-        Assert.assertEquals(selectedCity, weatherDataCached!![0].city)
-        Assert.assertEquals(true, ExpirableWeatherDataCache.isWeatherDataInCache(selectedCity))
+        assertThat(weatherDataCached!![0].city, `is`(selectedCity))
+        assertTrue(ExpirableWeatherDataCache.isWeatherDataInCache(selectedCity))
     }
 
     @Test
     fun isWeatherDataInCache_Empty() {
-        Assert.assertEquals(false, ExpirableWeatherDataCache.isWeatherDataInCache("London"))
+        assertFalse(ExpirableWeatherDataCache.isWeatherDataInCache("London"))
     }
 
     @Test
     fun isWeatherDataInCache_itemIsNotExpired() {
         val weatherData = getWeatherData(System.currentTimeMillis())
         ExpirableWeatherDataCache.addCachedWeatherData(weatherData)
-        Assert.assertEquals(true, ExpirableWeatherDataCache.isWeatherDataInCache("London"))
+        assertTrue(ExpirableWeatherDataCache.isWeatherDataInCache("London"))
     }
 
     @Test
     fun isWeatherDataInCache_ItemIsExpired() {
         val weatherData = getWeatherData(0)
         ExpirableWeatherDataCache.addCachedWeatherData(weatherData)
-        Assert.assertEquals(false, ExpirableWeatherDataCache.isWeatherDataInCache("London"))
+        assertFalse(ExpirableWeatherDataCache.isWeatherDataInCache("London"))
     }
 
     private fun getWeatherData(timeInMillis: Long): List<WeatherData> {
