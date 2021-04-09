@@ -14,7 +14,7 @@ import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEn
 interface CitiesDao {
 
     @Query("SELECT * FROM cities WHERE name LIKE :startName ORDER BY population DESC LIMIT :numbOfResult")
-    fun findCitiesStartWith(startName: String, numbOfResult: Int): List<CityEntity>
+    suspend fun findCitiesStartWith(startName: String, numbOfResult: Int): List<CityEntity>
 
     @Query("SELECT * FROM cities WHERE latitude = :latitude AND longitude = :longitude")
     fun findCityByCoords(latitude: Float, longitude: Float): CityEntity?

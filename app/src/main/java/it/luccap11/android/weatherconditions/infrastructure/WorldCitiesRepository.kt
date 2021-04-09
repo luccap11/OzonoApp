@@ -26,45 +26,33 @@ class WorldCitiesRepository: CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + job
 
-    fun fetchLocalCitiesData(userQuery: String, completion: (Resource<List<CityData>>) -> Unit) {
+    suspend fun fetchLocalCitiesData(userQuery: String): List<CityData> {
         val isCachedData = CitiesDataCache.isDataInCache(userQuery)
-        if (isCachedData) {
-            completion(Resource.Success(CitiesDataCache.getCachedCitiesData(userQuery)))
+        return if (isCachedData) {
+            CitiesDataCache.getCachedCitiesData(userQuery)
         } else {
-            launch {
-                val dbCities = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
+            val dbCities = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
 
-                if (dbCities.isNotEmpty() && dbCities.size >= numbOfResults) {
-                    val cities = CityDataBuilder().cityDataBuilder(dbCities)
-                    CitiesDataCache.addCachedCityData(userQuery, cities)
-                    completion(Resource.Success(cities))
-                } else {
-                    completion(Resource.Error(""))
-                }
+            if (dbCities.isNotEmpty() && dbCities.size >= numbOfResults) {
+                val cities = CityDataBuilder().cityDataBuilder(dbCities)
+                CitiesDataCache.addCachedCityData(userQuery, cities)
+                cities
+            } else {
+                emptyList()
             }
         }
     }
 
-    fun fetchRemoteCitiesData(userQuery: String, completion: (Resource<List<CityData>>) -> Unit) {
-        RemoteWCitiesDataSource.fetchBack4AppData(userQuery) { remoteResponse ->
-            when (remoteResponse) {
-                is Resource.Success -> {
-                    CitiesDataCache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
-                    val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteResponse.data!!)
-                    launch {
-                        citiesDao.insertCities(*citiesEntity)
-                        val dbCitiesEntity = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
-                        val dbData = CityDataBuilder().cityDataBuilder(dbCitiesEntity)
-                        completion(Resource.Success(dbData))
-                    }
-                    completion(Resource.Loading())
-                }
-
-                is Resource.Error -> {
-                    completion(Resource.Error(resources.getString(R.string.error_label)))
-                }
-            }
+    suspend fun fetchRemoteCitiesData(userQuery: String): List<CityData>? {
+        val remoteCities = RemoteWCitiesDataSource().fetchBack4AppData(userQuery)
+        if (!remoteCities.isNullOrEmpty()) {
+            CitiesDataCache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
+            val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteCities)
+            citiesDao.insertCities(*citiesEntity)
+            val dbCitiesEntity = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
+            return CityDataBuilder().cityDataBuilder(dbCitiesEntity)
         }
+        return remoteCities
     }
 
     fun getLastCitySearched(completion: (CityData?) -> Unit) {
