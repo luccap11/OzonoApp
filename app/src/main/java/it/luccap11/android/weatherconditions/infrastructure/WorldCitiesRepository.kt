@@ -7,24 +7,15 @@ import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEn
 import it.luccap11.android.weatherconditions.model.data.*
 import it.luccap11.android.weatherconditions.utils.AppUtils
 import it.luccap11.android.weatherconditions.utils.PreferencesManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 /**
  * @author Luca Capitoli
  * @since 13/jan/2021
  */
-class WorldCitiesRepository: CoroutineScope {
-    private var job: Job = Job()
+class WorldCitiesRepository {
     private val resources = OzonoAppl.instance.resources
     private val numbOfResults = resources.getInteger(R.integer.num_of_cities_result)
     private val citiesDao = AppDatabase.getInstance().citiesDao()
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Default + job
 
     suspend fun fetchLocalCitiesData(userQuery: String): List<CityData> {
         val isCachedData = CitiesDataCache.isDataInCache(userQuery)
@@ -55,23 +46,20 @@ class WorldCitiesRepository: CoroutineScope {
         return remoteCities
     }
 
-    fun getLastCitySearched(completion: (CityData?) -> Unit) {
+    suspend fun getLastCitySearched(): CityData? {
         val prefs = PreferencesManager()
         val lastLatitSearched = prefs.getLastSearchedCityLatit()
         val lastLongitSearched = prefs.getLastSearchedCityLongit()
-        if (!lastLatitSearched.equals(AppUtils.NOT_SET.toFloat()) && !lastLongitSearched.equals(
-                AppUtils.NOT_SET.toFloat())) {
-            launch {
-                val cityEntity = citiesDao.findCityByCoords(lastLatitSearched, lastLongitSearched)
-                if (cityEntity == null) {
-                    completion(null)
-                } else {
-                    val dbData = CityDataBuilder().cityDataBuilder(listOf(cityEntity))
-                    completion(dbData[0])
-                }
+        return if (!lastLatitSearched.equals(AppUtils.NOT_SET.toFloat()) && !lastLongitSearched.equals(AppUtils.NOT_SET.toFloat())) {
+            val cityEntity = citiesDao.findCityByCoords(lastLatitSearched, lastLongitSearched)
+            if (cityEntity == null) {
+                null
+            } else {
+                val dbData = CityDataBuilder().cityDataBuilder(listOf(cityEntity))
+                dbData[0]
             }
         } else {
-            completion(null)
+            null
         }
     }
 }

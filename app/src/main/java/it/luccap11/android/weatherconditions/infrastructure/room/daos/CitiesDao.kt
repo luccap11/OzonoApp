@@ -17,8 +17,8 @@ interface CitiesDao {
     suspend fun findCitiesStartWith(startName: String, numbOfResult: Int): List<CityEntity>
 
     @Query("SELECT * FROM cities WHERE latitude = :latitude AND longitude = :longitude")
-    fun findCityByCoords(latitude: Float, longitude: Float): CityEntity?
+    suspend fun findCityByCoords(latitude: Float, longitude: Float): CityEntity?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertCities(vararg city: CityEntity): List<Long>
+    suspend fun insertCities(vararg city: CityEntity): List<Long>
 }

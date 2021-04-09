@@ -50,8 +50,8 @@ class WeatherViewModel(
     }
 
     fun getLastCitySearched() {
-        cityRepository.getLastCitySearched {
-            lastCitySearched.postValue(it)
+        viewModelScope.launch(Dispatchers.IO) {
+            lastCitySearched.postValue(cityRepository.getLastCitySearched())
         }
     }
 
