@@ -7,4 +7,6 @@ package it.luccap11.android.weatherconditions.utils
 object AppUtils {
     const val EMPTY = 0
     const val NOT_SET = -1
+
+    const val LOG_TAG = "OzonoLog"
 }
