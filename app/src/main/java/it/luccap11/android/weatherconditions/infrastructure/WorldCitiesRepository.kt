@@ -2,7 +2,7 @@ package it.luccap11.android.weatherconditions.infrastructure
 
 import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.OzonoAppl
-import it.luccap11.android.weatherconditions.infrastructure.room.AppDatabase
+import it.luccap11.android.weatherconditions.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.weatherconditions.infrastructure.room.entities.CityEntityBuilder
 import it.luccap11.android.weatherconditions.model.data.*
 import it.luccap11.android.weatherconditions.utils.AppUtils
@@ -12,21 +12,20 @@ import it.luccap11.android.weatherconditions.utils.PreferencesManager
  * @author Luca Capitoli
  * @since 13/jan/2021
  */
-class WorldCitiesRepository {
+class WorldCitiesRepository(private val cache: CitiesDataCache, private val citiesDao: CitiesDao, private val remoteDataSource: RemoteWCitiesDataSource) {
     private val resources = OzonoAppl.instance.resources
     private val numbOfResults = resources.getInteger(R.integer.num_of_cities_result)
-    private val citiesDao = AppDatabase.getInstance().citiesDao()
 
     suspend fun fetchLocalCitiesData(userQuery: String): List<CityData> {
-        val isCachedData = CitiesDataCache.isDataInCache(userQuery)
+        val isCachedData = cache.isDataInCache(userQuery)
         return if (isCachedData) {
-            CitiesDataCache.getCachedCitiesData(userQuery)
+            cache.getCachedCitiesData(userQuery)
         } else {
             val dbCities = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
 
             if (dbCities.isNotEmpty() && dbCities.size >= numbOfResults) {
                 val cities = CityDataBuilder().cityDataBuilder(dbCities)
-                CitiesDataCache.addCachedCityData(userQuery, cities)
+                cache.addCachedCityData(userQuery, cities)
                 cities
             } else {
                 emptyList()
@@ -35,9 +34,9 @@ class WorldCitiesRepository {
     }
 
     suspend fun fetchRemoteCitiesData(userQuery: String): List<CityData>? {
-        val remoteCities = RemoteWCitiesDataSource().fetchBack4AppData(userQuery)
+        val remoteCities = remoteDataSource.fetchBack4AppData(userQuery)
         if (!remoteCities.isNullOrEmpty()) {
-            CitiesDataCache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
+            cache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
             val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteCities)
             citiesDao.insertCities(*citiesEntity)
             val dbCitiesEntity = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.Nullable
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,8 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.databinding.MainFragmentBinding
 import it.luccap11.android.weatherconditions.infrastructure.OWeatherMapRepository
+import it.luccap11.android.weatherconditions.infrastructure.RemoteWCitiesDataSource
 import it.luccap11.android.weatherconditions.infrastructure.Resource
 import it.luccap11.android.weatherconditions.infrastructure.WorldCitiesRepository
+import it.luccap11.android.weatherconditions.infrastructure.room.AppDatabase
+import it.luccap11.android.weatherconditions.model.data.CitiesDataCache
 import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.viewmodels.WeatherViewModel
@@ -30,7 +32,7 @@ import java.util.*
 class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<Resource<List<WeatherData>>>, OnItemClickListener {
     private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(
-        WorldCitiesRepository(),
+        WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
         OWeatherMapRepository()
     ) }
     private val prefs = PreferencesManager()
