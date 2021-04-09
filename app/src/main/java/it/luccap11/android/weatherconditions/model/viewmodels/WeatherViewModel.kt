@@ -1,6 +1,8 @@
 package it.luccap11.android.weatherconditions.model.viewmodels
 
 import androidx.lifecycle.*
+import it.luccap11.android.weatherconditions.OzonoAppl
+import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.infrastructure.OWeatherMapRepository
 import it.luccap11.android.weatherconditions.infrastructure.Resource
 import it.luccap11.android.weatherconditions.infrastructure.WorldCitiesRepository
@@ -12,8 +14,11 @@ import kotlinx.coroutines.*
  * The ViewModel triggers the network request when the user clicks, for example, on a button
  * @author Luca Capitoli
  */
-class WeatherViewModel(private val cityRepository: WorldCitiesRepository,
-                       private val weatherRepository: OWeatherMapRepository) : ViewModel() {
+class WeatherViewModel(
+    private val cityRepository: WorldCitiesRepository,
+    private val weatherRepository: OWeatherMapRepository
+) : ViewModel() {
+    private val resources = OzonoAppl.instance.resources
     val weatherLiveData = MutableLiveData<Resource<List<WeatherData>>>()
     val citiesLiveData = MutableLiveData<Resource<List<CityData>>>()
     val lastCitySearched = MutableLiveData<CityData>()
@@ -30,13 +35,15 @@ class WeatherViewModel(private val cityRepository: WorldCitiesRepository,
     fun updateCityData(userQuery: String) {
         citiesLiveData.postValue(Resource.Loading())
         viewModelScope.launch(Dispatchers.IO) {
-            cityRepository.fetchLocalCitiesData(userQuery) { worldCities ->
-                if (worldCities is Resource.Success) {
-                    citiesLiveData.postValue(worldCities)
+            val localCities = cityRepository.fetchLocalCitiesData(userQuery)
+            if (localCities.isNotEmpty()) {
+                citiesLiveData.postValue(Resource.Success(localCities))
+            } else {
+                val remoteCities = cityRepository.fetchRemoteCitiesData(userQuery)
+                if (remoteCities == null) {
+                    citiesLiveData.postValue(Resource.Error(resources.getString(R.string.error_label)))
                 } else {
-                    cityRepository.fetchRemoteCitiesData(userQuery) {
-                        citiesLiveData.postValue(it)
-                    }
+                    citiesLiveData.postValue(Resource.Success(remoteCities))
                 }
             }
         }
@@ -50,7 +57,11 @@ class WeatherViewModel(private val cityRepository: WorldCitiesRepository,
 
 }
 
-class WeatherViewModelFactory(private val cityRepository: WorldCitiesRepository,
-                              private val weatherRepository: OWeatherMapRepository): ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = WeatherViewModel(cityRepository, weatherRepository) as T
+class WeatherViewModelFactory(
+    private val cityRepository: WorldCitiesRepository,
+    private val weatherRepository: OWeatherMapRepository
+) : ViewModelProvider.NewInstanceFactory() {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+        WeatherViewModel(cityRepository, weatherRepository) as T
 }

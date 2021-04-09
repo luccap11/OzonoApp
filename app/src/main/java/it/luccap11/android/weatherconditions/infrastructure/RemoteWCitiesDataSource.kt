@@ -6,8 +6,8 @@ import it.luccap11.android.weatherconditions.model.data.CityData
 import it.luccap11.android.weatherconditions.model.data.WorldCitiesData
 import it.luccap11.android.weatherconditions.utils.AppUtils
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.awaitResponse
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.net.URLEncoder
@@ -20,7 +20,7 @@ import java.net.URLEncoder
 class RemoteWCitiesDataSource {
     private val threshold = 0.01
 
-    fun fetchBack4AppData(selectedCity: String, completion: (Resource<List<CityData>>) -> Unit) {
+    suspend fun fetchBack4AppData(selectedCity: String): List<CityData>? {
         val service: WorldCitiesWS = retrofitInstance!!.create(WorldCitiesWS::class.java)
         val where = URLEncoder.encode("""
     {
@@ -36,20 +36,13 @@ class RemoteWCitiesDataSource {
     }
     """.trimIndent(), "utf-8")
         val call: Call<WorldCitiesData> = service.getCities(where)
-        call.enqueue(object : Callback<WorldCitiesData> {
-            override fun onResponse(call: Call<WorldCitiesData>, response: Response<WorldCitiesData>) {
-                if (findErrorsInBodyResponse(response, response.body())) {
-                    completion(Resource.Error(""))
-                } else {
-                    val filteredCities = filterDuplicates(response.body()!!.cities)
-                    completion(Resource.Success(filteredCities))
-                }
-            }
+        val response = call.awaitResponse()
 
-            override fun onFailure(call: Call<WorldCitiesData>, t: Throwable?) {
-                completion(Resource.Error(""))
-            }
-        })
+        return if (findErrorsInBodyResponse(response, response.body())) {
+            null
+        } else {
+            filterDuplicates(response.body()!!.cities)
+        }
     }
 
     private fun findErrorsInBodyResponse(response: Response<WorldCitiesData>, body: WorldCitiesData?): Boolean {
