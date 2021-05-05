@@ -50,6 +50,7 @@
         android:id="@+id/emptyWeatherImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
         android:contentDescription="@string/empty_content_descr"
         android:src="@drawable/ic_eyes_up"
         app:layout_constraintBottom_toBottomOf="parent"

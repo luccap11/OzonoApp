@@ -15,6 +15,7 @@
         android:id="@+id/locationImage"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:importantForAccessibility="no"
         android:padding="@dimen/element_padding_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
