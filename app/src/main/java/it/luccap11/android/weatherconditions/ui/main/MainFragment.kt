@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import it.luccap11.android.weatherconditions.R
 import it.luccap11.android.weatherconditions.databinding.MainFragmentBinding
 import it.luccap11.android.weatherconditions.infrastructure.OWeatherMapRepository
@@ -49,12 +50,13 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
 
-        binding.listWeatherData.layoutManager = LinearLayoutManager(context)
-        binding.citiesList.layoutManager = LinearLayoutManager(context)
-
         binding.searchView.setIconifiedByDefault(false)
         binding.searchView.setOnQueryTextListener(this)
         binding.searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)?.setBackgroundColor(Color.TRANSPARENT)
+        val searchIcon = binding.searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
+        val searchClose = binding.searchView.findViewById<ImageView>(R.id.search_close_btn)
+        searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue))
+        searchClose.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue))
         return binding.root
     }
 
