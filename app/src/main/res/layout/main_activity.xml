@@ -9,7 +9,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/search_fragment"
-        android:name="it.luccap11.android.punkbeer.ui.main.SearchBeerFragment"
+        android:name="it.luccap11.android.weatherconditions.ui.main.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/weather_data_fragment"
-        android:name="it.luccap11.android.punkbeer.ui.main.BeerListFragment"
+        android:name="it.luccap11.android.weatherconditions.ui.main.WeatherDataFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

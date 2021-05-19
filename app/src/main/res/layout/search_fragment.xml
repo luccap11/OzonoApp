@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:foregroundTint="@color/blue"
         android:background="@drawable/round_rectangle"
-        android:backgroundTint="@color/background_dark_color_elements"
         android:padding="@dimen/element_padding_small"
         android:layout_margin="@dimen/element_padding_small"
         app:queryHint="@string/city_label"

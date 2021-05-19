@@ -1,18 +1,13 @@
 package it.luccap11.android.weatherconditions.ui.main
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.databinding.MainFragmentBinding
+import it.luccap11.android.weatherconditions.databinding.WeatherDataFragmentBinding
 import it.luccap11.android.weatherconditions.infrastructure.OWeatherMapRepository
 import it.luccap11.android.weatherconditions.infrastructure.RemoteWCitiesDataSource
 import it.luccap11.android.weatherconditions.infrastructure.Resource
@@ -24,41 +19,25 @@ import it.luccap11.android.weatherconditions.model.data.WeatherData
 import it.luccap11.android.weatherconditions.model.viewmodels.WeatherViewModel
 import it.luccap11.android.weatherconditions.model.viewmodels.WeatherViewModelFactory
 import it.luccap11.android.weatherconditions.utils.PreferencesManager
-import java.util.*
 
 
 /**
  * @author Luca Capitoli
  */
-class WeatherDataFragment : Fragment(), SearchView.OnQueryTextListener,
-    Observer<Resource<List<WeatherData>>>, OnItemClickListener {
+class WeatherDataFragment : Fragment(), Observer<Resource<List<WeatherData>>> {
     private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
         OWeatherMapRepository()
     ) }
     private val prefs = PreferencesManager()
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: WeatherDataFragmentBinding? = null
     private val binding get() = _binding!!
-
-    companion object {
-        fun newInstance() = WeatherDataFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
-
-        binding.searchView.setIconifiedByDefault(false)
-        binding.searchView.setOnQueryTextListener(this)
-        binding.searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)?.setBackgroundColor(Color.TRANSPARENT)
-        val searchIcon = binding.searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
-        val searchClose = binding.searchView.findViewById<ImageView>(R.id.search_close_btn)
-        searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue))
-        searchClose.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue))
-
-//        binding.listWeatherData.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+        _binding = WeatherDataFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -66,38 +45,14 @@ class WeatherDataFragment : Fragment(), SearchView.OnQueryTextListener,
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.weatherLiveData.observe(viewLifecycleOwner, this)
-        viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
-            when (citiesData) {
-                is Resource.Loading -> {
-                    binding.citiesDataLoading.visibility = View.VISIBLE
-                    binding.listWeatherData.visibility = View.GONE
-                }
-
-                is Resource.Error -> {
-                    binding.citiesDataLoading.visibility = View.GONE
-                    binding.citiesList.visibility = View.GONE
-                }
-
-                is Resource.Success -> {
-                    binding.citiesDataLoading.visibility = View.GONE
-                    binding.citiesList.visibility = View.VISIBLE
-                    binding.citiesList.adapter = CitiesAdapter(
-                        citiesData.data!!.take(
-                            resources.getInteger(
-                                R.integer.num_of_cities_result
-                            )
-                        ), this
-                    )
-                }
-            }
-        })
-
-        viewModel.getLastCitySearched()
-        viewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
-            if (lastCitySearched != null) {
-                binding.searchView.setQuery(lastCitySearched.name, true)
-            }
-        })
+//        viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
+//            when (citiesData) {
+//                is Resource.Loading -> {
+////                    binding.citiesDataLoading.visibility = View.VISIBLE
+//                    binding.listWeatherData.visibility = View.GONE
+//                }
+//            }
+//        })
     }
 
     override fun onDestroyView() {
@@ -126,44 +81,5 @@ class WeatherDataFragment : Fragment(), SearchView.OnQueryTextListener,
                 binding.listWeatherData.adapter = WeatherAdapter(weatherData.data!!)
             }
         }
-    }
-
-    override fun onQueryTextSubmit(queryString: String?): Boolean {
-        if (!queryString.isNullOrBlank()) {
-            viewModel.updateWeatherData(queryString)
-        }
-        return false
-    }
-
-    override fun onQueryTextChange(queryString: String?): Boolean {
-        if (queryString.isNullOrBlank()) {
-            binding.citiesList.visibility = View.GONE
-        } else {
-            if (binding.searchView.isIconified) {
-                binding.searchView.isIconified = false
-            } else {
-                binding.citiesList.visibility = View.VISIBLE
-                viewModel.updateCityData(queryString.trim().split(" ").joinToString(" ") {
-                    it.capitalize(
-                        Locale.getDefault()
-                    )
-                })
-            }
-        }
-        return false
-    }
-
-    override fun onItemClick(cityData: CityData) {
-        binding.searchView.isIconified = true //text is cleared
-        binding.searchView.isIconified = true //keyboard and search view get closed
-        binding.searchView.setQuery(cityData.name, true)
-        binding.citiesDataLoading.visibility = View.GONE
-        binding.citiesList.visibility = View.GONE
-        savePreference(cityData)
-    }
-
-    private fun savePreference(cityData: CityData) {
-        prefs.saveLastSearchedCityLatit(cityData.location.latitude)
-        prefs.saveLastSearchedCityLongit(cityData.location.longitude)
     }
 }

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.weatherconditions.R
-import it.luccap11.android.weatherconditions.databinding.MainFragmentBinding
+import it.luccap11.android.weatherconditions.databinding.SearchFragmentBinding
 import it.luccap11.android.weatherconditions.infrastructure.OWeatherMapRepository
 import it.luccap11.android.weatherconditions.infrastructure.RemoteWCitiesDataSource
 import it.luccap11.android.weatherconditions.infrastructure.Resource
@@ -31,13 +31,13 @@ import java.util.*
  * @author Luca Capitoli
  */
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
-    Observer<Resource<List<WeatherData>>>, OnItemClickListener {
+    Observer<Resource<List<CityData>>>, OnItemClickListener {
     private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
         OWeatherMapRepository()
     ) }
     private val prefs = PreferencesManager()
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
 
     companion object {
@@ -48,7 +48,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = SearchFragmentBinding.inflate(inflater, container, false)
 
         binding.searchView.setIconifiedByDefault(false)
         binding.searchView.setOnQueryTextListener(this)
@@ -65,32 +65,8 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.weatherLiveData.observe(viewLifecycleOwner, this)
-        viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
-            when (citiesData) {
-                is Resource.Loading -> {
-                    binding.citiesDataLoading.visibility = View.VISIBLE
-                    binding.listWeatherData.visibility = View.GONE
-                }
-
-                is Resource.Error -> {
-                    binding.citiesDataLoading.visibility = View.GONE
-                    binding.citiesList.visibility = View.GONE
-                }
-
-                is Resource.Success -> {
-                    binding.citiesDataLoading.visibility = View.GONE
-                    binding.citiesList.visibility = View.VISIBLE
-                    binding.citiesList.adapter = CitiesAdapter(
-                        citiesData.data!!.take(
-                            resources.getInteger(
-                                R.integer.num_of_cities_result
-                            )
-                        ), this
-                    )
-                }
-            }
-        })
+        viewModel.citiesLiveData.observe(viewLifecycleOwner, this)
+//        binding.citiesList.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
 
         viewModel.getLastCitySearched()
         viewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
@@ -105,25 +81,28 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         _binding = null
     }
 
-    override fun onChanged(weatherData: Resource<List<WeatherData>>) {
-        when (weatherData) {
+    override fun onChanged(citiesData: Resource<List<CityData>>) {
+        when (citiesData) {
             is Resource.Loading -> {
-                binding.weatherDataLoading.visibility = View.VISIBLE
-                binding.listWeatherData.visibility = View.GONE
-                binding.emptyWeatherImage.visibility = View.GONE
+                binding.citiesDataLoading.visibility = View.VISIBLE
+//                    binding.listWeatherData.visibility = View.GONE
             }
 
             is Resource.Error -> {
-                binding.weatherDataLoading.visibility = View.GONE
-                binding.listWeatherData.visibility = View.GONE
-                binding.emptyWeatherImage.visibility = View.VISIBLE
+                binding.citiesDataLoading.visibility = View.GONE
+                binding.citiesList.visibility = View.GONE
             }
 
             is Resource.Success -> {
-                binding.weatherDataLoading.visibility = View.GONE
-                binding.emptyWeatherImage.visibility = View.GONE
-                binding.listWeatherData.visibility = View.VISIBLE
-                binding.listWeatherData.adapter = WeatherAdapter(weatherData.data!!)
+                binding.citiesDataLoading.visibility = View.GONE
+                binding.citiesList.visibility = View.VISIBLE
+                binding.citiesList.adapter = CitiesAdapter(
+                    citiesData.data!!.take(
+                        resources.getInteger(
+                            R.integer.num_of_cities_result
+                        )
+                    ), this
+                )
             }
         }
     }
