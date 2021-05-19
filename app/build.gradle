@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "it.luccap11.android.weatherconditions"
+        applicationId "it.luccap11.android.ozono"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 2
