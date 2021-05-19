@@ -12,7 +12,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import it.luccap11.android.weatherconditions.ui.main.MainFragment
+import it.luccap11.android.weatherconditions.ui.main.SearchFragment
 import org.hamcrest.Matcher
 import org.hamcrest.core.AllOf.allOf
 import org.junit.Before
@@ -21,10 +21,10 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class MainFragmentTest {
+class SearchFragmentTest {
     @Before
     fun before() {
-        launchInContainer(MainFragment::class.java, null, R.style.Theme_AppCompat, null)
+        launchInContainer(SearchFragment::class.java, null, R.style.Theme_AppCompat, null)
     }
 
     @Test

@@ -30,7 +30,7 @@ import java.util.*
 /**
  * @author Luca Capitoli
  */
-class MainFragment : Fragment(), SearchView.OnQueryTextListener,
+class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<Resource<List<WeatherData>>>, OnItemClickListener {
     private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
@@ -41,7 +41,7 @@ class MainFragment : Fragment(), SearchView.OnQueryTextListener,
     private val binding get() = _binding!!
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = SearchFragment()
     }
 
     override fun onCreateView(

@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/weather_data_fragment"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/search_fragment" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/weather_data_fragment"
