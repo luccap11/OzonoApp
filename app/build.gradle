@@ -12,8 +12,9 @@ android {
         applicationId "it.luccap11.android.weatherconditions"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,6 +26,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -35,6 +37,7 @@ android {
         unitTests.returnDefaultValues = true
     }
     buildFeatures {
+        dataBinding true
         viewBinding true
     }
 }
@@ -50,6 +53,8 @@ dependencies {
         retrofitVersion = '2.9.0'
         roomVersion = '2.3.0'
     }
+
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.activity:activity-ktx:1.2.3'
