@@ -35,14 +35,24 @@ class RemoteWCitiesDataSource {
         }
     }
     """.trimIndent(), "utf-8")
-        val call: Call<WorldCitiesData> = service.getCities(where)
-        val response = call.awaitResponse()
-
-        return if (findErrorsInBodyResponse(response, response.body())) {
+        return try {
+            val call: Call<WorldCitiesData> = service.getCities(where)
+            val response = call.awaitResponse()
+            if (findErrorsInBodyResponse(response, response.body())) {
+                null
+            } else {
+                filterDuplicates(response.body()!!.cities)
+            }
+        } catch (e: Exception) {
+            Log.e(AppUtils.LOG_TAG, e.toString(), e)
             null
-        } else {
-            filterDuplicates(response.body()!!.cities)
         }
+
+//        return listOf(CityData("Ankara", Country("Turkey"), 1000, "TU", Location(1.1f, 1.2f)),
+//            CityData("Ankara1", Country("Turkey"), 1000, "TU", Location(1.1f, 1.2f)),
+//            CityData("Ankara2", Country("Turkey"), 1000, "TU", Location(1.1f, 1.2f)),
+//            CityData("Rome", Country("Italy"), 1000, "TU", Location(1.1f, 1.2f)),
+//            CityData("Madrid", Country("Spain"), 1000, "TU", Location(1.1f, 1.2f)))
     }
 
     private fun findErrorsInBodyResponse(response: Response<WorldCitiesData>, body: WorldCitiesData?): Boolean {

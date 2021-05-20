@@ -33,11 +33,13 @@
         android:id="@+id/listWeatherData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:scrollbars="vertical"
+        android:visibility="gone"
         app:layoutManager="LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="parent"
-        tools:listitem="@layout/weather_row_item"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/weather_row_item" />
 
     <ProgressBar
         android:id="@+id/weatherDataLoading"

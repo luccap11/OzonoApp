@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.ozono.databinding.WeatherDataFragmentBinding
@@ -24,11 +25,10 @@ import it.luccap11.android.ozono.utils.PreferencesManager
  * @author Luca Capitoli
  */
 class WeatherDataFragment : Fragment(), Observer<Resource<List<WeatherData>>> {
-    private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(
+    private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
         OWeatherMapRepository()
     ) }
-    private val prefs = PreferencesManager()
     private var _binding: WeatherDataFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -43,7 +43,7 @@ class WeatherDataFragment : Fragment(), Observer<Resource<List<WeatherData>>> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.weatherLiveData.observe(viewLifecycleOwner, this)
+        sharedViewModel.weatherLiveData.observe(viewLifecycleOwner, this)
 //        viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
 //            when (citiesData) {
 //                is Resource.Loading -> {
