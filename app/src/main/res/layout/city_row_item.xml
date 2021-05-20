@@ -14,10 +14,11 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/locationImage"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
         android:importantForAccessibility="no"
         android:padding="@dimen/element_padding_small"
+        android:layout_marginStart="@dimen/element_padding_xsmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,7 +28,6 @@
         android:id="@+id/cityDescr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/element_padding_small"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintStart_toEndOf="@+id/locationImage"
         app:layout_constraintBottom_toBottomOf="parent"

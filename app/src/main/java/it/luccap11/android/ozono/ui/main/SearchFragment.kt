@@ -89,7 +89,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
             is Resource.Success -> {
                 binding.citiesDataLoading.visibility = View.GONE
-                binding.citiesList.visibility = View.VISIBLE
+                binding.citiesList.visibility = if (citiesData.data.isNullOrEmpty()) View.GONE else View.VISIBLE
                 binding.citiesList.adapter = CitiesAdapter(
                     citiesData.data!!.take(
                         resources.getInteger(

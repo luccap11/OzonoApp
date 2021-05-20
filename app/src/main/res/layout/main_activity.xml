@@ -12,9 +12,11 @@
         android:name="it.luccap11.android.ozono.ui.main.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/element_padding_medium"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/weather_data_fragment"
+        android:elevation="30dp"
         tools:layout="@layout/search_fragment" />
 
     <androidx.fragment.app.FragmentContainerView
