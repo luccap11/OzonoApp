@@ -1,10 +1,11 @@
-package it.luccap11.android.ozono.infrastructure
+package it.luccap11.android.ozono.repository
 
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.OzonoAppl
 import it.luccap11.android.ozono.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.ozono.infrastructure.room.entities.CityEntityBuilder
 import it.luccap11.android.ozono.model.data.*
+import it.luccap11.android.ozono.network.RemoteWCitiesDataSource
 import it.luccap11.android.ozono.utils.AppUtils
 import it.luccap11.android.ozono.utils.PreferencesManager
 

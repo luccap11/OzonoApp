@@ -1,7 +1,7 @@
-package it.luccap11.android.ozono.infrastructure
+package it.luccap11.android.ozono.network
 
 import android.util.Log
-import it.luccap11.android.ozono.infrastructure.RetrofitClientInstance.retrofitInstance
+import it.luccap11.android.ozono.network.RetrofitClientInstance.retrofitInstance
 import it.luccap11.android.ozono.model.data.CityData
 import it.luccap11.android.ozono.model.data.WorldCitiesData
 import it.luccap11.android.ozono.utils.AppUtils

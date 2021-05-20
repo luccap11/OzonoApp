@@ -3,9 +3,9 @@ package it.luccap11.android.ozono.model.viewmodels
 import androidx.lifecycle.*
 import it.luccap11.android.ozono.OzonoAppl
 import it.luccap11.android.ozono.R
-import it.luccap11.android.ozono.infrastructure.OWeatherMapRepository
+import it.luccap11.android.ozono.repository.OWeatherMapRepository
 import it.luccap11.android.ozono.infrastructure.Resource
-import it.luccap11.android.ozono.infrastructure.WorldCitiesRepository
+import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.model.data.CityData
 import it.luccap11.android.ozono.model.data.WeatherData
 import kotlinx.coroutines.*
@@ -62,6 +62,5 @@ class WeatherViewModelFactory(
     private val weatherRepository: OWeatherMapRepository
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        WeatherViewModel(cityRepository, weatherRepository) as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = WeatherViewModel(cityRepository, weatherRepository) as T
 }

@@ -1,4 +1,4 @@
-package it.luccap11.android.ozono.infrastructure
+package it.luccap11.android.ozono.network
 
 import android.util.Log
 import com.android.volley.Request
@@ -6,6 +6,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.OzonoAppl
+import it.luccap11.android.ozono.infrastructure.Resource
 import org.json.JSONObject
 
 /**

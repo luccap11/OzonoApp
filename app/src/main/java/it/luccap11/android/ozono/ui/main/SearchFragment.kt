@@ -9,14 +9,14 @@ import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.databinding.SearchFragmentBinding
-import it.luccap11.android.ozono.infrastructure.OWeatherMapRepository
-import it.luccap11.android.ozono.infrastructure.RemoteWCitiesDataSource
+import it.luccap11.android.ozono.repository.OWeatherMapRepository
+import it.luccap11.android.ozono.network.RemoteWCitiesDataSource
 import it.luccap11.android.ozono.infrastructure.Resource
-import it.luccap11.android.ozono.infrastructure.WorldCitiesRepository
+import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase
 import it.luccap11.android.ozono.model.data.CitiesDataCache
 import it.luccap11.android.ozono.model.data.CityData
@@ -31,17 +31,13 @@ import java.util.*
  */
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<Resource<List<CityData>>>, OnItemClickListener {
-    private val viewModel: WeatherViewModel by viewModels { WeatherViewModelFactory(
+    private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
         OWeatherMapRepository()
     ) }
     private val prefs = PreferencesManager()
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
-
-    companion object {
-        fun newInstance() = SearchFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,11 +60,10 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.citiesLiveData.observe(viewLifecycleOwner, this)
-//        binding.citiesList.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+        this.sharedViewModel.citiesLiveData.observe(viewLifecycleOwner, this)
 
-        viewModel.getLastCitySearched()
-        viewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
+        this.sharedViewModel.getLastCitySearched()
+        this.sharedViewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
             if (lastCitySearched != null) {
                 binding.searchView.setQuery(lastCitySearched.name, true)
             }
@@ -108,7 +103,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onQueryTextSubmit(queryString: String?): Boolean {
         if (!queryString.isNullOrBlank()) {
-            viewModel.updateWeatherData(queryString)
+            this.sharedViewModel.updateWeatherData(queryString)
         }
         return false
     }
@@ -121,10 +116,11 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
                 binding.searchView.isIconified = false
             } else {
                 binding.citiesList.visibility = View.VISIBLE
-                viewModel.updateCityData(queryString.trim().split(" ").joinToString(" ") {
-                    it.capitalize(
-                        Locale.getDefault()
-                    )
+                this.sharedViewModel.updateCityData(queryString.trim().split(" ").joinToString(" ") { userQuery ->
+                    userQuery.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()
+                        ) else it.toString()
+                    }
                 })
             }
         }

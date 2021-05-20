@@ -1,4 +1,4 @@
-package it.luccap11.android.ozono.infrastructure
+package it.luccap11.android.ozono.network
 
 import it.luccap11.android.ozono.model.data.WorldCitiesData
 import retrofit2.Call

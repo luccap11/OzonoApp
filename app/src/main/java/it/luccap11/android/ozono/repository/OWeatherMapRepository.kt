@@ -1,10 +1,12 @@
-package it.luccap11.android.ozono.infrastructure
+package it.luccap11.android.ozono.repository
 
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.OzonoAppl
+import it.luccap11.android.ozono.infrastructure.Resource
 import it.luccap11.android.ozono.model.data.ExpirableWeatherDataCache
 import it.luccap11.android.ozono.model.data.WeatherData
 import it.luccap11.android.ozono.model.data.WeatherDataParser
+import it.luccap11.android.ozono.network.RemoteWeatherDataSource
 
 /**
  * @author Luca Capitoli

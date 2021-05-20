@@ -1,4 +1,4 @@
-package it.luccap11.android.ozono.infrastructure
+package it.luccap11.android.ozono.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

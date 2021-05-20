@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.ozono.databinding.WeatherDataFragmentBinding
-import it.luccap11.android.ozono.infrastructure.OWeatherMapRepository
-import it.luccap11.android.ozono.infrastructure.RemoteWCitiesDataSource
+import it.luccap11.android.ozono.repository.OWeatherMapRepository
+import it.luccap11.android.ozono.network.RemoteWCitiesDataSource
 import it.luccap11.android.ozono.infrastructure.Resource
-import it.luccap11.android.ozono.infrastructure.WorldCitiesRepository
+import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase
 import it.luccap11.android.ozono.model.data.CitiesDataCache
 import it.luccap11.android.ozono.model.data.WeatherData
