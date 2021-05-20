@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_row_element"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/blue_opaque"
+        app:layout_constraintBottom_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/locationImage"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:importantForAccessibility="no"
+        android:padding="@dimen/element_padding_small"
+        android:layout_marginStart="@dimen/element_padding_xsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_location" />
+
+    <TextView
+        android:id="@+id/cityDescr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toEndOf="@+id/locationImage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Sulmona"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

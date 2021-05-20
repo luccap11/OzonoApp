@@ -1,37 +1,18 @@
 <resources>
-    <string name="app_name">Weather Condition</string>
+    <string name="app_name">Ozono App</string>
     <string name="owm_api_key">7d85604d75067f7a0da53ac8f70c5364</string>
 
-
-    <string name="city_label">City</string>
+    <!-- Labels -->
+    <string name="city_label">Search a city</string>
     <string name="error_label">Something went wrong</string>
+    <string name="no_data_label">No data found…</string>
 
-    <array name="bestCities">
-        <item>Ancara</item>
-        <item>Berlin</item>
-        <item>Copenhagen</item>
-        <item>Denver</item>
-        <item>Edimburgh</item>
-        <item>Florence</item>
-        <item>Forlì</item>
-        <item>Genk</item>
-        <item>Helsinki</item>
-        <item>Istanbul</item>
-        <item>Lahore</item>
-        <item>London</item>
-        <item>Lisbon</item>
-        <item>Moscow</item>
-        <item>Nassau</item>
-        <item>Osaka</item>
-        <item>Prague</item>
-        <item>Rome</item>
-        <item>Stockholm</item>
-        <item>Sydney</item>
-        <item>Tokyo</item>
-        <item>Toronto</item>
-        <item>Udine</item>
-        <item>Venice</item>
-        <item>Zara</item>
-        <item>Washington</item>
-    </array>
+    <!-- Shared Prefereces -->
+    <string name="preference_file_key">it.luccap11.android.ozono.PREFERENCE_FILE_KEY</string>
+    <string name="preference_last_searched_city_latit">it.luccap11.android.ozono.PREFERENCE_LAST_SEARCHED_CITY_LATIT</string>
+    <string name="preference_last_searched_city_longit">it.luccap11.android.ozono.PREFERENCE_LAST_SEARCHED_CITY_LONGIT</string>
+
+    <!-- Images Content Deciption -->
+    <string name="empty_content_descr">icon</string>
+
 </resources>
