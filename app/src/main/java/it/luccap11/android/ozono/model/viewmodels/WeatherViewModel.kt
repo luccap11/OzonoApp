@@ -20,7 +20,6 @@ class WeatherViewModel(
     private val weatherRepository: WeatherDataRepository
 ) : ViewModel() {
     private val resources = OzonoAppl.instance.resources
-//    val weatherLiveData = MutableLiveData<Resource<List<WeatherData>>>()
     val citiesLiveData = MutableLiveData<Resource<List<CityData>>>()
     val lastCitySearched = MutableLiveData<CityData>()
 
