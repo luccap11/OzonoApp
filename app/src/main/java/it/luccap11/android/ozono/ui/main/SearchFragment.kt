@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.databinding.SearchFragmentBinding
-import it.luccap11.android.ozono.repository.OWeatherMapApiService
+import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.network.RemoteWCitiesDataSource
 import it.luccap11.android.ozono.infrastructure.Resource
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
@@ -34,7 +34,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<Resource<List<CityData>>>, OnItemClickListener {
     private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
-        OWeatherMapApiService(OWMRemoteDataSource)
+        WeatherDataRepository(OWMRemoteDataSource)
     ) }
     private val prefs = PreferencesManager()
     private var _binding: SearchFragmentBinding? = null

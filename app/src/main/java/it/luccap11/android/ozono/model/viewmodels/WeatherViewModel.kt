@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import it.luccap11.android.ozono.OzonoAppl
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.infrastructure.ApiStatus
-import it.luccap11.android.ozono.repository.OWeatherMapApiService
+import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.infrastructure.Resource
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.model.data.CityData
@@ -17,7 +17,7 @@ import kotlinx.coroutines.*
  */
 class WeatherViewModel(
     private val cityRepository: WorldCitiesRepository,
-    private val weatherRepository: OWeatherMapApiService
+    private val weatherRepository: WeatherDataRepository
 ) : ViewModel() {
     private val resources = OzonoAppl.instance.resources
 //    val weatherLiveData = MutableLiveData<Resource<List<WeatherData>>>()
@@ -68,7 +68,7 @@ class WeatherViewModel(
 
 class WeatherViewModelFactory(
     private val cityRepository: WorldCitiesRepository,
-    private val weatherRepository: OWeatherMapApiService
+    private val weatherRepository: WeatherDataRepository
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = WeatherViewModel(cityRepository, weatherRepository) as T

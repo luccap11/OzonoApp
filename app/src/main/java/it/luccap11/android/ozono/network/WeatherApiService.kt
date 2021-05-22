@@ -1,4 +1,4 @@
-package it.luccap11.android.ozono.repository
+package it.luccap11.android.ozono.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
