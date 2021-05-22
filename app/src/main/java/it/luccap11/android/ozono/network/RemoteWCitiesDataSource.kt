@@ -44,7 +44,7 @@ class RemoteWCitiesDataSource {
                 filterDuplicates(response.body()!!.cities)
             }
         } catch (e: Exception) {
-            Log.e(AppUtils.LOG_TAG, e.toString(), e)
+            Log.e(AppUtils.TAG_LOG, e.toString(), e)
             null
         }
 
@@ -57,11 +57,11 @@ class RemoteWCitiesDataSource {
 
     private fun findErrorsInBodyResponse(response: Response<WorldCitiesData>, body: WorldCitiesData?): Boolean {
         return if (body == null) {
-            Log.e(AppUtils.LOG_TAG, response.message())
+            Log.e(AppUtils.TAG_LOG, response.message())
 
             val errorBody = response.errorBody()
             if (errorBody != null) {
-                Log.e(AppUtils.LOG_TAG, errorBody.toString())
+                Log.e(AppUtils.TAG_LOG, errorBody.toString())
             }
             true
         } else {

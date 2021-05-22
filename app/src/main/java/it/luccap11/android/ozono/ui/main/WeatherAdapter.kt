@@ -1,6 +1,5 @@
 package it.luccap11.android.ozono.ui.main
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import it.luccap11.android.ozono.model.data.WeatherData
  */
 class WeatherAdapter(private val dataSet: List<WeatherData>) :
     RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
-    private lateinit var context : Context
 
     /**
      * Provide a reference to the type of views that you are using
@@ -30,7 +28,6 @@ class WeatherAdapter(private val dataSet: List<WeatherData>) :
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        context = viewGroup.context
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.weather_row_item, viewGroup, false)
 
@@ -38,14 +35,14 @@ class WeatherAdapter(private val dataSet: List<WeatherData>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.date.text = dataSet[position].date.subSequence(0, 10)
-        viewHolder.descr.text = dataSet[position].descr
-        viewHolder.temp.text = String.format("%d °C", dataSet[position].temp.toInt())
+        viewHolder.date.text = dataSet[position].list[0].date.subSequence(0, 10)
+        viewHolder.descr.text = dataSet[position].list[0].weather[0].descr
+        viewHolder.temp.text = String.format("%d °C", dataSet[position].list[0].main.temp.toInt())
         val imgUrl = String.format(
             "https://openweathermap.org/img/wn/%s@2x.png",
-            dataSet[position].icon
+            dataSet[position].list[0].weather[0].icon
         )
-        Glide.with(context).load(imgUrl)
+        Glide.with(viewHolder.img.context).load(imgUrl)
             .placeholder(R.drawable.ic_baseline_image_not_supported_24)
             .circleCrop().into(viewHolder.img)
 

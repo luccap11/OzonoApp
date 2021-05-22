@@ -43,7 +43,8 @@ Before launching instrumented test you have to set up you test environment as de
 - Kotlin (Coroutines, completion handler)
 - MVVM
 - Dependency Injection
-- Retrofit2 and Volley - as HTTP client
+- Retrofit2 - as HTTP client
+- Moshi
 - Room - for persistence layer
 - Glide - for image loading.
 - LruCache - for caching data

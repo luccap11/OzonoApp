@@ -20,7 +20,7 @@ object ExpirableWeatherDataCache {
     }
 
     fun addCachedWeatherData(weatherData: List<WeatherData>) {
-        cachedWeatherData.put(weatherData[0].city, weatherData)
+        cachedWeatherData.put(weatherData[0].city.name, weatherData)
     }
 
     fun isWeatherDataInCache(selectedCity: String): Boolean {
@@ -28,7 +28,7 @@ object ExpirableWeatherDataCache {
         return if (weatherData.isNullOrEmpty()) {
             false
         } else {
-            if (isItemExpired(weatherData[0].timeInMillis)) {
+            if (isItemExpired(weatherData[0].list[0].timeInMillis)) {
                 cachedWeatherData.remove(selectedCity)
                 false
             } else {

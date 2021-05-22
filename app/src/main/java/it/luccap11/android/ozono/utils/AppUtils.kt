@@ -8,5 +8,5 @@ object AppUtils {
     const val EMPTY = 0
     const val NOT_SET = -1
 
-    const val LOG_TAG = "OzonoLog"
+    const val TAG_LOG = "OzonoLog"
 }

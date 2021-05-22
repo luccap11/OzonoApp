@@ -1,31 +1,31 @@
 package it.luccap11.android.ozono.network
 
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import it.luccap11.android.ozono.R
-import it.luccap11.android.ozono.OzonoAppl
-import it.luccap11.android.ozono.infrastructure.Resource
-import org.json.JSONObject
+import it.luccap11.android.ozono.model.data.WeatherData
+import it.luccap11.android.ozono.model.data.WorldCitiesData
+import it.luccap11.android.ozono.repository.WeatherApiService
+import it.luccap11.android.ozono.repository.retrofit
+import it.luccap11.android.ozono.utils.AppUtils.TAG_LOG
+import retrofit2.Call
+import retrofit2.awaitResponse
 
 /**
  * @author Luca Capitoli
  * @since 30/dec/2020
  */
-object RemoteWeatherDataSource {
-    private const val BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
+object RemoteWeatherDataSource: RemoteWDataSource {
+    private val retrofitService : WeatherApiService by lazy {
+        retrofit.create(WeatherApiService::class.java)
+    }
 
-    fun fetchOWeatherMapData(selectedCity: String, completion: (Resource<JSONObject>) -> Unit) {
-        val resource = OzonoAppl.instance.resources
-        val url = String.format("%s?q=%s&APPID=%s&units=metric", BASE_URL, selectedCity, resource.getString(R.string.owm_api_key))
-        val requestQueue = Volley.newRequestQueue(OzonoAppl.instance)
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, { response ->
-            completion(Resource.Success(response))
-        }) { error ->
-            Log.e("TAG", error.toString())
-            completion(Resource.Error(""))
+    override suspend fun fetchOWeatherMapData(selectedCity: String): List<WeatherData>? {
+        try {
+
+            return listOf(retrofitService.fetchRemoteWeatherData(selectedCity))
+//            return emptyList()
+        } catch (e: Exception) {
+            Log.e(TAG_LOG, e.toString(), e)
         }
-        requestQueue.add(jsonObjectRequest)
+        return null
     }
 }

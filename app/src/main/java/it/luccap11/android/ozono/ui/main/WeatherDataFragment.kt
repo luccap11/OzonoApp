@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.databinding.WeatherDataFragmentBinding
-import it.luccap11.android.ozono.repository.OWeatherMapRepository
+import it.luccap11.android.ozono.infrastructure.ApiStatus
+import it.luccap11.android.ozono.repository.OWeatherMapApiService
 import it.luccap11.android.ozono.network.RemoteWCitiesDataSource
 import it.luccap11.android.ozono.infrastructure.Resource
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
@@ -18,16 +19,16 @@ import it.luccap11.android.ozono.model.data.CitiesDataCache
 import it.luccap11.android.ozono.model.data.WeatherData
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModel
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModelFactory
-import it.luccap11.android.ozono.utils.PreferencesManager
+import it.luccap11.android.ozono.network.RemoteWeatherDataSource
 
 
 /**
  * @author Luca Capitoli
  */
-class WeatherDataFragment : Fragment(), Observer<Resource<List<WeatherData>>> {
+class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
     private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
-        OWeatherMapRepository()
+        OWeatherMapApiService(RemoteWeatherDataSource)
     ) }
     private var _binding: WeatherDataFragmentBinding? = null
     private val binding get() = _binding!!
@@ -43,7 +44,7 @@ class WeatherDataFragment : Fragment(), Observer<Resource<List<WeatherData>>> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.weatherLiveData.observe(viewLifecycleOwner, this)
+        sharedViewModel.weatherStatus.observe(viewLifecycleOwner, this)
 //        viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
 //            when (citiesData) {
 //                is Resource.Loading -> {
@@ -59,25 +60,34 @@ class WeatherDataFragment : Fragment(), Observer<Resource<List<WeatherData>>> {
         _binding = null
     }
 
-    override fun onChanged(weatherData: Resource<List<WeatherData>>) {
-        when (weatherData) {
-            is Resource.Loading -> {
+    override fun onChanged(status: ApiStatus) {
+        when (status) {
+            ApiStatus.LOADING -> {
                 binding.weatherDataLoading.visibility = View.VISIBLE
                 binding.listWeatherData.visibility = View.GONE
                 binding.emptyWeatherImage.visibility = View.GONE
             }
 
-            is Resource.Error -> {
+            ApiStatus.ERROR -> {
                 binding.weatherDataLoading.visibility = View.GONE
                 binding.listWeatherData.visibility = View.GONE
                 binding.emptyWeatherImage.visibility = View.VISIBLE
+                binding.resultMessage.visibility = View.VISIBLE
+                binding.resultMessage.text = resources.getString(R.string.error_label)
             }
 
-            is Resource.Success -> {
+            ApiStatus.SUCCESS -> {
                 binding.weatherDataLoading.visibility = View.GONE
                 binding.emptyWeatherImage.visibility = View.GONE
                 binding.listWeatherData.visibility = View.VISIBLE
-                binding.listWeatherData.adapter = WeatherAdapter(weatherData.data!!)
+
+                val data = sharedViewModel.weatherData.value
+                binding.listWeatherData.adapter = WeatherAdapter(data!!)
+
+                if (data.isEmpty()) {
+                    binding.resultMessage.visibility = View.VISIBLE
+                    binding.resultMessage.text = resources.getText(R.string.no_data_label)
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Ozono App</string>
-    <string name="owm_api_key">7d85604d75067f7a0da53ac8f70c5364</string>
 
     <!-- Labels -->
     <string name="city_label">Search a city</string>
