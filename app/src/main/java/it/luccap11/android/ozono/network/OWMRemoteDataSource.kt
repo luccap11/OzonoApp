@@ -2,18 +2,15 @@ package it.luccap11.android.ozono.network
 
 import android.util.Log
 import it.luccap11.android.ozono.model.data.WeatherData
-import it.luccap11.android.ozono.model.data.WorldCitiesData
 import it.luccap11.android.ozono.repository.WeatherApiService
 import it.luccap11.android.ozono.repository.retrofit
 import it.luccap11.android.ozono.utils.AppUtils.TAG_LOG
-import retrofit2.Call
-import retrofit2.awaitResponse
 
 /**
  * @author Luca Capitoli
  * @since 30/dec/2020
  */
-object RemoteWeatherDataSource: RemoteWDataSource {
+object OWMRemoteDataSource: RemoteWDataSource {
     private val retrofitService : WeatherApiService by lazy {
         retrofit.create(WeatherApiService::class.java)
     }

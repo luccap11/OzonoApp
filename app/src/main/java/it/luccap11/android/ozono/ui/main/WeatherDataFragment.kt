@@ -12,14 +12,12 @@ import it.luccap11.android.ozono.databinding.WeatherDataFragmentBinding
 import it.luccap11.android.ozono.infrastructure.ApiStatus
 import it.luccap11.android.ozono.repository.OWeatherMapApiService
 import it.luccap11.android.ozono.network.RemoteWCitiesDataSource
-import it.luccap11.android.ozono.infrastructure.Resource
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase
 import it.luccap11.android.ozono.model.data.CitiesDataCache
-import it.luccap11.android.ozono.model.data.WeatherData
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModel
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModelFactory
-import it.luccap11.android.ozono.network.RemoteWeatherDataSource
+import it.luccap11.android.ozono.network.OWMRemoteDataSource
 
 
 /**
@@ -28,7 +26,7 @@ import it.luccap11.android.ozono.network.RemoteWeatherDataSource
 class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
     private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
-        OWeatherMapApiService(RemoteWeatherDataSource)
+        OWeatherMapApiService(OWMRemoteDataSource)
     ) }
     private var _binding: WeatherDataFragmentBinding? = null
     private val binding get() = _binding!!

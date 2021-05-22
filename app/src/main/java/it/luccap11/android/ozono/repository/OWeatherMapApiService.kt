@@ -1,17 +1,13 @@
 package it.luccap11.android.ozono.repository
 
-import it.luccap11.android.ozono.R
-import it.luccap11.android.ozono.OzonoAppl
-import it.luccap11.android.ozono.infrastructure.Resource
 import it.luccap11.android.ozono.model.data.ExpirableWeatherDataCache
 import it.luccap11.android.ozono.model.data.WeatherData
-import it.luccap11.android.ozono.model.data.WeatherDataParser
-import it.luccap11.android.ozono.network.RemoteWeatherDataSource
+import it.luccap11.android.ozono.network.OWMRemoteDataSource
 
 /**
  * @author Luca Capitoli
  */
-class OWeatherMapApiService(private val remoteDataSource: RemoteWeatherDataSource) {
+class OWeatherMapApiService(private val remoteDataSource: OWMRemoteDataSource) {
 
     suspend fun fetchWeatherDataByCityName(selectedCity: String): List<WeatherData>? {
         val isCachedData = ExpirableWeatherDataCache.isWeatherDataInCache(selectedCity)

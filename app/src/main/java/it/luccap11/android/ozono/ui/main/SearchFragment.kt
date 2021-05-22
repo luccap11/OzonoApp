@@ -22,7 +22,7 @@ import it.luccap11.android.ozono.model.data.CitiesDataCache
 import it.luccap11.android.ozono.model.data.CityData
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModel
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModelFactory
-import it.luccap11.android.ozono.network.RemoteWeatherDataSource
+import it.luccap11.android.ozono.network.OWMRemoteDataSource
 import it.luccap11.android.ozono.utils.PreferencesManager
 import java.util.*
 
@@ -34,7 +34,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<Resource<List<CityData>>>, OnItemClickListener {
     private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
         WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
-        OWeatherMapApiService(RemoteWeatherDataSource)
+        OWeatherMapApiService(OWMRemoteDataSource)
     ) }
     private val prefs = PreferencesManager()
     private var _binding: SearchFragmentBinding? = null
