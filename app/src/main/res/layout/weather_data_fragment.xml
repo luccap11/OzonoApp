@@ -33,13 +33,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listWeatherData"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:scrollbars="vertical"
-        android:visibility="gone"
+        android:layout_marginTop="@dimen/element_padding_medium"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/weather_row_item" />
 
     <ProgressBar

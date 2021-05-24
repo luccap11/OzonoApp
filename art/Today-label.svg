@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="148" height="106" viewBox="0 0 148 106">
+  <defs>
+    <linearGradient id="linear-gradient" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#64afff"/>
+      <stop offset="1" stop-color="#95ebff"/>
+    </linearGradient>
+    <filter id="Rettangolo_89" x="0" y="0" width="148" height="106" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feFlood flood-color="#2b6fb7"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Raggruppa_132" data-name="Raggruppa 132" transform="translate(6.746 -199.834)">
+    <g transform="matrix(1, 0, 0, 1, -6.75, 199.83)" filter="url(#Rettangolo_89)">
+      <path id="Rettangolo_89-2" data-name="Rettangolo 89" d="M8,0H50a8,8,0,0,1,8,8v8a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8A8,8,0,0,1,8,0Z" transform="translate(45 41)" fill="url(#linear-gradient)"/>
+    </g>
+    <text id="TODAY" transform="translate(50.254 252.146)" fill="#192940" font-size="10" font-family="Poppins-Bold, Poppins" font-weight="700"><tspan x="0" y="0">TODAY</tspan></text>
+  </g>
+</svg>

@@ -29,6 +29,7 @@ class WeatherAdapter(private val dataSet: List<ListData>) :
         val descr: TextView = view.findViewById(R.id.descr)
         val temp: TextView = view.findViewById(R.id.temperature)
         val img: ImageView = view.findViewById(R.id.weatherImage)
+        val todayLabel: ImageView = view.findViewById(R.id.todayLabel)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -39,6 +40,7 @@ class WeatherAdapter(private val dataSet: List<ListData>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        viewHolder.todayLabel.visibility = if (position == 0) View.VISIBLE else View.GONE
         viewHolder.date.text = dateFormatter(dataSet[position].timeInSecs * 1000)
         viewHolder.descr.text = dataSet[position].weather[0].descr
         viewHolder.temp.text = String.format("%d °C", dataSet[position].main.temp.toInt())
@@ -47,9 +49,9 @@ class WeatherAdapter(private val dataSet: List<ListData>) :
             dataSet[position].weather[0].icon
         )
         Glide.with(viewHolder.img.context).load(imgUrl)
-            .placeholder(R.drawable.ic_baseline_image_not_supported_24)
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.ic_baseline_image_not_supported_24)
             .circleCrop().into(viewHolder.img)
-
     }
 
     override fun getItemCount() = dataSet.size
