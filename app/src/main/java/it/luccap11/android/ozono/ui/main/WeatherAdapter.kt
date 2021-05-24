@@ -25,7 +25,8 @@ class WeatherAdapter(private val dataSet: List<ListData>) :
      * (custom ViewHolder).
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val date: TextView = view.findViewById(R.id.day)
+        val day: TextView = view.findViewById(R.id.day)
+        val month: TextView = view.findViewById(R.id.month)
         val descr: TextView = view.findViewById(R.id.descr)
         val temp: TextView = view.findViewById(R.id.temperature)
         val img: ImageView = view.findViewById(R.id.weatherImage)
@@ -41,8 +42,10 @@ class WeatherAdapter(private val dataSet: List<ListData>) :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.todayLabel.visibility = if (position == 0) View.VISIBLE else View.GONE
-        viewHolder.date.text = dateFormatter(dataSet[position].timeInSecs * 1000)
-        viewHolder.descr.text = dataSet[position].weather[0].descr
+        val timeInMillis = dataSet[position].timeInSecs * 1000
+        viewHolder.day.text = dateFormatter(timeInMillis, "dd")
+        viewHolder.month.text = dateFormatter(timeInMillis, "/MM")
+        viewHolder.descr.text = dateFormatter(timeInMillis, "EEEE")
         viewHolder.temp.text = String.format("%d °C", dataSet[position].main.temp.toInt())
         val imgUrl = String.format(
             "https://openweathermap.org/img/wn/%s@2x.png",
@@ -56,8 +59,8 @@ class WeatherAdapter(private val dataSet: List<ListData>) :
 
     override fun getItemCount() = dataSet.size
 
-    private fun dateFormatter(timeInMillis: Long): String {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM");
+    private fun dateFormatter(timeInMillis: Long, pattern: String): String {
+        val formatter = DateTimeFormatter.ofPattern(pattern)
         val instant = Instant.ofEpochMilli(timeInMillis)
         val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
         return formatter.format(date)
