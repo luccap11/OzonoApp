@@ -24,8 +24,8 @@ class WeatherViewModel(
     val lastCitySearched = MutableLiveData<CityData>()
 
     val weatherStatus = MutableLiveData<ApiStatus>()
-    private val _weatherData = MutableLiveData<List<WeatherData>>()
-    val weatherData: LiveData<List<WeatherData>> = _weatherData
+    private val _weatherData = MutableLiveData<WeatherData>()
+    val weatherData: LiveData<WeatherData> = _weatherData
 
     fun updateWeatherData(selectedCity: String) {
         weatherStatus.postValue(ApiStatus.LOADING)
@@ -34,7 +34,7 @@ class WeatherViewModel(
             if (fiveDaysWeather == null) {
                 return@launch weatherStatus.postValue(ApiStatus.ERROR)
             } else {
-                _weatherData.postValue(fiveDaysWeather!!)
+                _weatherData.postValue(fiveDaysWeather)
                 return@launch weatherStatus.postValue(ApiStatus.SUCCESS)
             }
         }

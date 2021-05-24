@@ -15,7 +15,7 @@ data class City (
 )
 
 data class ListData (
-    @Json(name = "dt") val timeInMillis: Long,
+    @Json(name = "dt") val timeInSecs: Long,
     @Json(name = "dt_txt") val date: String,
     @Json(name = "weather") val weather: List<Weather>,
     @Json(name = "main") val main: Main

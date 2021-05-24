@@ -41,16 +41,7 @@ class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         sharedViewModel.weatherStatus.observe(viewLifecycleOwner, this)
-//        viewModel.citiesLiveData.observe(viewLifecycleOwner, { citiesData ->
-//            when (citiesData) {
-//                is Resource.Loading -> {
-////                    binding.citiesDataLoading.visibility = View.VISIBLE
-//                    binding.listWeatherData.visibility = View.GONE
-//                }
-//            }
-//        })
     }
 
     override fun onDestroyView() {
@@ -79,12 +70,14 @@ class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
                 binding.emptyWeatherImage.visibility = View.GONE
                 binding.listWeatherData.visibility = View.VISIBLE
 
-                val data = sharedViewModel.weatherData.value
-                binding.listWeatherData.adapter = WeatherAdapter(data!!)
+                val data = sharedViewModel.weatherData.value!!.list
+                binding.listWeatherData.adapter = WeatherAdapter(data)
 
                 if (data.isEmpty()) {
                     binding.resultMessage.visibility = View.VISIBLE
                     binding.resultMessage.text = resources.getText(R.string.no_data_label)
+                } else {
+                    binding.resultMessage.visibility = View.GONE
                 }
             }
         }

@@ -9,26 +9,26 @@ import androidx.collection.LruCache
 object ExpirableWeatherDataCache {
     private val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
     private val cacheSize = maxMemory / 8
-    private var cachedWeatherData = object : LruCache<String, List<WeatherData>>(cacheSize) {
-        override fun sizeOf(key: String, weatherData: List<WeatherData>): Int {
-            return weatherData.size
+    private var cachedWeatherData = object : LruCache<String, WeatherData>(cacheSize) {
+        override fun sizeOf(key: String, weatherData: WeatherData): Int {
+            return weatherData.list.size
         }
     }
 
-    fun getCachedWeatherData(selectedCity: String): List<WeatherData>? {
+    fun getCachedWeatherData(selectedCity: String): WeatherData? {
         return cachedWeatherData[selectedCity]
     }
 
-    fun addCachedWeatherData(weatherData: List<WeatherData>) {
-        cachedWeatherData.put(weatherData[0].city.name, weatherData)
+    fun addCachedWeatherData(weatherData: WeatherData) {
+        cachedWeatherData.put(weatherData.city.name, weatherData)
     }
 
     fun isWeatherDataInCache(selectedCity: String): Boolean {
         val weatherData = cachedWeatherData[selectedCity]
-        return if (weatherData.isNullOrEmpty()) {
+        return if (weatherData == null) {
             false
         } else {
-            if (isItemExpired(weatherData[0].list[0].timeInMillis)) {
+            if (isItemExpired(weatherData.list[0].timeInSecs)) {
                 cachedWeatherData.remove(selectedCity)
                 false
             } else {

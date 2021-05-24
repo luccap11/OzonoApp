@@ -9,7 +9,7 @@ import it.luccap11.android.ozono.network.OWMRemoteDataSource
  */
 class WeatherDataRepository(private val remoteDataSource: OWMRemoteDataSource) {
 
-    suspend fun fetchWeatherDataByCityName(selectedCity: String): List<WeatherData>? {
+    suspend fun fetchWeatherDataByCityName(selectedCity: String): WeatherData? {
         val isCachedData = ExpirableWeatherDataCache.isWeatherDataInCache(selectedCity)
         return if (isCachedData) {
             ExpirableWeatherDataCache.getCachedWeatherData(selectedCity)!!

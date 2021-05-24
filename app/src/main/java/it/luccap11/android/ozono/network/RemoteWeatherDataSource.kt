@@ -4,5 +4,5 @@ import it.luccap11.android.ozono.model.data.WeatherData
 
 
 interface RemoteWeatherDataSource {
-    suspend fun fetchOWeatherMapData(selectedCity: String): List<WeatherData>?
+    suspend fun fetchOWeatherMapData(selectedCity: String): WeatherData?
 }

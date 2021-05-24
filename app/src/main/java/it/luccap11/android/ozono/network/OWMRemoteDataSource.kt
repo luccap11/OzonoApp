@@ -13,9 +13,9 @@ object OWMRemoteDataSource : RemoteWeatherDataSource {
         retrofit.create(WeatherApiService::class.java)
     }
 
-    override suspend fun fetchOWeatherMapData(selectedCity: String): List<WeatherData>? {
+    override suspend fun fetchOWeatherMapData(selectedCity: String): WeatherData? {
         try {
-            return listOf(retrofitService.fetchRemoteWeatherData(selectedCity))
+            return retrofitService.fetchRemoteWeatherData(selectedCity)
         } catch (e: Exception) {
             Log.e(TAG_LOG, e.toString(), e)
         }
