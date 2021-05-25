@@ -11,5 +11,8 @@
         <item name="android:textSize">18sp</item>
         <item name="android:colorBackground">@color/background_night_color</item>
         <item name="android:textColorPrimary">@color/light_grey</item>
+        <!-- change color to status bar -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/background_night_color</item>
     </style>
 </resources>
