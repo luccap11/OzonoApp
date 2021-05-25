@@ -1,0 +1,60 @@
+<svg id="Livello_1" data-name="Livello 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+        <style>.cls-1{fill:#05090d;}.cls-2{fill:#64afff;}.cls-3{fill:#ff8d46;}</style>
+    </defs>
+    <rect class="cls-1" x="-0.11" y="0.21" width="512" height="512" />
+    <g id="Raggruppa_232" data-name="Raggruppa 232">
+        <path id="Tracciato_521" data-name="Tracciato 521" class="cls-2"
+            d="M92,284a27.84,27.84,0,1,1,27.84-27.84h0A27.86,27.86,0,0,1,92,284ZM92,234a22.27,22.27,0,1,0,22.27,22.27A22.27,22.27,0,0,0,92,234Z" />
+    </g>
+    <g id="Raggruppa_233" data-name="Raggruppa 233">
+        <path id="Tracciato_522" data-name="Tracciato 522" class="cls-2"
+            d="M419.76,284A27.84,27.84,0,1,1,447.6,256.2h0A27.86,27.86,0,0,1,419.76,284Zm0-50.09A22.27,22.27,0,1,0,442,256.22h0A22.3,22.3,0,0,0,419.76,234Z" />
+    </g>
+    <g id="Raggruppa_243" data-name="Raggruppa 243">
+        <g id="Raggruppa_234" data-name="Raggruppa 234">
+            <path id="Tracciato_523" data-name="Tracciato 523" class="cls-3"
+                d="M257.28,284a27.84,27.84,0,1,1,27.84-27.84A27.84,27.84,0,0,1,257.28,284Zm0-50.09a22.27,22.27,0,1,0,22.27,22.27h0A22.29,22.29,0,0,0,257.28,234Z" />
+        </g>
+        <g id="Raggruppa_235" data-name="Raggruppa 235">
+            <path id="Tracciato_524" data-name="Tracciato 524" class="cls-3"
+                d="M257.28,221.88a2.77,2.77,0,0,1-2.77-2.78V202.4a2.78,2.78,0,0,1,5.55,0v16.7A2.78,2.78,0,0,1,257.28,221.88Z" />
+        </g>
+        <g id="Raggruppa_236" data-name="Raggruppa 236">
+            <path id="Tracciato_525" data-name="Tracciato 525" class="cls-3"
+                d="M231,232.75a2.67,2.67,0,0,1-1.95-.82l-11.81-11.81a2.78,2.78,0,0,1,3.93-3.93L233,228a2.79,2.79,0,0,1-2,4.75Z" />
+        </g>
+        <g id="Raggruppa_237" data-name="Raggruppa 237">
+            <path id="Tracciato_526" data-name="Tracciato 526" class="cls-3"
+                d="M220.16,259h-16.7a2.78,2.78,0,0,1,0-5.55h16.7a2.78,2.78,0,1,1,0,5.55Z" />
+        </g>
+        <g id="Raggruppa_238" data-name="Raggruppa 238">
+            <path id="Tracciato_527" data-name="Tracciato 527" class="cls-3"
+                d="M219.22,297a2.66,2.66,0,0,1-1.95-.81,2.8,2.8,0,0,1,0-3.94l11.81-11.81a2.78,2.78,0,0,1,3.93,3.94L221.2,296.22A2.75,2.75,0,0,1,219.22,297Z" />
+        </g>
+        <g id="Raggruppa_239" data-name="Raggruppa 239">
+            <path id="Tracciato_528" data-name="Tracciato 528" class="cls-3"
+                d="M257.28,312.8a2.77,2.77,0,0,1-2.77-2.78v-16.7a2.78,2.78,0,0,1,5.55,0V310A2.78,2.78,0,0,1,257.28,312.8Z" />
+        </g>
+        <g id="Raggruppa_240" data-name="Raggruppa 240">
+            <path id="Tracciato_529" data-name="Tracciato 529" class="cls-3"
+                d="M295.32,297a2.68,2.68,0,0,1-2-.81l-11.81-11.81a2.79,2.79,0,1,1,3.86-4l.08.08,11.81,11.81a2.78,2.78,0,0,1-2,4.75Z" />
+        </g>
+        <g id="Raggruppa_241" data-name="Raggruppa 241">
+            <path id="Tracciato_530" data-name="Tracciato 530" class="cls-3"
+                d="M311.09,259H294.38a2.78,2.78,0,0,1,0-5.55h16.71a2.78,2.78,0,0,1,0,5.55Z" />
+        </g>
+        <g id="Raggruppa_242" data-name="Raggruppa 242">
+            <path id="Tracciato_531" data-name="Tracciato 531" class="cls-3"
+                d="M283.51,232.75a2.69,2.69,0,0,1-2-.82,2.79,2.79,0,0,1,0-3.93l11.81-11.81a2.78,2.78,0,0,1,3.94,3.93l-11.81,11.81A2.78,2.78,0,0,1,283.51,232.75Z" />
+        </g>
+    </g>
+    <g id="Raggruppa_244" data-name="Raggruppa 244">
+        <path id="Tracciato_532" data-name="Tracciato 532" class="cls-2"
+            d="M186.7,282.65H136.61a2.77,2.77,0,0,1,0-5.54h43.1l-45-42.53a2.79,2.79,0,0,1,1.91-4.81H186.7a2.78,2.78,0,1,1,0,5.55H143.61l45,42.5a2.76,2.76,0,0,1,.67,3.06A2.79,2.79,0,0,1,186.7,282.65Z" />
+    </g>
+    <g id="Raggruppa_245" data-name="Raggruppa 245">
+        <path id="Tracciato_533" data-name="Tracciato 533" class="cls-2"
+            d="M327.84,284a2.58,2.58,0,0,1-1-.2,2.81,2.81,0,0,1-1.75-2.59V231.16a2.78,2.78,0,1,1,5.55,0h0v43.09l42.5-45a2.79,2.79,0,0,1,4.81,1.92v50.09a2.77,2.77,0,1,1-5.54,0v-43.1l-42.51,45A2.81,2.81,0,0,1,327.84,284Z" />
+    </g>
+</svg>

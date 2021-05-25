@@ -1,0 +1,58 @@
+<svg id="Livello_1" data-name="Livello 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    <defs>
+        <style>
+            .cls-1{fill:#05090d;}.cls-2,.cls-5{fill:none;}.cls-3{fill:#64afff;}.cls-4{fill:#f48e47;}.cls-5{stroke:#64afff;stroke-linecap:round;stroke-width:7.65px;}
+        </style>
+    </defs>
+    <rect class="cls-1" width="512" height="512" />
+    <g id="Raggruppa_231" data-name="Raggruppa 231">
+        <g id="Raggruppa_230" data-name="Raggruppa 230">
+            <g id="Tracciato_509" data-name="Tracciato 509">
+                <path class="cls-2"
+                    d="M256,80.41A108.22,108.22,0,0,1,364.23,188.63h0c0,59.78-110.07,235.9-108.23,242.78s-108.23-183-108.23-242.78A108.23,108.23,0,0,1,256,80.41Z" />
+                <path class="cls-3"
+                    d="M256,88.05A100.53,100.53,0,0,0,155.41,188.64c0,12.15,5.16,31.63,15.32,57.92,8.48,21.94,20.28,48.13,35.08,77.84,19.45,39.07,38.77,73.64,48.9,90.85,3.44-6.62,8.59-16.07,16.18-29.93,15.76-28.75,37.34-68.14,54.95-105.53,20.4-43.31,30.74-74,30.74-91.15A100.48,100.48,0,0,0,256,88.05m0-7.64A108.23,108.23,0,0,1,364.23,188.64c0,59.77-110.08,235.89-108.23,242.77,0,.12,0,.18,0,.18-2,0-108.22-184.24-108.22-242.95A108.23,108.23,0,0,1,256,80.41Z" />
+            </g>
+            <g id="Raggruppa_185" data-name="Raggruppa 185">
+                <g id="Raggruppa_176" data-name="Raggruppa 176">
+                    <path id="Tracciato_488" data-name="Tracciato 488" class="cls-4"
+                        d="M256.77,225.39a32.94,32.94,0,1,1,32.94-32.94A32.93,32.93,0,0,1,256.77,225.39Zm0-59.29a26.35,26.35,0,1,0,26.35,26.35h0A26.38,26.38,0,0,0,256.77,166.1Z" />
+                </g>
+                <g id="Raggruppa_177" data-name="Raggruppa 177">
+                    <path id="Tracciato_489" data-name="Tracciato 489" class="cls-4"
+                        d="M256.78,151.84a3.3,3.3,0,0,1-3.3-3.29h0V128.79a3.3,3.3,0,1,1,6.59-.23v20A3.29,3.29,0,0,1,256.78,151.84Z" />
+                </g>
+                <g id="Raggruppa_178" data-name="Raggruppa 178">
+                    <path id="Tracciato_490" data-name="Tracciato 490" class="cls-4"
+                        d="M225.73,164.71a3.32,3.32,0,0,1-2.33-1l-14-14A3.29,3.29,0,1,1,214,145l.14.14,14,14a3.3,3.3,0,0,1-2.33,5.62Z" />
+                </g>
+                <g id="Raggruppa_179" data-name="Raggruppa 179">
+                    <path id="Tracciato_491" data-name="Tracciato 491" class="cls-4"
+                        d="M212.87,195.75H193.11a3.3,3.3,0,1,1,0-6.59h19.77a3.3,3.3,0,0,1,0,6.59Z" />
+                </g>
+                <g id="Raggruppa_180" data-name="Raggruppa 180">
+                    <path id="Tracciato_492" data-name="Tracciato 492" class="cls-4"
+                        d="M211.75,240.77a3.29,3.29,0,0,1-2.32-5.62l14-14a3.3,3.3,0,0,1,4.66,4.66l-14,14A3.3,3.3,0,0,1,211.75,240.77Z" />
+                </g>
+                <g id="Raggruppa_181" data-name="Raggruppa 181">
+                    <path id="Tracciato_493" data-name="Tracciato 493" class="cls-4"
+                        d="M256.78,259.42a3.3,3.3,0,0,1-3.3-3.29h0V236.36a3.3,3.3,0,0,1,6.59,0v19.76A3.29,3.29,0,0,1,256.78,259.42Z" />
+                </g>
+                <g id="Raggruppa_182" data-name="Raggruppa 182">
+                    <path id="Tracciato_494" data-name="Tracciato 494" class="cls-4"
+                        d="M301.8,240.77a3.3,3.3,0,0,1-2.33-1l-14-14a3.3,3.3,0,0,1,4.66-4.66l14,14a3.3,3.3,0,0,1-2.33,5.62Z" />
+                </g>
+                <g id="Raggruppa_183" data-name="Raggruppa 183">
+                    <path id="Tracciato_495" data-name="Tracciato 495" class="cls-4"
+                        d="M320.45,195.75H300.69a3.3,3.3,0,1,1,0-6.59h19.77a3.3,3.3,0,0,1,0,6.59Z" />
+                </g>
+                <g id="Raggruppa_184" data-name="Raggruppa 184">
+                    <path id="Tracciato_496" data-name="Tracciato 496" class="cls-4"
+                        d="M287.82,164.71a3.29,3.29,0,0,1-2.32-5.62l14-14a3.29,3.29,0,0,1,4.66,4.65l-14,14A3.3,3.3,0,0,1,287.82,164.71Z" />
+                </g>
+            </g>
+        </g>
+        <line id="Linea_43" data-name="Linea 43" class="cls-5" x1="149.61" y1="430.17" x2="363.78"
+            y2="430.17" />
+    </g>
+</svg>
