@@ -18,7 +18,7 @@ class WorldCitiesRepository(private val cache: CitiesDataCache, private val citi
     private val resources = OzonoAppl.instance.resources
     private val numbOfResults = resources.getInteger(R.integer.num_of_cities_result)
 
-    suspend fun fetchLocalCitiesData(userQuery: String): List<Hits> {
+    suspend fun fetchLocalCitiesData(userQuery: String): List<CityData> {
         val isCachedData = cache.isDataInCache(userQuery)
         return if (isCachedData) {
             cache.getCachedCitiesData(userQuery)
@@ -35,7 +35,7 @@ class WorldCitiesRepository(private val cache: CitiesDataCache, private val citi
         }
     }
 
-    suspend fun fetchRemoteCitiesData(userQuery: String): List<Hits>? {
+    suspend fun fetchRemoteCitiesData(userQuery: String): List<CityData>? {
         val remoteCities = remoteDataSource.fetchAlgoliaData(userQuery)
         if (!remoteCities.isNullOrEmpty()) {
             cache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
@@ -47,7 +47,7 @@ class WorldCitiesRepository(private val cache: CitiesDataCache, private val citi
         return remoteCities
     }
 
-    suspend fun getLastCitySearched(): Hits? {
+    suspend fun getLastCitySearched(): CityData? {
         val prefs = PreferencesManager()
         val lastLatitSearched = prefs.getLastSearchedCityLatit()
         val lastLongitSearched = prefs.getLastSearchedCityLongit()

@@ -1,6 +1,6 @@
 package it.luccap11.android.ozono.ui.main
 
-import it.luccap11.android.ozono.model.data.Hits
+import it.luccap11.android.ozono.model.data.CityData
 
 /**
  * Interface for RecyclerView item click.
@@ -8,5 +8,5 @@ import it.luccap11.android.ozono.model.data.Hits
  * @since 21/jan/2021
  */
 interface OnItemClickListener {
-    fun onItemClick(cityData: Hits)
+    fun onItemClick(cityData: CityData)
 }

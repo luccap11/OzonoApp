@@ -17,7 +17,7 @@ import it.luccap11.android.ozono.databinding.SearchFragmentBinding
 import it.luccap11.android.ozono.infrastructure.ApiStatus
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase
 import it.luccap11.android.ozono.model.data.CitiesDataCache
-import it.luccap11.android.ozono.model.data.Hits
+import it.luccap11.android.ozono.model.data.CityData
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModel
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModelFactory
 import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
@@ -69,7 +69,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         sharedViewModel.getLastCitySearched()
         sharedViewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
             if (lastCitySearched != null) {
-                binding.searchView.setQuery(lastCitySearched.localeNames.default[0], true)
+                binding.searchView.setQuery(lastCitySearched.localeNames.cityNames[0], true)
             }
         })
 
@@ -143,9 +143,9 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         return false
     }
 
-    override fun onItemClick(cityData: Hits) {
+    override fun onItemClick(cityData: CityData) {
         isCitySelected = true
-        binding.searchView.setQuery(cityData.localeNames.default[0], true)
+        binding.searchView.setQuery(cityData.localeNames.cityNames[0], true)
 
         binding.citiesDataLoading.visibility = View.GONE
         binding.citiesList.visibility = View.GONE
@@ -153,7 +153,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         savePreference(cityData)
     }
 
-    private fun savePreference(cityData: Hits) {
+    private fun savePreference(cityData: CityData) {
         prefs.saveLastSearchedCityLatit(cityData.geoloc.lat)
         prefs.saveLastSearchedCityLongit(cityData.geoloc.lng)
     }

@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import it.luccap11.android.ozono.infrastructure.ApiStatus
 import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
-import it.luccap11.android.ozono.model.data.Hits
+import it.luccap11.android.ozono.model.data.CityData
 import it.luccap11.android.ozono.model.data.WeatherData
 import kotlinx.coroutines.*
 
@@ -16,11 +16,11 @@ class WeatherViewModel(
     private val cityRepository: WorldCitiesRepository,
     private val weatherRepository: WeatherDataRepository
 ) : ViewModel() {
-    val lastCitySearched = MutableLiveData<Hits>()
+    val lastCitySearched = MutableLiveData<CityData>()
 
     val citiesStatus = MutableLiveData<ApiStatus>()
-    private val _citiesData = MutableLiveData<List<Hits>>()
-    val citiesData: LiveData<List<Hits>> = _citiesData
+    private val _citiesData = MutableLiveData<List<CityData>>()
+    val citiesData: LiveData<List<CityData>> = _citiesData
 
     val weatherStatus = MutableLiveData<ApiStatus>()
     private val _weatherData = MutableLiveData<WeatherData>()

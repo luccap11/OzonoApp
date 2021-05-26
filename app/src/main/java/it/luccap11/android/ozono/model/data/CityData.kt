@@ -3,19 +3,19 @@ package it.luccap11.android.ozono.model.data
 import com.squareup.moshi.Json
 import it.luccap11.android.ozono.infrastructure.room.entities.CityEntity
 
-data class NewCityData(
-    @Json(name = "hits") val list: List<Hits>
+data class AlgoliaModel(
+    @Json(name = "hits") val list: List<CityData>
 )
 
-data class Hits(
-    @Json(name = "country") val country: CountryC,
-    @Json(name = "administrative") val administrative: List<String>,
+data class CityData(
+    @Json(name = "country") val country: Country,
+    @Json(name = "administrative") val region: List<String>,
     @Json(name = "_geoloc") val geoloc: Geoloc,
     @Json(name = "locale_names") val localeNames: LocaleNames
 
 )
 
-data class CountryC(
+data class Country(
     @Json(name = "default") val name: String
 )
 
@@ -25,14 +25,14 @@ data class Geoloc(
 )
 
 data class LocaleNames(
-    @Json(name = "default") val default: List<String>
+    @Json(name = "default") val cityNames: List<String>
 )
 
 class CityDataBuilder {
-    fun cityDataBuilder(entities: List<CityEntity>): List<Hits> {
-        var result = listOf<Hits>()
+    fun cityDataBuilder(entities: List<CityEntity>): List<CityData> {
+        var result = listOf<CityData>()
         entities.forEach {
-            result = result.plusElement(Hits(CountryC(it.country), listOf(it.adminCode), Geoloc(it.latitude, it.longitude),
+            result = result.plusElement(CityData(Country(it.country), listOf(it.adminCode), Geoloc(it.latitude, it.longitude),
                 LocaleNames(listOf(it.name))))
         }
         return result

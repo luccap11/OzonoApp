@@ -2,16 +2,11 @@ package it.luccap11.android.ozono.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import it.luccap11.android.ozono.model.data.NewCityData
-import it.luccap11.android.ozono.model.data.WeatherData
-import okhttp3.OkHttpClient
-import retrofit2.Call
+import it.luccap11.android.ozono.model.data.AlgoliaModel
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 /**
  * Interfaces that define the possible HTTP operations
@@ -30,7 +25,7 @@ val retrofitCities: Retrofit = Retrofit.Builder()
 interface CitiesApiService {
 
     @POST("query")
-    suspend fun fetchRemoteCitiesByName(@Body query: BodyParams): NewCityData
+    suspend fun fetchRemoteCitiesByName(@Body query: BodyParams): AlgoliaModel
 }
 
 data class BodyParams(

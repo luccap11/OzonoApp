@@ -2,7 +2,7 @@ package it.luccap11.android.ozono.infrastructure.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import it.luccap11.android.ozono.model.data.Hits
+import it.luccap11.android.ozono.model.data.CityData
 
 /**
  * @author Luca Capitoli
@@ -20,11 +20,11 @@ data class CityEntity (
 )
 
  class CityEntityBuilder {
-    fun cityEntityBuilder(citiesData: List<Hits>): Array<CityEntity> {
+    fun cityEntityBuilder(citiesData: List<CityData>): Array<CityEntity> {
         val result = arrayListOf<CityEntity>()
         citiesData.forEach { cityData ->
-            val newCity = CityEntity(cityData.localeNames.default[0], cityData.country.name, -1,
-                cityData.administrative[0], cityData.geoloc.lat, cityData.geoloc.lng,
+            val newCity = CityEntity(cityData.localeNames.cityNames[0], cityData.country.name, -1,
+                cityData.region[0], cityData.geoloc.lat, cityData.geoloc.lng,
                 System.currentTimeMillis())
             result.add(newCity)
         }
