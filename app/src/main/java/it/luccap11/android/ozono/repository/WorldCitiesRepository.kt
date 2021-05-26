@@ -5,7 +5,7 @@ import it.luccap11.android.ozono.OzonoAppl
 import it.luccap11.android.ozono.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.ozono.infrastructure.room.entities.CityEntityBuilder
 import it.luccap11.android.ozono.model.data.*
-import it.luccap11.android.ozono.network.RemoteWCitiesDataSource
+import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
 import it.luccap11.android.ozono.utils.AppUtils
 import it.luccap11.android.ozono.utils.PreferencesManager
 
@@ -13,11 +13,12 @@ import it.luccap11.android.ozono.utils.PreferencesManager
  * @author Luca Capitoli
  * @since 13/jan/2021
  */
-class WorldCitiesRepository(private val cache: CitiesDataCache, private val citiesDao: CitiesDao, private val remoteDataSource: RemoteWCitiesDataSource) {
+class WorldCitiesRepository(private val cache: CitiesDataCache, private val citiesDao: CitiesDao,
+                            private val remoteDataSource: AlgoliaCitiesRemoteDataSource) {
     private val resources = OzonoAppl.instance.resources
     private val numbOfResults = resources.getInteger(R.integer.num_of_cities_result)
 
-    suspend fun fetchLocalCitiesData(userQuery: String): List<CityData> {
+    suspend fun fetchLocalCitiesData(userQuery: String): List<Hits> {
         val isCachedData = cache.isDataInCache(userQuery)
         return if (isCachedData) {
             cache.getCachedCitiesData(userQuery)
@@ -34,8 +35,8 @@ class WorldCitiesRepository(private val cache: CitiesDataCache, private val citi
         }
     }
 
-    suspend fun fetchRemoteCitiesData(userQuery: String): List<CityData>? {
-        val remoteCities = remoteDataSource.fetchBack4AppData(userQuery)
+    suspend fun fetchRemoteCitiesData(userQuery: String): List<Hits>? {
+        val remoteCities = remoteDataSource.fetchAlgoliaData(userQuery)
         if (!remoteCities.isNullOrEmpty()) {
             cache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
             val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteCities)
@@ -46,7 +47,7 @@ class WorldCitiesRepository(private val cache: CitiesDataCache, private val citi
         return remoteCities
     }
 
-    suspend fun getLastCitySearched(): CityData? {
+    suspend fun getLastCitySearched(): Hits? {
         val prefs = PreferencesManager()
         val lastLatitSearched = prefs.getLastSearchedCityLatit()
         val lastLongitSearched = prefs.getLastSearchedCityLongit()

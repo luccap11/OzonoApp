@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.luccap11.android.ozono.R
-import it.luccap11.android.ozono.model.data.CityData
+import it.luccap11.android.ozono.model.data.Hits
 
 /**
  * @author Luca Capitoli
  * @since 13/jan/2021
  */
-class CitiesAdapter(private val dataSet: List<CityData>, private val listener: OnItemClickListener) :
+class CitiesAdapter(private val dataSet: List<Hits>, private val listener: OnItemClickListener) :
     RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
 
     /**
@@ -30,7 +30,8 @@ class CitiesAdapter(private val dataSet: List<CityData>, private val listener: O
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.cityDescr.text = String.format("%s, %s, %s", dataSet[position].name, dataSet[position].adminCode, dataSet[position].country.name)
+        viewHolder.cityDescr.text = String.format("%s, %s, %s", dataSet[position].localeNames.default[0],
+            dataSet[position].administrative[0], dataSet[position].country.name)
         viewHolder.itemView.setOnClickListener {
             listener.onItemClick(dataSet[position])
         }

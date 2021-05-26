@@ -1,13 +1,10 @@
 package it.luccap11.android.ozono.model.viewmodels
 
 import androidx.lifecycle.*
-import it.luccap11.android.ozono.OzonoAppl
-import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.infrastructure.ApiStatus
 import it.luccap11.android.ozono.repository.WeatherDataRepository
-import it.luccap11.android.ozono.infrastructure.Resource
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
-import it.luccap11.android.ozono.model.data.CityData
+import it.luccap11.android.ozono.model.data.Hits
 import it.luccap11.android.ozono.model.data.WeatherData
 import kotlinx.coroutines.*
 
@@ -19,9 +16,11 @@ class WeatherViewModel(
     private val cityRepository: WorldCitiesRepository,
     private val weatherRepository: WeatherDataRepository
 ) : ViewModel() {
-    private val resources = OzonoAppl.instance.resources
-    val citiesLiveData = MutableLiveData<Resource<List<CityData>>>()
-    val lastCitySearched = MutableLiveData<CityData>()
+    val lastCitySearched = MutableLiveData<Hits>()
+
+    val citiesStatus = MutableLiveData<ApiStatus>()
+    private val _citiesData = MutableLiveData<List<Hits>>()
+    val citiesData: LiveData<List<Hits>> = _citiesData
 
     val weatherStatus = MutableLiveData<ApiStatus>()
     private val _weatherData = MutableLiveData<WeatherData>()
@@ -41,17 +40,19 @@ class WeatherViewModel(
     }
 
     fun updateCityData(userQuery: String) {
-        citiesLiveData.postValue(Resource.Loading())
+        citiesStatus.postValue(ApiStatus.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
             val localCities = cityRepository.fetchLocalCitiesData(userQuery)
             if (localCities.isNotEmpty()) {
-                citiesLiveData.postValue(Resource.Success(localCities))
+                _citiesData.postValue(localCities)
+                citiesStatus.postValue(ApiStatus.SUCCESS)
             } else {
                 val remoteCities = cityRepository.fetchRemoteCitiesData(userQuery)
                 if (remoteCities == null) {
-                    citiesLiveData.postValue(Resource.Error(resources.getString(R.string.error_label)))
+                    citiesStatus.postValue(ApiStatus.ERROR)
                 } else {
-                    citiesLiveData.postValue(Resource.Success(remoteCities))
+                    _citiesData.postValue(remoteCities)
+                    citiesStatus.postValue(ApiStatus.SUCCESS)
                 }
             }
         }
