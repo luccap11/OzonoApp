@@ -27,7 +27,7 @@ class WeatherAdapter(private val dataSet: List<ListData>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val day: TextView = view.findViewById(R.id.day)
         val month: TextView = view.findViewById(R.id.month)
-        val descr: TextView = view.findViewById(R.id.descr)
+        val descr: TextView = view.findViewById(R.id.dayOfTheWeek)
         val temp: TextView = view.findViewById(R.id.temperature)
         val img: ImageView = view.findViewById(R.id.weatherImage)
         val todayLabel: ImageView = view.findViewById(R.id.todayLabel)
