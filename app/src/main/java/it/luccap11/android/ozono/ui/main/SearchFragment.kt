@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.ozono.R
@@ -41,6 +41,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
     private var isCitySelected = false
+    private lateinit var activityContainerView: FragmentContainerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +72,8 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
                 binding.searchView.setQuery(lastCitySearched.localeNames.default[0], true)
             }
         })
+
+        activityContainerView = requireActivity().findViewById(R.id.search_fragment)
     }
 
     override fun onDestroyView() {
@@ -82,25 +85,33 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         when (status) {
             ApiStatus.LOADING -> {
                 binding.citiesDataLoading.visibility = View.VISIBLE
+                activityContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_search))
             }
 
             ApiStatus.ERROR -> {
                 binding.citiesDataLoading.visibility = View.GONE
                 binding.citiesList.visibility = View.GONE
+                activityContainerView.setBackgroundColor(Color.TRANSPARENT)
             }
 
             ApiStatus.SUCCESS -> {
                 binding.citiesDataLoading.visibility = View.GONE
 
-                val data = sharedViewModel.citiesData.value!!
-                binding.citiesList.visibility = if (data.isNullOrEmpty()) View.GONE else View.VISIBLE
-                binding.citiesList.adapter = CitiesAdapter(
-                    data.take(
-                        resources.getInteger(
-                            R.integer.num_of_cities_result
-                        )
-                    ), this
-                )
+                val data = sharedViewModel.citiesData.value
+                if (data.isNullOrEmpty()) {
+                    binding.citiesList.visibility = View.GONE
+                    activityContainerView.setBackgroundColor(Color.TRANSPARENT)
+                } else {
+                    binding.citiesList.visibility = View.VISIBLE
+                    activityContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_search))
+                    binding.citiesList.adapter = CitiesAdapter(
+                        data.take(
+                            resources.getInteger(
+                                R.integer.num_of_cities_result
+                            )
+                        ), this
+                    )
+                }
             }
         }
     }
@@ -108,6 +119,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     override fun onQueryTextSubmit(queryString: String?): Boolean {
         if (!queryString.isNullOrBlank()) {
             sharedViewModel.updateWeatherData(queryString)
+            binding.searchView.clearFocus()
         }
         return false
     }
@@ -115,6 +127,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     override fun onQueryTextChange(queryString: String?): Boolean {
         if (queryString.isNullOrBlank()) {
             binding.citiesList.visibility = View.GONE
+            activityContainerView.setBackgroundColor(Color.TRANSPARENT)
         } else {
             if (isCitySelected) {
                 isCitySelected = false
@@ -132,11 +145,11 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onItemClick(cityData: Hits) {
         isCitySelected = true
-//        hideKeyBoard()
         binding.searchView.setQuery(cityData.localeNames.default[0], true)
 
         binding.citiesDataLoading.visibility = View.GONE
         binding.citiesList.visibility = View.GONE
+        activityContainerView.setBackgroundColor(Color.TRANSPARENT)
         savePreference(cityData)
     }
 
@@ -144,10 +157,4 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         prefs.saveLastSearchedCityLatit(cityData.geoloc.lat)
         prefs.saveLastSearchedCityLongit(cityData.geoloc.lng)
     }
-
-//    private fun hideKeyBoard() {
-//        requireActivity().window.setSoftInputMode(
-//            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-//        )
-//    }
 }

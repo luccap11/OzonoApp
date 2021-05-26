@@ -12,6 +12,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_grey">#FFDDDDDD</color>
+    <color name="backgroud_search">#AA05090D</color>
     <color name="background_night_color">#05090D</color>
     <color name="background_color_elements">@color/light_grey</color>
     <color name="background_dark_color_elements">#161E26</color>

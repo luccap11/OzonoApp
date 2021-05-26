@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/round_rectangle"
-    android:layout_margin="@dimen/element_padding_small"
+    android:padding="@dimen/element_padding_xsmall"
     tools:context=".ui.main.SearchFragment">
 
     <androidx.appcompat.widget.SearchView
@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foregroundTint="@color/blue"
-        android:padding="@dimen/element_padding_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,10 +32,10 @@
         android:id="@+id/citiesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/element_padding_small"
         android:layout_marginStart="@dimen/element_padding_small"
         android:layout_marginEnd="@dimen/element_padding_small"
         android:visibility="gone"
+        android:elevation="30dp"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="@+id/searchView"
         app:layout_constraintStart_toStartOf="@+id/searchView"
