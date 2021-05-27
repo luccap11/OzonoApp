@@ -12,6 +12,10 @@
 Good app display next 5 days weather conditions
 example: http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d85604d75067f7a0da53ac8f70c5364
 
+
+Cites API:
+https://community.algolia.com/places/api-clients.html
+
 ## Notes
 I can improve the app:
 1. introducing dagger2 for DI

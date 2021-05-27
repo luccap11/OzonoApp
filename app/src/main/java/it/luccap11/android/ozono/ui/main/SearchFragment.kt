@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.databinding.SearchFragmentBinding
-import it.luccap11.android.ozono.infrastructure.ApiStatus
+import it.luccap11.android.ozono.model.ApiStatus
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase
 import it.luccap11.android.ozono.model.data.CitiesDataCache
 import it.luccap11.android.ozono.model.data.CityData

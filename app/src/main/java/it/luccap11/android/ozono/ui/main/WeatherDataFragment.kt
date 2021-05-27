@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.databinding.WeatherDataFragmentBinding
-import it.luccap11.android.ozono.infrastructure.ApiStatus
+import it.luccap11.android.ozono.model.ApiStatus
 import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase

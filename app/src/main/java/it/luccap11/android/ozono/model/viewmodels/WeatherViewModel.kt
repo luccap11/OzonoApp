@@ -1,7 +1,7 @@
 package it.luccap11.android.ozono.model.viewmodels
 
 import androidx.lifecycle.*
-import it.luccap11.android.ozono.infrastructure.ApiStatus
+import it.luccap11.android.ozono.model.ApiStatus
 import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.model.data.CityData
