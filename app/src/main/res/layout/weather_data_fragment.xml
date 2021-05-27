@@ -45,7 +45,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/element_padding_medium"
             android:scrollbars="vertical"
-            app:listData="@{viewModel.weatherData}"
+            app:listWeatherData="@{viewModel.weatherData}"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,7 +1,5 @@
 package it.luccap11.android.ozono.repository
 
-import it.luccap11.android.ozono.R
-import it.luccap11.android.ozono.OzonoAppl
 import it.luccap11.android.ozono.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.ozono.infrastructure.room.entities.CityEntityBuilder
 import it.luccap11.android.ozono.model.data.*
@@ -15,10 +13,8 @@ import it.luccap11.android.ozono.utils.PreferencesManager
  */
 class WorldCitiesRepository(private val cache: CitiesDataCache, private val citiesDao: CitiesDao,
                             private val remoteDataSource: AlgoliaCitiesRemoteDataSource) {
-    private val resources = OzonoAppl.instance.resources
-    private val numbOfResults = resources.getInteger(R.integer.num_of_cities_result)
 
-    suspend fun fetchLocalCitiesData(userQuery: String): List<CityData> {
+    suspend fun fetchLocalCitiesData(userQuery: String, numbOfResults: Int): List<CityData> {
         val isCachedData = cache.isDataInCache(userQuery)
         return if (isCachedData) {
             cache.getCachedCitiesData(userQuery)
@@ -35,7 +31,7 @@ class WorldCitiesRepository(private val cache: CitiesDataCache, private val citi
         }
     }
 
-    suspend fun fetchRemoteCitiesData(userQuery: String): List<CityData>? {
+    suspend fun fetchRemoteCitiesData(userQuery: String, numbOfResults: Int): List<CityData>? {
         val remoteCities = remoteDataSource.fetchAlgoliaData(userQuery)
         if (!remoteCities.isNullOrEmpty()) {
             cache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))

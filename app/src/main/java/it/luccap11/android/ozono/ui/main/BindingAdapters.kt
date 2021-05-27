@@ -6,6 +6,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import it.luccap11.android.ozono.R
+import it.luccap11.android.ozono.model.data.CityData
 import it.luccap11.android.ozono.model.data.ListData
 import java.time.Instant
 import java.time.LocalDateTime
@@ -49,10 +50,22 @@ fun bindTemperature(textView: TextView, temp: Float) {
     textView.text = String.format("%d °C", temp.toInt())
 }
 
-@BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<ListData>?) {
+@BindingAdapter("listWeatherData")
+fun bindWeatherRecyclerView(recyclerView: RecyclerView, data: List<ListData>?) {
     val adapter = recyclerView.adapter as WeatherAdapter
     adapter.submitList(data)
+}
+
+@BindingAdapter("listCitiesData")
+fun bindCitiesRecyclerView(recyclerView: RecyclerView, data: List<CityData>?) {
+    val adapter = recyclerView.adapter as CitiesAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("cityText")
+fun bindCityName(textView: TextView, cityData: CityData) {
+    textView.text = String.format("%s, %s, %s", cityData.localeNames.cityNames[0],
+        cityData.region[0], cityData.country.name)
 }
 
 private fun dateFormatter(timeInMillis: Long, pattern: String): String {

@@ -20,6 +20,7 @@ class WeatherViewModel(
     private val cityRepository: WorldCitiesRepository,
     private val weatherRepository: WeatherDataRepository
 ) : ViewModel() {
+    private val numOfCitiesResults = 3
     val lastCitySearched = MutableLiveData<CityData>()
 
     val citiesStatus = MutableLiveData<ApiStatus>()
@@ -67,16 +68,16 @@ class WeatherViewModel(
     fun updateCityData(userQuery: String) {
         citiesStatus.postValue(ApiStatus.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
-            val localCities = cityRepository.fetchLocalCitiesData(userQuery)
+            val localCities = cityRepository.fetchLocalCitiesData(userQuery, numOfCitiesResults)
             if (localCities.isNotEmpty()) {
                 _citiesData.postValue(localCities)
                 citiesStatus.postValue(ApiStatus.SUCCESS)
             } else {
-                val remoteCities = cityRepository.fetchRemoteCitiesData(userQuery)
+                val remoteCities = cityRepository.fetchRemoteCitiesData(userQuery, numOfCitiesResults)
                 if (remoteCities == null) {
                     citiesStatus.postValue(ApiStatus.ERROR)
                 } else {
-                    _citiesData.postValue(remoteCities)
+                    _citiesData.postValue(remoteCities.take(numOfCitiesResults))
                     citiesStatus.postValue(ApiStatus.SUCCESS)
                 }
             }
