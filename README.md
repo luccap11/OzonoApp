@@ -20,7 +20,6 @@ https://community.algolia.com/places/api-clients.html
 I can improve the app:
 1. introducing dagger2 for DI
 1. Introducing RxJava
-1. Introducing DataBinding
 1. Design dark/light mode (Only dark mode was considered).
 2. memory management, performance tuning and profiling tools (LeakCanary, AndroidProfiler)
 3. 
@@ -54,6 +53,7 @@ Before launching instrumented test you have to set up you test environment as de
 - LruCache - for caching data
 - LiveData - use LiveData to see UI update with data changes.
 - Espresso for instrumented tests (new for me)
+- DataBinding
 
 ## Application Architecture
 1. follow the rules from Architecture guidelines recommended by Google.

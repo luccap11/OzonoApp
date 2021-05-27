@@ -5,8 +5,12 @@ import it.luccap11.android.ozono.model.ApiStatus
 import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.model.data.CityData
-import it.luccap11.android.ozono.model.data.WeatherData
+import it.luccap11.android.ozono.model.data.ListData
 import kotlinx.coroutines.*
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 /**
  * The ViewModel triggers the network request when the user clicks, for example, on a button
@@ -23,8 +27,8 @@ class WeatherViewModel(
     val citiesData: LiveData<List<CityData>> = _citiesData
 
     val weatherStatus = MutableLiveData<ApiStatus>()
-    private val _weatherData = MutableLiveData<WeatherData>()
-    val weatherData: LiveData<WeatherData> = _weatherData
+    private val _weatherData = MutableLiveData<List<ListData>>()
+    val weatherData: LiveData<List<ListData>> = _weatherData
 
     fun updateWeatherData(selectedCity: String) {
         weatherStatus.postValue(ApiStatus.LOADING)
@@ -33,11 +37,32 @@ class WeatherViewModel(
             if (fiveDaysWeather == null) {
                 return@launch weatherStatus.postValue(ApiStatus.ERROR)
             } else {
-                _weatherData.postValue(fiveDaysWeather)
+                _weatherData.postValue(temp_filterData(fiveDaysWeather))
                 return@launch weatherStatus.postValue(ApiStatus.SUCCESS)
             }
         }
     }
+
+    private fun temp_filterData(original: List<ListData>): List<ListData> {
+        val days = mutableSetOf<String>()
+        val result = mutableListOf<ListData>()
+        original.forEach {
+            val day = dateFormatter(it.timeInSecs)
+            if (!days.contains(day)) {
+                result.add(it)
+                days.add(day)
+            }
+        }
+        return result
+    }
+
+    private fun dateFormatter(timeInMillis: Long): String {
+        val formatter = DateTimeFormatter.ofPattern("EEEE")
+        val instant = Instant.ofEpochMilli(timeInMillis * 1000)
+        val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+        return formatter.format(date)
+    }
+
 
     fun updateCityData(userQuery: String) {
         citiesStatus.postValue(ApiStatus.LOADING)

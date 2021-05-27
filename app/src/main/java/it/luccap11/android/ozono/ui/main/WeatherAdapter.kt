@@ -3,12 +3,14 @@ package it.luccap11.android.ozono.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import it.luccap11.android.ozono.R
+import it.luccap11.android.ozono.databinding.WeatherRowItemBinding
 import it.luccap11.android.ozono.model.data.ListData
+import it.luccap11.android.ozono.model.data.WeatherData
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -17,53 +19,43 @@ import java.time.format.DateTimeFormatter
 /**
  * @author Luca Capitoli
  */
-class WeatherAdapter(private val dataSet: List<ListData>) :
-    RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherAdapter : ListAdapter<ListData, WeatherAdapter.ViewHolder>(DiffCallback) {
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val day: TextView = view.findViewById(R.id.day)
-        val month: TextView = view.findViewById(R.id.month)
-        val descr: TextView = view.findViewById(R.id.dayOfTheWeek)
-        val temp: TextView = view.findViewById(R.id.temperature)
-        val img: ImageView = view.findViewById(R.id.weatherImage)
-        val todayLabel: ImageView = view.findViewById(R.id.todayLabel)
+    class ViewHolder(private var binding: WeatherRowItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(weatherData: ListData) {
+            binding.todayLabel.visibility = if (layoutPosition == 0) View.VISIBLE else View.GONE
+
+            binding.date = weatherData
+            binding.weatherData = weatherData.weather[0]
+            binding.temp = weatherData.main
+            binding.executePendingBindings()
+        }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.weather_row_item, viewGroup, false)
-
-        return ViewHolder(view)
+        val inflater = LayoutInflater.from(viewGroup.context)
+        return ViewHolder(WeatherRowItemBinding.inflate(inflater, viewGroup, false))
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.todayLabel.visibility = if (position == 0) View.VISIBLE else View.GONE
-        val timeInMillis = dataSet[position].timeInSecs * 1000
-        viewHolder.day.text = dateFormatter(timeInMillis, "dd")
-        viewHolder.month.text = dateFormatter(timeInMillis, "/MM")
-        viewHolder.descr.text = dateFormatter(timeInMillis, "EEEE")
-        viewHolder.temp.text = String.format("%d °C", dataSet[position].main.temp.toInt())
-        val imgUrl = String.format(
-            "https://openweathermap.org/img/wn/%s@2x.png",
-            dataSet[position].weather[0].icon
-        )
-        Glide.with(viewHolder.img.context).load(imgUrl)
-            .placeholder(R.drawable.loading_animation)
-            .error(R.drawable.ic_baseline_image_not_supported_24)
-            .circleCrop().into(viewHolder.img)
+        val weatherData = getItem(position)
+        viewHolder.bind(weatherData)
     }
 
-    override fun getItemCount() = dataSet.size
+    companion object DiffCallback : DiffUtil.ItemCallback<ListData>() {
 
-    private fun dateFormatter(timeInMillis: Long, pattern: String): String {
-        val formatter = DateTimeFormatter.ofPattern(pattern)
-        val instant = Instant.ofEpochMilli(timeInMillis)
-        val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-        return formatter.format(date)
+        override fun areItemsTheSame(oldItem: ListData, newItem: ListData): Boolean {
+            return oldItem.timeInSecs == newItem.timeInSecs
+        }
+
+        override fun areContentsTheSame(oldItem: ListData, newItem: ListData): Boolean {
+            return oldItem.timeInSecs == newItem.timeInSecs
+        }
     }
 
 }

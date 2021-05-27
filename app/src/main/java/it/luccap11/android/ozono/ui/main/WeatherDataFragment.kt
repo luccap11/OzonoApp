@@ -14,15 +14,10 @@ import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase
 import it.luccap11.android.ozono.model.data.CitiesDataCache
-import it.luccap11.android.ozono.model.data.ListData
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModel
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModelFactory
 import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
 import it.luccap11.android.ozono.network.OWMRemoteDataSource
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 
 /**
@@ -41,11 +36,20 @@ class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
         savedInstanceState: Bundle?
     ): View {
         _binding = WeatherDataFragmentBinding.inflate(inflater, container, false)
+
+        binding.listWeatherData.apply {
+            setHasFixedSize(true)
+            adapter = WeatherAdapter()
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            viewModel = sharedViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
         sharedViewModel.weatherStatus.observe(viewLifecycleOwner, this)
     }
 
@@ -75,8 +79,7 @@ class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
                 binding.emptyWeatherImage.visibility = View.GONE
                 binding.listWeatherData.visibility = View.VISIBLE
 
-                val data = sharedViewModel.weatherData.value!!.list
-                binding.listWeatherData.adapter = WeatherAdapter(temp_filterData(data))
+                val data = sharedViewModel.weatherData.value!!
 
                 if (data.isEmpty()) {
                     binding.resultMessage.visibility = View.VISIBLE
@@ -86,25 +89,5 @@ class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
                 }
             }
         }
-    }
-
-    private fun temp_filterData(original: List<ListData>): List<ListData> {
-        val days = mutableSetOf<String>()
-        val result = mutableListOf<ListData>()
-        original.forEach {
-            val day = dateFormatter(it.timeInSecs)
-            if (!days.contains(day)) {
-                result.add(it)
-                days.add(day)
-            }
-        }
-        return result
-    }
-
-    private fun dateFormatter(timeInMillis: Long): String {
-        val formatter = DateTimeFormatter.ofPattern("EEEE")
-        val instant = Instant.ofEpochMilli(timeInMillis * 1000)
-        val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-        return formatter.format(date)
     }
 }

@@ -1,100 +1,120 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/todayLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/empty_content_descr"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_today_label"
-        android:layout_gravity="center"
-        tools:src="@drawable/ic_today_label"/>
+    <data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <variable
+            name="date"
+            type="it.luccap11.android.ozono.model.data.ListData" />
+        <variable
+            name="weatherData"
+            type="it.luccap11.android.ozono.model.data.Weather" />
+        <variable
+            name="temp"
+            type="it.luccap11.android.ozono.model.data.Main" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/element_padding_small"
-        android:layout_marginEnd="@dimen/element_padding_small"
-        android:layout_marginBottom="@dimen/element_padding_medium"
-        android:background="@drawable/bg_weather_data"
-        app:layout_constraintTop_toBottomOf="@+id/todayLabel">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/day"
+        <ImageView
+            android:id="@+id/todayLabel"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_marginStart="@dimen/element_padding_large"
-            android:layout_marginTop="29dp"
-            android:fontFamily="@font/poppins_medium"
-            android:paddingStart="@dimen/element_padding_small"
-            android:paddingTop="1dp"
-            android:paddingEnd="1dp"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/dayOfTheWeek"
-            app:layout_constraintEnd_toStartOf="@+id/month"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="RtlSymmetry"
-            tools:text="19" />
-
-        <TextView
-            android:id="@+id/month"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:fontFamily="@font/poppins_extra_light"
-            android:paddingEnd="@dimen/element_padding_small"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/day"
-            app:layout_constraintStart_toEndOf="@+id/day"
-            app:layout_constraintTop_toTopOf="@+id/day"
-            tools:ignore="RtlSymmetry"
-            tools:text="/05" />
-
-        <TextView
-            android:id="@+id/dayOfTheWeek"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp"
-            android:fontFamily="@font/poppins_extra_light"
-            android:paddingStart="@dimen/element_padding_small"
-            android:paddingEnd="@dimen/element_padding_small"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/day"
-            app:layout_constraintTop_toBottomOf="@+id/day"
-            tools:text="Monday" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/weatherImage"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_margin="@dimen/element_padding_small"
+            android:layout_gravity="center"
+            android:contentDescription="@string/empty_content_descr"
             android:importantForAccessibility="no"
-            android:padding="@dimen/element_padding_small"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/logo_open_weather_map_sample" />
+            android:src="@drawable/ic_today_label"
+            tools:src="@drawable/ic_today_label" />
 
-        <TextView
-            android:id="@+id/temperature"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/element_padding_large"
-            android:padding="@dimen/element_padding_small"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="18°C" />
+            android:layout_marginStart="@dimen/element_padding_small"
+            android:layout_marginEnd="@dimen/element_padding_small"
+            android:layout_marginBottom="@dimen/element_padding_medium"
+            android:background="@drawable/bg_weather_data"
+            app:layout_constraintTop_toBottomOf="@+id/todayLabel">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="@dimen/element_padding_large"
+                android:layout_marginTop="29dp"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="@dimen/element_padding_small"
+                android:paddingTop="1dp"
+                android:paddingEnd="1dp"
+                android:textSize="18sp"
+                app:dayText="@{date.timeInSecs}"
+                app:layout_constraintBottom_toTopOf="@+id/dayOfTheWeek"
+                app:layout_constraintEnd_toStartOf="@+id/month"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="RtlSymmetry"
+                tools:text="19" />
+
+            <TextView
+                android:id="@+id/month"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:fontFamily="@font/poppins_extra_light"
+                android:paddingEnd="@dimen/element_padding_small"
+                android:textSize="20sp"
+                app:monthText="@{date.timeInSecs}"
+                app:layout_constraintBottom_toBottomOf="@+id/day"
+                app:layout_constraintStart_toEndOf="@+id/day"
+                app:layout_constraintTop_toTopOf="@+id/day"
+                tools:ignore="RtlSymmetry"
+                tools:text="/05" />
+
+            <TextView
+                android:id="@+id/dayOfTheWeek"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:fontFamily="@font/poppins_extra_light"
+                android:paddingStart="@dimen/element_padding_small"
+                android:paddingEnd="@dimen/element_padding_small"
+                android:textSize="14sp"
+                app:dayOfTheWeek="@{date.timeInSecs}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/day"
+                app:layout_constraintTop_toBottomOf="@+id/day"
+                tools:text="Monday" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/weatherImage"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_margin="@dimen/element_padding_small"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/element_padding_small"
+                app:weatherImageUrl="@{weatherData.icon}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/logo_open_weather_map_sample" />
+
+            <TextView
+                android:id="@+id/temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/element_padding_large"
+                android:padding="@dimen/element_padding_small"
+                android:textSize="24sp"
+                app:temp="@{temp.temp}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="18°C" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

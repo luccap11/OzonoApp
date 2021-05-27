@@ -16,13 +16,13 @@ data class City (
 
 data class ListData (
     @Json(name = "dt") val timeInSecs: Long,
-    @Json(name = "dt_txt") val date: String,
+//    @Json(name = "dt_txt") val date: String,
     @Json(name = "weather") val weather: List<Weather>,
     @Json(name = "main") val main: Main
         )
 
 data class Weather (
-    @Json(name = "main") val descr: String,
+//    @Json(name = "main") val descr: String,
     @Json(name = "icon") val icon: String
 //    @Json(name = "description") val descr: String
 )
