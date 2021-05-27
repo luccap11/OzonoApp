@@ -69,7 +69,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         sharedViewModel.getLastCitySearched()
         sharedViewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
             if (lastCitySearched != null) {
-                binding.searchView.setQuery(lastCitySearched.localeNames.cityNames[0], true)
+                onItemClick(lastCitySearched)
             }
         })
 
