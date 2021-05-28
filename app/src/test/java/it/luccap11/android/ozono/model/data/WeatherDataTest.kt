@@ -1,8 +1,8 @@
 package it.luccap11.android.ozono.model.data
 
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert
-import org.junit.Assert.assertThat
 import org.junit.Test
 
 /**
@@ -13,14 +13,15 @@ class WeatherDataTest {
     @Test
     fun testAllFields() {
         val timeInMillis =  System.currentTimeMillis()
-        val weatherData = WeatherData("Madrid", "Sunny", 24.3f, "2021-09-12", "icon", timeInMillis)
+        val weatherData = WeatherData(listOf(ListData(
+            timeInMillis, listOf(Weather("icon")), Main(23.5f))),
+            City("Sulmona")
+        )
         Assert.assertNotEquals(null, weatherData)
-        assertThat(weatherData.city, `is`("Madrid"))
-        assertThat(weatherData.descr, `is`("Sunny"))
-        assertThat(weatherData.temp, `is`(24.3f))
-        assertThat(weatherData.date, `is`("2021-09-12"))
-        assertThat(weatherData.icon, `is`("icon"))
-        assertThat(weatherData.timeInMillis, `is`(timeInMillis))
+        assertThat(weatherData.city.name, `is`("Sulmona"))
+        assertThat(weatherData.list[0].main.temp, `is`(23.5f))
+        assertThat(weatherData.list[0].weather[0].icon, `is`("icon"))
+        assertThat(weatherData.list[0].timeInSecs, `is`(timeInMillis))
     }
 
 }
