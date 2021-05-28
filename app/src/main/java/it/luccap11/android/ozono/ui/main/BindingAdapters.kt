@@ -54,6 +54,7 @@ fun bindTemperature(textView: TextView, temp: Float) {
 fun bindWeatherRecyclerView(recyclerView: RecyclerView, data: List<ListData>?) {
     val adapter = recyclerView.adapter as WeatherAdapter
     adapter.submitList(data)
+    adapter.notifyDataSetChanged()
 }
 
 @BindingAdapter("listCitiesData")

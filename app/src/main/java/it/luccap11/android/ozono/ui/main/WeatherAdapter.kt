@@ -6,15 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.databinding.WeatherRowItemBinding
 import it.luccap11.android.ozono.model.data.ListData
-import it.luccap11.android.ozono.model.data.WeatherData
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 /**
  * @author Luca Capitoli
