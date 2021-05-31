@@ -5,6 +5,7 @@ import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.model.data.City
 import it.luccap11.android.ozono.model.data.WeatherData
 import it.luccap11.android.ozono.network.OWMRemoteDataSource
+import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.Is.`is`
@@ -25,7 +26,7 @@ class WeatherDataRepositoryTest {
     @get:Rule
     var coroutinesTestRule = CoroutinesTestRule()
     @Mock
-    private val remoteRepository = Mockito.mock(OWMRemoteDataSource::class.java)
+    private val remoteRepository = mock(OWMRemoteDataSource::class.java)
 
     @Test
     fun fetchWeatherDataByCityName_null() = coroutinesTestRule.testDispatcher.runBlockingTest {
@@ -34,7 +35,7 @@ class WeatherDataRepositoryTest {
 
         val results = methodUnderTest.fetchWeatherDataByCityName("Lisbona")
 
-        Assert.assertEquals(null, results)
+        assertEquals(null, results)
     }
 
     @Test

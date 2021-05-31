@@ -15,9 +15,9 @@ class WorldCitiesRepository(private val cache: CitiesDataCache, private val citi
                             private val remoteDataSource: AlgoliaCitiesRemoteDataSource) {
 
     suspend fun fetchLocalCitiesData(userQuery: String, numbOfResults: Int): List<CityData> {
-        val isCachedData = cache.isDataInCache(userQuery)
-        return if (isCachedData) {
-            cache.getCachedCitiesData(userQuery)
+        val cacheData = cache.getCachedCitiesData(userQuery)
+        return if (cacheData.isNotEmpty()) {
+            cacheData
         } else {
             val dbCities = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
 
