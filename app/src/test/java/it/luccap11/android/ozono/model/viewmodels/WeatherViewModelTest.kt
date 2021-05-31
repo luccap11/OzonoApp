@@ -3,8 +3,8 @@ package it.luccap11.android.ozono.model.viewmodels
 import CoroutinesTestRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.model.ApiStatus
-import it.luccap11.android.ozono.model.data.*
 import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -83,7 +83,7 @@ class WeatherViewModelTest {
     fun updateWeatherDataTest_liveData_success() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
             `when`(weatherRepository.fetchWeatherDataByCityName(anyString()))
-                .thenReturn(listOf(mockWeatherData(System.currentTimeMillis())))
+                .thenReturn(listOf(TestUtil().mockWeatherData(System.currentTimeMillis())))
 
             sharedViewModel.updateWeatherData("London")
 
@@ -148,7 +148,7 @@ class WeatherViewModelTest {
         `when`(cityRepository.fetchLocalCitiesData(anyString(), anyInt()))
             .thenReturn(emptyList())
         `when`(cityRepository.fetchRemoteCitiesData(anyString(), anyInt()))
-            .thenReturn(listOf(mockCityData()))
+            .thenReturn(listOf(TestUtil().mockCityData()))
 
         sharedViewModel.updateCityData("London")
 
@@ -172,7 +172,7 @@ class WeatherViewModelTest {
 
     @Test
     fun getLastCitySearchedTest_cachedData_success() = coroutinesTestRule.testDispatcher.runBlockingTest {
-            `when`(cityRepository.getLastCitySearched()).thenReturn(mockCityData())
+            `when`(cityRepository.getLastCitySearched()).thenReturn(TestUtil().mockCityData())
 
             sharedViewModel.getLastCitySearched()
 
@@ -185,21 +185,4 @@ class WeatherViewModelTest {
             assertThat(value.geoloc.lat, `is`(12.3456f))
             assertThat(value.geoloc.lng, `is`(12.3456f))
         }
-
-    private fun mockWeatherData(timeInMillis: Long): ListData {
-        return ListData(
-            timeInMillis,
-            listOf(Weather("icon")),
-            Main(23.4f)
-        )
-    }
-
-    private fun mockCityData(): CityData {
-        return CityData(
-            Country("UK"),
-            listOf("region"),
-            Geoloc(12.3456f, 12.3456f),
-            LocaleNames(listOf("London"))
-        )
-    }
 }
