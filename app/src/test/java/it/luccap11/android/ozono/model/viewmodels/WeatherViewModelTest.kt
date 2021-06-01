@@ -126,29 +126,28 @@ class WeatherViewModelTest {
 
     @Test
 //    @Ignore("Github launches a TimeoutException")
-    fun updateCityDataTest_emptyLiveData_success() =
-        coroutinesTestRule.testDispatcher.runBlockingTest {
-            `when`(cityRepository.fetchLocalCitiesData(anyString(), anyInt()))
-                .thenReturn(emptyList())
-            `when`(cityRepository.fetchRemoteCitiesData(anyString(), anyInt()))
-                .thenReturn(listOf())
+    fun updateCityDataTest_emptyLiveData_success() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        `when`(cityRepository.fetchLocalCitiesData(anyString(), anyInt()))
+            .thenReturn(emptyList())
+        `when`(cityRepository.fetchRemoteCitiesData(anyString(), anyInt()))
+            .thenReturn(listOf())
 
-            sharedViewModel.updateCityData("London")
+        sharedViewModel.updateCityData("London")
 
-            val statusValue = sharedViewModel.citiesStatus.getOrAwaitValue(2)
-            val city = sharedViewModel.citiesData
-            assertThat(statusValue, `is`(instanceOf(ApiStatus.SUCCESS::class.java)))
-            assertThat(city.value, not(nullValue()))
-            assertThat(city.value, `is`(emptyList()))
-        }
+        val statusValue = sharedViewModel.citiesStatus.getOrAwaitValue(2)
+        val city = sharedViewModel.citiesData
+        assertThat(statusValue, `is`(instanceOf(ApiStatus.SUCCESS::class.java)))
+        assertThat(city.value, not(nullValue()))
+        assertThat(city.value, `is`(emptyList()))
+    }
 
     @Test
 //    @Ignore("Github launches a TimeoutException")
     fun updateCityDataTest_liveData_success() = coroutinesTestRule.testDispatcher.runBlockingTest {
-        `when`(cityRepository.fetchLocalCitiesData(anyString(), anyInt()))
-            .thenReturn(emptyList())
         `when`(cityRepository.fetchRemoteCitiesData(anyString(), anyInt()))
             .thenReturn(listOf(TestUtil().mockCityData()))
+        `when`(cityRepository.fetchLocalCitiesData(anyString(), anyInt()))
+            .thenReturn(emptyList())
 
         sharedViewModel.updateCityData("London")
 
@@ -162,27 +161,27 @@ class WeatherViewModelTest {
 
     @Test
     fun getLastCitySearchedTest_cachedData_null() = coroutinesTestRule.testDispatcher.runBlockingTest {
-            `when`(cityRepository.getLastCitySearched()).thenReturn(null)
+        `when`(cityRepository.getLastCitySearched()).thenReturn(null)
 
-            sharedViewModel.getLastCitySearched()
+        sharedViewModel.getLastCitySearched()
 
-            val value = sharedViewModel.lastCitySearched.getOrAwaitValue()
-            assertEquals(value, null)
-        }
+        val value = sharedViewModel.lastCitySearched.getOrAwaitValue()
+        assertEquals(value, null)
+    }
 
     @Test
     fun getLastCitySearchedTest_cachedData_success() = coroutinesTestRule.testDispatcher.runBlockingTest {
-            `when`(cityRepository.getLastCitySearched()).thenReturn(TestUtil().mockCityData())
+        `when`(cityRepository.getLastCitySearched()).thenReturn(TestUtil().mockCityData())
 
-            sharedViewModel.getLastCitySearched()
+        sharedViewModel.getLastCitySearched()
 
-            val value = sharedViewModel.lastCitySearched.getOrAwaitValue()
-            assertFalse(value == null)
-            assertThat(value.localeNames.cityNames[0], `is`("London"))
-            assertThat(value.country.name, `is`("UK"))
-            assertThat(value.region, not(emptyList()))
-            assertThat(value.region[0], `is`("region"))
-            assertThat(value.geoloc.lat, `is`(12.3456f))
-            assertThat(value.geoloc.lng, `is`(12.3456f))
-        }
+        val value = sharedViewModel.lastCitySearched.getOrAwaitValue()
+        assertFalse(value == null)
+        assertThat(value.localeNames.cityNames[0], `is`("London"))
+        assertThat(value.country.name, `is`("UK"))
+        assertThat(value.region, not(emptyList()))
+        assertThat(value.region[0], `is`("region"))
+        assertThat(value.geoloc.lat, `is`(12.3456f))
+        assertThat(value.geoloc.lng, `is`(12.3456f))
+    }
 }

@@ -4,11 +4,14 @@ import CoroutinesTestRule
 import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.ozono.model.data.CitiesDataCache
+import it.luccap11.android.ozono.model.data.source.FakeCitiesDao
 import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsNot.not
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test
@@ -40,5 +43,96 @@ class WorldCitiesRepositoryTest {
 
         assertNotEquals(results, null)
         assertThat(results.size, `is`(1))
+    }
+
+    @Test
+    fun fetchLocalCitiesData_empty_db() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val fakeCitiesDao = FakeCitiesDao()
+        val  methodUnderTest = WorldCitiesRepository(cache, fakeCitiesDao, remoteRepository)
+        `when`(cache.getCachedCitiesData(anyString())).thenReturn(emptyList())
+
+        val results = methodUnderTest.fetchLocalCitiesData("Lisbona", numOfCitiesResults)
+
+        assertNotEquals(results, null)
+        assertThat(results, `is`(emptyList()))
+    }
+
+    @Test
+    fun fetchLocalCitiesData_2orLess_db() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val city = TestUtil().mockCityEntity(System.currentTimeMillis())
+        val fakeCitiesDao = FakeCitiesDao(mutableListOf(city, city))
+        val  methodUnderTest = WorldCitiesRepository(cache, fakeCitiesDao, remoteRepository)
+        `when`(cache.getCachedCitiesData(anyString())).thenReturn(emptyList())
+
+        val results = methodUnderTest.fetchLocalCitiesData("Lisbona", numOfCitiesResults)
+
+        assertNotEquals(results, null)
+        assertThat(results, `is`(emptyList()))
+    }
+
+    @Test
+    fun fetchLocalCitiesData_3orMore_db() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val city = TestUtil().mockCityEntity(System.currentTimeMillis())
+        val fakeCitiesDao = FakeCitiesDao(mutableListOf(city, city, city, city))
+        val  methodUnderTest = WorldCitiesRepository(cache, fakeCitiesDao, remoteRepository)
+        `when`(cache.getCachedCitiesData(anyString())).thenReturn(emptyList())
+
+        val results = methodUnderTest.fetchLocalCitiesData("Lisbona", numOfCitiesResults)
+
+        assertNotEquals(results, null)
+        assertThat(results, not(emptyList()))
+        assertThat(results[0].country.name, `is`("Portogallo"))
+        assertThat(results[0].localeNames.cityNames[0], `is`("Lisbona"))
+        assertThat(results[0].region[0], `is`("admin code"))
+        assertThat(results[0].geoloc.lat, `is`(12.3456f))
+        assertThat(results[0].geoloc.lng, `is`(12.3456f))
+    }
+
+    @Test
+    fun fetchRemoteCitiesData_null() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val  methodUnderTest = WorldCitiesRepository(cache, dao, remoteRepository)
+        `when`(remoteRepository.fetchAlgoliaData(anyString())).thenReturn(null)
+
+        val results = methodUnderTest.fetchRemoteCitiesData("Lisbona", numOfCitiesResults)
+
+        assertEquals(results, null)
+    }
+
+    @Test
+    fun fetchRemoteCitiesData_empty() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val  methodUnderTest = WorldCitiesRepository(cache, dao, remoteRepository)
+        `when`(remoteRepository.fetchAlgoliaData(anyString())).thenReturn(emptyList())
+
+        val results = methodUnderTest.fetchRemoteCitiesData("Lisbona", numOfCitiesResults)
+
+        assertNotEquals(results, null)
+        assertThat(results, `is`(emptyList()))
+    }
+
+    @Test
+    fun fetchRemoteCitiesData() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val cityData = TestUtil().mockCityData()
+        val cityEntity = TestUtil().mockCityEntity(System.currentTimeMillis())
+        val fakeCitiesDao = FakeCitiesDao(mutableListOf(cityEntity, cityEntity, cityEntity, cityEntity))
+        val  methodUnderTest = WorldCitiesRepository(cache, fakeCitiesDao, remoteRepository)
+        `when`(remoteRepository.fetchAlgoliaData(anyString())).thenReturn(listOf(cityData))
+
+        val results = methodUnderTest.fetchRemoteCitiesData("Lisbona", numOfCitiesResults)
+
+        assertNotEquals(results, null)
+        assertThat(results!!.size, `is`(3))
+    }
+
+    @Test
+    fun fetchRemoteCitiesData_emptyDao() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        val cityData = TestUtil().mockCityData()
+        val fakeCitiesDao = FakeCitiesDao()
+        val  methodUnderTest = WorldCitiesRepository(cache, fakeCitiesDao, remoteRepository)
+        `when`(remoteRepository.fetchAlgoliaData(anyString())).thenReturn(listOf(cityData))
+
+        val results = methodUnderTest.fetchRemoteCitiesData("Lisbona", numOfCitiesResults)
+
+        assertNotEquals(results, null)
+        assertThat(results, `is`(emptyList()))
     }
 }
