@@ -7,10 +7,6 @@ import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.model.data.CityData
 import it.luccap11.android.ozono.model.data.ListData
 import kotlinx.coroutines.*
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 /**
  * The ViewModel triggers the network request when the user clicks, for example, on a button
@@ -45,25 +41,12 @@ class WeatherViewModel(
     }
 
     private fun temp_filterData(original: List<ListData>): List<ListData> {
-        val days = mutableSetOf<String>()
         val result = mutableListOf<ListData>()
-        original.forEach {
-            val day = dateFormatter(it.timeInSecs)
-            if (!days.contains(day)) {
-                result.add(it)
-                days.add(day)
-            }
+        for (index in original.indices step 8) {
+            result.add(original[index])
         }
         return result
     }
-
-    private fun dateFormatter(timeInMillis: Long): String {
-        val formatter = DateTimeFormatter.ofPattern("EEEE")
-        val instant = Instant.ofEpochMilli(timeInMillis * 1000)
-        val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-        return formatter.format(date)
-    }
-
 
     fun updateCityData(userQuery: String) {
         citiesStatus.postValue(ApiStatus.LOADING)
