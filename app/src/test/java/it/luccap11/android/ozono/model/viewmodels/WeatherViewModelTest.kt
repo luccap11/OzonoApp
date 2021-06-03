@@ -2,11 +2,14 @@ package it.luccap11.android.ozono.model.viewmodels
 
 import CoroutinesTestRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import it.luccap11.android.ozono.OzonoAppl
 import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.model.ApiStatus
 import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
+import it.luccap11.android.ozono.utils.PreferencesManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.*
@@ -17,6 +20,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 @ExperimentalCoroutinesApi
@@ -30,6 +35,9 @@ class WeatherViewModelTest {
     private val cityRepository = mock(WorldCitiesRepository::class.java)
     private val weatherRepository = mock(WeatherDataRepository::class.java)
     private lateinit var sharedViewModel: WeatherViewModel
+
+    @Mock
+    val prefs = mock(PreferencesManager::class.java)
 
     @Before
     fun setupViewModel() {
@@ -171,6 +179,8 @@ class WeatherViewModelTest {
 
     @Test
     fun getLastCitySearchedTest_cachedData_success() = coroutinesTestRule.testDispatcher.runBlockingTest {
+//        `when`(prefs.getLastSearchedCityLatit()).thenReturn(12.3456f)
+//        `when`(prefs.getLastSearchedCityLongit()).thenReturn(12.3456f)
         `when`(cityRepository.getLastCitySearched()).thenReturn(TestUtil().mockCityData())
 
         sharedViewModel.getLastCitySearched()

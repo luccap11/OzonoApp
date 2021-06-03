@@ -34,7 +34,7 @@ import java.util.*
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     Observer<ApiStatus>, OnItemClickListener {
     private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
-        WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), AlgoliaCitiesRemoteDataSource),
+        WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), AlgoliaCitiesRemoteDataSource, PreferencesManager()),
         WeatherDataRepository(OWMRemoteDataSource)
     ) }
     private val prefs = PreferencesManager()

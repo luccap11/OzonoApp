@@ -11,8 +11,11 @@ import it.luccap11.android.ozono.utils.PreferencesManager
  * @author Luca Capitoli
  * @since 13/jan/2021
  */
-class WorldCitiesRepository(private val cache: CitiesDataCache, private val citiesDao: CitiesDao,
-                            private val remoteDataSource: AlgoliaCitiesRemoteDataSource) {
+class WorldCitiesRepository(
+    private val cache: CitiesDataCache, private val citiesDao: CitiesDao,
+    private val remoteDataSource: AlgoliaCitiesRemoteDataSource,
+    private val prefs: PreferencesManager
+) {
 
     suspend fun fetchLocalCitiesData(userQuery: String, numbOfResults: Int): List<CityData> {
         val cacheData = cache.getCachedCitiesData(userQuery)
@@ -44,10 +47,12 @@ class WorldCitiesRepository(private val cache: CitiesDataCache, private val citi
     }
 
     suspend fun getLastCitySearched(): CityData? {
-        val prefs = PreferencesManager()
         val lastLatitSearched = prefs.getLastSearchedCityLatit()
         val lastLongitSearched = prefs.getLastSearchedCityLongit()
-        return if (!lastLatitSearched.equals(AppUtils.NOT_SET.toFloat()) && !lastLongitSearched.equals(AppUtils.NOT_SET.toFloat())) {
+        return if (!lastLatitSearched.equals(AppUtils.NOT_SET.toFloat()) && !lastLongitSearched.equals(
+                AppUtils.NOT_SET.toFloat()
+            )
+        ) {
             val cityEntity = citiesDao.findCityByCoords(lastLatitSearched, lastLongitSearched)
             if (cityEntity == null) {
                 null

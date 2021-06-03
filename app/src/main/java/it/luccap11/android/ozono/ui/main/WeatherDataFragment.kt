@@ -18,6 +18,7 @@ import it.luccap11.android.ozono.model.viewmodels.WeatherViewModel
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModelFactory
 import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
 import it.luccap11.android.ozono.network.OWMRemoteDataSource
+import it.luccap11.android.ozono.utils.PreferencesManager
 
 
 /**
@@ -25,7 +26,7 @@ import it.luccap11.android.ozono.network.OWMRemoteDataSource
  */
 class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
     private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
-        WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), AlgoliaCitiesRemoteDataSource),
+        WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), AlgoliaCitiesRemoteDataSource, PreferencesManager()),
         WeatherDataRepository(OWMRemoteDataSource)
     ) }
     private var _binding: WeatherDataFragmentBinding? = null
@@ -79,13 +80,13 @@ class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
                 binding.emptyWeatherImage.visibility = View.GONE
                 binding.listWeatherData.visibility = View.VISIBLE
 
-                val data = sharedViewModel.weatherData.value!!
-
-                if (data.isEmpty()) {
-                    binding.resultMessage.visibility = View.VISIBLE
-                    binding.resultMessage.text = resources.getText(R.string.no_data_label)
-                } else {
-                    binding.resultMessage.visibility = View.GONE
+                sharedViewModel.weatherData.value?.let {
+                    if (it.isEmpty()) {
+                        binding.resultMessage.visibility = View.VISIBLE
+                        binding.resultMessage.text = resources.getText(R.string.no_data_label)
+                    } else {
+                        binding.resultMessage.visibility = View.GONE
+                    }
                 }
             }
         }
