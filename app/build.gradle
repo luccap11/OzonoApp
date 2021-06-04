@@ -65,7 +65,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$androidxLifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidxLifecycle"
     debugImplementation "androidx.fragment:fragment-testing:$androidxFragment"
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'javax.annotation:javax.annotation-api:1.3.2'//JDK9 haven't javax.annotation. In the next future.
 
 
@@ -96,6 +96,7 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$archTestingVersion"// per InstantTaskExecutorRule
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
+    // Robolectric
     testImplementation 'org.robolectric:robolectric:4.5.1'
 
     // Mockito

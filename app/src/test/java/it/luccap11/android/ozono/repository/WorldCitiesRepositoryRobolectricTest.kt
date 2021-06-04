@@ -1,6 +1,6 @@
 package it.luccap11.android.ozono.repository
 
-import CoroutinesTestRule
+import it.luccap11.android.ozono.CoroutinesTestRule
 import androidx.test.core.app.ApplicationProvider
 import it.luccap11.android.ozono.OzonoAppl
 import it.luccap11.android.ozono.TestUtil

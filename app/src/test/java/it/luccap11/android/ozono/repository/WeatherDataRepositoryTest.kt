@@ -1,6 +1,6 @@
 package it.luccap11.android.ozono.repository
 
-import CoroutinesTestRule
+import it.luccap11.android.ozono.CoroutinesTestRule
 import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.model.data.City
 import it.luccap11.android.ozono.model.data.WeatherData
@@ -10,14 +10,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Assert
 import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 @ExperimentalCoroutinesApi

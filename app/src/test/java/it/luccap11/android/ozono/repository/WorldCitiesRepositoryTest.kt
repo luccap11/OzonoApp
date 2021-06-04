@@ -1,6 +1,6 @@
 package it.luccap11.android.ozono.repository
 
-import CoroutinesTestRule
+import it.luccap11.android.ozono.CoroutinesTestRule
 import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.ozono.model.data.CitiesDataCache

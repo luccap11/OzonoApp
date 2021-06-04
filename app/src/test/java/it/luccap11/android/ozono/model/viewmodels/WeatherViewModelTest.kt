@@ -1,10 +1,8 @@
 package it.luccap11.android.ozono.model.viewmodels
 
-import CoroutinesTestRule
+import it.luccap11.android.ozono.CoroutinesTestRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import it.luccap11.android.ozono.OzonoAppl
 import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.model.ApiStatus
 import it.luccap11.android.ozono.repository.WeatherDataRepository
@@ -21,7 +19,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 @ExperimentalCoroutinesApi
