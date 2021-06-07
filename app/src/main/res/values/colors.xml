@@ -9,6 +9,7 @@
 
     <color name="blue">#FF64AFFF</color>
     <color name="blue_opaque">#6664AFFF</color>
+    <color name="today_text_color">#192940</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_grey">#FFDDDDDD</color>

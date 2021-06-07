@@ -15,7 +15,7 @@
             type="it.luccap11.android.ozono.model.data.Main" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -28,15 +28,35 @@
             android:contentDescription="@string/empty_content_descr"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_today_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_today_label" />
 
+        <TextView
+            android:id="@+id/todayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today_label"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:textColor="@color/today_text_color"
+            app:layout_constraintBottom_toBottomOf="@+id/todayLabel"
+            app:layout_constraintEnd_toEndOf="@+id/todayLabel"
+            app:layout_constraintStart_toStartOf="@+id/todayLabel" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/weatherDataContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/element_padding_small"
             android:layout_marginEnd="@dimen/element_padding_small"
             android:layout_marginBottom="@dimen/element_padding_medium"
             android:background="@drawable/bg_weather_data"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todayLabel">
 
             <TextView
@@ -64,12 +84,12 @@
                 android:layout_height="0dp"
                 android:fontFamily="@font/poppins_extra_light"
                 android:paddingEnd="@dimen/element_padding_small"
-                android:visibility="gone"
                 android:textSize="18sp"
-                app:monthText="@{date.timeInSecs}"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/day"
                 app:layout_constraintStart_toEndOf="@+id/day"
                 app:layout_constraintTop_toTopOf="@+id/day"
+                app:monthText="@{date.timeInSecs}"
                 tools:ignore="RtlSymmetry"
                 tools:text="/05" />
 
@@ -95,11 +115,11 @@
                 android:layout_margin="@dimen/element_padding_xsmall"
                 android:importantForAccessibility="no"
                 android:padding="@dimen/element_padding_xsmall"
-                app:weatherImageUrl="@{weatherData.icon}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:weatherImageUrl="@{weatherData.icon}"
                 tools:src="@drawable/logo_open_weather_map_sample" />
 
             <TextView
@@ -109,12 +129,12 @@
                 android:layout_marginEnd="@dimen/element_padding_large"
                 android:padding="@dimen/element_padding_small"
                 android:textSize="24sp"
-                app:temp="@{temp.temp}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:temp="@{temp.temp}"
                 tools:text="18°C" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

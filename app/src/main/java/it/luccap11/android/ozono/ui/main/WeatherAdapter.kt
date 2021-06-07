@@ -21,7 +21,9 @@ class WeatherAdapter : ListAdapter<ListData, WeatherAdapter.ViewHolder>(DiffCall
     class ViewHolder(private var binding: WeatherRowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(weatherData: ListData) {
-            binding.todayLabel.visibility = if (layoutPosition == 0) View.VISIBLE else View.GONE
+            val isTodayLabalVisible = if (layoutPosition == 0) View.VISIBLE else View.GONE
+            binding.todayLabel.visibility = isTodayLabalVisible
+            binding.todayText.visibility = isTodayLabalVisible
 
             binding.date = weatherData
             binding.weatherData = weatherData.weather[0]
