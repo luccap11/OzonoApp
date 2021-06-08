@@ -5,6 +5,7 @@
     <dimen name="element_padding_small">8dp</dimen>
     <dimen name="element_padding_medium">16dp</dimen>
     <dimen name="element_padding_large">32dp</dimen>
+    <dimen name="element_padding_xlarge">40dp</dimen>
 
     <dimen name="height_row_element">56dp</dimen>
 </resources>

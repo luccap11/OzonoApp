@@ -32,6 +32,7 @@
             android:id="@+id/citiesDataLoading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:indeterminateTint="?attr/colorControlNormal"
             android:layout_marginStart="@dimen/element_padding_small"
             android:layout_marginEnd="@dimen/element_padding_small"
             android:visibility="gone"

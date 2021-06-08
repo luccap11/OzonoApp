@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryDark">@color/blue_opaque</item>
-        <item name="colorAccent">@color/blue_opaque</item>
+        <item name="colorAccent">@color/text_color</item>
 
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/poppins</item>

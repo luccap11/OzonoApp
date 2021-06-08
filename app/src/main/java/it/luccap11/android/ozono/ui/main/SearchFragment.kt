@@ -41,7 +41,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
     private var isCitySelected = false
-    private lateinit var activityContainerView: FragmentContainerView
+    private lateinit var fragmentContainerView: FragmentContainerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,7 +84,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
             }
         })
 
-        activityContainerView = requireActivity().findViewById(R.id.search_fragment)
+        fragmentContainerView = requireActivity().findViewById(R.id.search_fragment)
     }
 
     override fun onDestroyView() {
@@ -96,13 +96,13 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         when (status) {
             ApiStatus.LOADING -> {
                 binding.citiesDataLoading.visibility = View.VISIBLE
-                activityContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_semitransparent_search))
+                fragmentContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_semitransparent_search))
             }
 
             ApiStatus.ERROR -> {
                 binding.citiesDataLoading.visibility = View.GONE
                 binding.citiesList.visibility = View.GONE
-                activityContainerView.setBackgroundColor(Color.TRANSPARENT)
+                fragmentContainerView.setBackgroundColor(Color.TRANSPARENT)
             }
 
             ApiStatus.SUCCESS -> {
@@ -111,10 +111,10 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
                 val data = sharedViewModel.citiesData.value
                 if (data.isNullOrEmpty()) {
                     binding.citiesList.visibility = View.GONE
-                    activityContainerView.setBackgroundColor(Color.TRANSPARENT)
+                    fragmentContainerView.setBackgroundColor(Color.TRANSPARENT)
                 } else {
                     binding.citiesList.visibility = View.VISIBLE
-                    activityContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_semitransparent_search))
+                    fragmentContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_semitransparent_search))
                 }
             }
         }
@@ -125,7 +125,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
             sharedViewModel.updateWeatherData(queryString)
             binding.citiesDataLoading.visibility = View.GONE
             binding.citiesList.visibility = View.GONE
-            activityContainerView.setBackgroundColor(Color.TRANSPARENT)
+            fragmentContainerView.setBackgroundColor(Color.TRANSPARENT)
             binding.searchView.clearFocus()
         }
         return false
@@ -134,7 +134,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     override fun onQueryTextChange(queryString: String?): Boolean {
         if (queryString.isNullOrBlank()) {
             binding.citiesList.visibility = View.GONE
-            activityContainerView.setBackgroundColor(Color.TRANSPARENT)
+            fragmentContainerView.setBackgroundColor(Color.TRANSPARENT)
         } else {
             if (isCitySelected) {
                 isCitySelected = false
