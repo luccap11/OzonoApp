@@ -9,13 +9,14 @@
 
     <color name="blue">#FF64AFFF</color>
     <color name="blue_opaque">#6664AFFF</color>
+    <color name="text_color">#32373C</color>
     <color name="today_text_color">#192940</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_grey">#FFDDDDDD</color>
-    <color name="backgroud_search">#AA05090D</color>
+    <color name="backgroud_semitransparent_search">#AA05090D</color>
     <color name="background_night_color">#05090D</color>
+    <color name="background_light_color">#69A3D5</color>
     <color name="background_color_search">@color/white</color>
-    <color name="background_color_elements">@color/light_grey</color>
-    <color name="background_dark_color_elements">#161E26</color>
+    <color name="background_color_elements">#A5D6FF</color>
 </resources>

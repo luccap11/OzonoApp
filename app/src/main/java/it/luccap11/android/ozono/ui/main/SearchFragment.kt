@@ -96,7 +96,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         when (status) {
             ApiStatus.LOADING -> {
                 binding.citiesDataLoading.visibility = View.VISIBLE
-                activityContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_search))
+                activityContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_semitransparent_search))
             }
 
             ApiStatus.ERROR -> {
@@ -114,7 +114,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
                     activityContainerView.setBackgroundColor(Color.TRANSPARENT)
                 } else {
                     binding.citiesList.visibility = View.VISIBLE
-                    activityContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_search))
+                    activityContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_semitransparent_search))
                 }
             }
         }
