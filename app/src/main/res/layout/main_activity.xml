@@ -14,6 +14,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/element_padding_small"
         android:layout_marginEnd="@dimen/element_padding_small"
+        android:layout_marginTop="@dimen/element_padding_medium"
         android:elevation="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

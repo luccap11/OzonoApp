@@ -25,13 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/element_padding_large"
             android:contentDescription="@string/empty_content_descr"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_today_label"
+            android:src="@drawable/bg_today"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_today_label" />
+            tools:src="@drawable/bg_today" />
 
         <TextView
             android:id="@+id/todayText"
@@ -39,12 +40,14 @@
             android:layout_height="wrap_content"
             android:text="@string/today_label"
             android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="3dp"
             android:textSize="14sp"
             android:textAllCaps="true"
             android:textColor="@color/today_text_color"
             app:layout_constraintBottom_toBottomOf="@+id/todayLabel"
             app:layout_constraintEnd_toEndOf="@+id/todayLabel"
-            app:layout_constraintStart_toStartOf="@+id/todayLabel" />
+            app:layout_constraintStart_toStartOf="@+id/todayLabel"
+            app:layout_constraintTop_toTopOf="@+id/todayLabel" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/weatherDataContainer"
@@ -84,9 +87,8 @@
                 android:layout_height="0dp"
                 android:fontFamily="@font/poppins_extra_light"
                 android:paddingEnd="@dimen/element_padding_small"
-                android:textSize="18sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/day"
+                android:layout_marginTop="2dp"
+                android:textSize="24sp"
                 app:layout_constraintStart_toEndOf="@+id/day"
                 app:layout_constraintTop_toTopOf="@+id/day"
                 app:monthText="@{date.timeInSecs}"
