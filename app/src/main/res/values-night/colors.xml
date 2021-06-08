@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="background_color_search">#455360</color>
     <color name="background_color_elements">@color/background_dark_color_elements</color>
 </resources>
