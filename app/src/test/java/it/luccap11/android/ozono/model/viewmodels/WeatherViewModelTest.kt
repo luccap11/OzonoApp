@@ -7,7 +7,6 @@ import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.model.ApiStatus
 import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
-import it.luccap11.android.ozono.utils.PreferencesManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.*
@@ -18,7 +17,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.Mockito.*
 
 @ExperimentalCoroutinesApi
@@ -32,9 +30,6 @@ class WeatherViewModelTest {
     private val cityRepository = mock(WorldCitiesRepository::class.java)
     private val weatherRepository = mock(WeatherDataRepository::class.java)
     private lateinit var sharedViewModel: WeatherViewModel
-
-    @Mock
-    val prefs = mock(PreferencesManager::class.java)
 
     @Before
     fun setupViewModel() {

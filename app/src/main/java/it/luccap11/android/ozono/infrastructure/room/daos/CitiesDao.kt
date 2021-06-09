@@ -1,9 +1,6 @@
 package it.luccap11.android.ozono.infrastructure.room.daos
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import it.luccap11.android.ozono.infrastructure.room.entities.CityEntity
 
 /**
@@ -21,4 +18,7 @@ interface CitiesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCities(vararg city: CityEntity): List<Long>
+
+    @Delete
+    suspend fun deleteCityByCoords(vararg city: CityEntity)
 }
