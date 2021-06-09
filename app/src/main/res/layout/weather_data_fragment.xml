@@ -29,15 +29,21 @@
 
         <TextView
             android:id="@+id/resultMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/element_padding_medium"
+            android:padding="@dimen/element_padding_medium"
+            android:fontFamily="@font/poppins_thin"
             android:text="@string/no_data_label"
-            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/text_color"
+            android:textSize="40sp"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emptyWeatherImage" />
+            app:layout_constraintTop_toBottomOf="@+id/emptyWeatherImage"
+            tools:text="@string/no_data_label" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listWeatherData"
@@ -45,6 +51,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/element_padding_medium"
             android:scrollbars="vertical"
+            android:visibility="gone"
             app:listWeatherData="@{viewModel.weatherData}"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"

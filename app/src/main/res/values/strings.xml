@@ -4,7 +4,7 @@
     <!-- Labels -->
     <string name="city_label">Search a city</string>
     <string name="error_label">Something went wrong</string>
-    <string name="no_data_label">No data found…</string>
+    <string name="no_data_label">Oops, no data found!</string>
     <string name="today_label">Today</string>
 
     <!-- Shared Prefereces -->

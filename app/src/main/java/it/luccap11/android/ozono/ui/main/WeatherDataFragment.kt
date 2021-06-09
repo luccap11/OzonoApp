@@ -71,6 +71,7 @@ class WeatherDataFragment : Fragment(), Observer<ApiStatus> {
                 binding.weatherDataLoading.visibility = View.GONE
                 binding.listWeatherData.visibility = View.GONE
                 binding.emptyWeatherImage.visibility = View.VISIBLE
+                binding.emptyWeatherImage.setImageResource(R.drawable.ic_eyes_down)
                 binding.resultMessage.visibility = View.VISIBLE
                 binding.resultMessage.text = resources.getString(R.string.error_label)
             }

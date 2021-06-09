@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="text_color">@color/blue_opaque</color>
     <color name="background_color_search">#455360</color>
     <color name="background_color_elements">#161E26</color>
 </resources>
