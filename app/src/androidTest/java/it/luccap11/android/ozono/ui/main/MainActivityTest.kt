@@ -1,10 +1,12 @@
 package it.luccap11.android.ozono.ui.main
 
 import android.content.Intent
+import android.view.KeyEvent
 import androidx.annotation.UiThread
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -40,9 +42,7 @@ class MainActivityTest {
     @Test
     @UiThread
     fun showFragments() {
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        ActivityScenario.launch<MainActivity>(intent)
+        launchActivity()
 
         onView(withId(R.id.container)).check(matches(isDisplayed()))
         onView(withId(R.id.container)).check { _, noViewFoundException ->
@@ -61,9 +61,7 @@ class MainActivityTest {
         prefsManager.saveLastSearchedCityLatit(AppUtils.NOT_SET.toFloat())
         prefsManager.saveLastSearchedCityLongit(AppUtils.NOT_SET.toFloat())
 
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        ActivityScenario.launch<MainActivity>(intent)
+        launchActivity()
 
         onView(withId(R.id.searchView)).check(matches(isDisplayed()))
         onView(withId(R.id.emptyWeatherImage)).check(matches(isDisplayed()))
@@ -72,7 +70,7 @@ class MainActivityTest {
         onView(withId(R.id.citiesDataLoading)).check(matches(not(isDisplayed())))
         onView(withId(R.id.citiesList)).check(matches(not(isDisplayed())))
         onView(withId(R.id.weatherDataLoading)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.listWeatherData)).check(matches(isDisplayed()))
+        onView(withId(R.id.listWeatherData)).check(matches(not(isDisplayed())))
         onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
     }
 
@@ -83,9 +81,7 @@ class MainActivityTest {
         prefsManager.saveLastSearchedCityLatit(12.3456f)
         prefsManager.saveLastSearchedCityLongit(12.3456f)
 
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        ActivityScenario.launch<MainActivity>(intent)
+        launchActivity()
 
         onView(withId(R.id.searchView)).check(matches(isDisplayed()))
         onView(withId(R.id.emptyWeatherImage)).check(matches(isDisplayed()))
@@ -94,7 +90,7 @@ class MainActivityTest {
         onView(withId(R.id.citiesDataLoading)).check(matches(not(isDisplayed())))
         onView(withId(R.id.citiesList)).check(matches(not(isDisplayed())))
         onView(withId(R.id.weatherDataLoading)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.listWeatherData)).check(matches(isDisplayed()))
+        onView(withId(R.id.listWeatherData)).check(matches(not(isDisplayed())))//depends if city is in cache
         onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
     }
 
@@ -105,17 +101,15 @@ class MainActivityTest {
         prefsManager.saveLastSearchedCityLatit(0f)
         prefsManager.saveLastSearchedCityLongit(0f)
 
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        ActivityScenario.launch<MainActivity>(intent)
+        launchActivity()
 
         onView(withId(R.id.searchView)).check(matches(isDisplayed()))
         onView(withId(androidx.appcompat.R.id.search_src_text)).check(matches(withText("Budapest")))
         onView(withId(R.id.citiesDataLoading)).check(matches(not(isDisplayed())))
         onView(withId(R.id.citiesList)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.weatherDataLoading)).check(matches(isDisplayed()))
+//        onView(withId(R.id.weatherDataLoading)).check(matches(isDisplayed())) depends if city is in cache
         onView(withId(R.id.emptyWeatherImage)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.listWeatherData)).check(matches(not(isDisplayed())))
+//        onView(withId(R.id.listWeatherData)).check(matches(not(isDisplayed())))
         onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
     }
 
@@ -126,9 +120,7 @@ class MainActivityTest {
         prefsManager.saveLastSearchedCityLatit(0f)
         prefsManager.saveLastSearchedCityLongit(0f)
 
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        ActivityScenario.launch<MainActivity>(intent)
+        launchActivity()
 
         Thread.sleep(2000)
 
@@ -142,8 +134,57 @@ class MainActivityTest {
         onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
     }
 
+    @Test
+    fun writeNewCity() {
+        launchActivity()
+
+        onView(withId(R.id.searchView)).check(matches(isDisplayed()))
+        onView(withId(R.id.searchView)).perform(TestUtil.typeSearchViewText(""))//clear
+        onView(withId(R.id.searchView)).perform(TestUtil.typeSearchViewText("Abcde"))
+        onView(withId(androidx.appcompat.R.id.search_src_text)).check(matches(withText("Abcde")))
+        Thread.sleep(100)
+        onView(withId(R.id.citiesDataLoading)).check(matches(isDisplayed()))
+        onView(withId(R.id.citiesList)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun searchNewCity() {
+        launchActivity()
+
+        onView(withId(R.id.searchView)).check(matches(isDisplayed()))
+        onView(withId(R.id.searchView)).perform(TestUtil.typeSearchViewText(""))//clear
+        onView(withId(R.id.searchView)).perform(
+            TestUtil.typeSearchViewText("Denver"),
+            ViewActions.pressKey(KeyEvent.KEYCODE_SEARCH)
+        )
+        onView(withId(androidx.appcompat.R.id.search_src_text)).check(matches(withText("Denver")))
+
+        //It depends if the city is in cache or not...
+//        Thread.sleep(100)
+//        onView(withId(R.id.citiesDataLoading)).check(matches(isDisplayed()))
+//        onView(withId(R.id.citiesList)).check(matches(not(isDisplayed())))
+
+        onView(withId(R.id.weatherDataLoading)).check(matches(isDisplayed()))
+        onView(withId(R.id.emptyWeatherImage)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.listWeatherData)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
+
+        Thread.sleep(2000)
+
+        onView(withId(R.id.weatherDataLoading)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.emptyWeatherImage)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.listWeatherData)).check(matches(isDisplayed()))
+        onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
+    }
+
     @After
     fun after(): Unit = runBlocking {
         AppDatabase.getInstance().citiesDao().deleteCityByCoords(cityEntity)
+    }
+
+    private fun launchActivity() {
+        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        ActivityScenario.launch<MainActivity>(intent)
     }
 }
