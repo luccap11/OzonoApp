@@ -4,8 +4,8 @@ import it.luccap11.android.ozono.infrastructure.room.daos.CitiesDao
 import it.luccap11.android.ozono.infrastructure.room.entities.CityEntityBuilder
 import it.luccap11.android.ozono.model.data.*
 import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
-import it.luccap11.android.ozono.utils.AppUtils
-import it.luccap11.android.ozono.utils.PreferencesManager
+import it.luccap11.android.ozono.util.AppUtils
+import it.luccap11.android.ozono.util.PreferencesManager
 
 /**
  * @author Luca Capitoli

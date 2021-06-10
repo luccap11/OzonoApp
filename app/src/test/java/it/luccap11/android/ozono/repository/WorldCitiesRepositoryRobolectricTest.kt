@@ -7,7 +7,7 @@ import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.model.data.CitiesDataCache
 import it.luccap11.android.ozono.model.data.source.FakeCitiesDao
 import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
-import it.luccap11.android.ozono.utils.PreferencesManager
+import it.luccap11.android.ozono.util.PreferencesManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.Is.`is`

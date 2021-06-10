@@ -1,4 +1,4 @@
-package it.luccap11.android.ozono.utils
+package it.luccap11.android.ozono.util
 
 /**
  * @author Luca Capitoli

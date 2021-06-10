@@ -18,7 +18,7 @@ import it.luccap11.android.ozono.model.viewmodels.WeatherViewModel
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModelFactory
 import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
 import it.luccap11.android.ozono.network.OWMRemoteDataSource
-import it.luccap11.android.ozono.utils.PreferencesManager
+import it.luccap11.android.ozono.util.PreferencesManager
 
 
 /**

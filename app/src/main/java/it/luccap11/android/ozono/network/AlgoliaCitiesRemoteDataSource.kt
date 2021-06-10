@@ -2,7 +2,7 @@ package it.luccap11.android.ozono.network
 
 import android.util.Log
 import it.luccap11.android.ozono.model.data.CityData
-import it.luccap11.android.ozono.utils.AppUtils.TAG_LOG
+import it.luccap11.android.ozono.util.AppUtils.TAG_LOG
 
 /**
  * @author Luca Capitoli
