@@ -10,7 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+        android:id="@+id/mainSearchFrag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_rectangle"

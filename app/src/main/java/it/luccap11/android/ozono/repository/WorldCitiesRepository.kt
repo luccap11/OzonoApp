@@ -6,6 +6,7 @@ import it.luccap11.android.ozono.model.data.*
 import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
 import it.luccap11.android.ozono.util.AppUtils
 import it.luccap11.android.ozono.util.PreferencesManager
+import it.luccap11.android.ozono.util.wrapEspressoIdlingResource
 
 /**
  * @author Luca Capitoli
@@ -18,50 +19,56 @@ class WorldCitiesRepository(
 ) {
 
     suspend fun fetchLocalCitiesData(userQuery: String, numbOfResults: Int): List<CityData> {
-        val cacheData = cache.getCachedCitiesData(userQuery)
-        return if (cacheData.isNotEmpty()) {
-            cacheData
-        } else {
-            val dbCities = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
-
-            if (dbCities.isNotEmpty() && dbCities.size >= numbOfResults) {
-                val cities = CityDataBuilder().cityDataBuilder(dbCities)
-                cache.addCachedCityData(userQuery, cities)
-                cities
+        wrapEspressoIdlingResource {
+            val cacheData = cache.getCachedCitiesData(userQuery)
+            return if (cacheData.isNotEmpty()) {
+                cacheData
             } else {
-                emptyList()
+                val dbCities = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
+
+                if (dbCities.isNotEmpty() && dbCities.size >= numbOfResults) {
+                    val cities = CityDataBuilder().cityDataBuilder(dbCities)
+                    cache.addCachedCityData(userQuery, cities)
+                    cities
+                } else {
+                    emptyList()
+                }
             }
         }
     }
 
     suspend fun fetchRemoteCitiesData(userQuery: String, numbOfResults: Int): List<CityData>? {
-        val remoteCities = remoteDataSource.fetchAlgoliaData(userQuery)
-        if (!remoteCities.isNullOrEmpty()) {
-            cache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
-            val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteCities)
-            citiesDao.insertCities(*citiesEntity)
-            val dbCitiesEntity = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
-            return CityDataBuilder().cityDataBuilder(dbCitiesEntity)
+        wrapEspressoIdlingResource {
+            val remoteCities = remoteDataSource.fetchAlgoliaData(userQuery)
+            if (!remoteCities.isNullOrEmpty()) {
+                cache.deleteMultipleCachedCityData(userQuery.substring(0..userQuery.length - 2))
+                val citiesEntity = CityEntityBuilder().cityEntityBuilder(remoteCities)
+                citiesDao.insertCities(*citiesEntity)
+                val dbCitiesEntity = citiesDao.findCitiesStartWith("$userQuery%", numbOfResults)
+                return CityDataBuilder().cityDataBuilder(dbCitiesEntity)
+            }
+            return remoteCities
         }
-        return remoteCities
     }
 
     suspend fun getLastCitySearched(): CityData? {
-        val lastLatitSearched = prefs.getLastSearchedCityLatit()
-        val lastLongitSearched = prefs.getLastSearchedCityLongit()
-        return if (!lastLatitSearched.equals(AppUtils.NOT_SET.toFloat()) && !lastLongitSearched.equals(
-                AppUtils.NOT_SET.toFloat()
-            )
-        ) {
-            val cityEntity = citiesDao.findCityByCoords(lastLatitSearched, lastLongitSearched)
-            if (cityEntity == null) {
-                null
+        wrapEspressoIdlingResource {
+            val lastLatitSearched = prefs.getLastSearchedCityLatit()
+            val lastLongitSearched = prefs.getLastSearchedCityLongit()
+            return if (!lastLatitSearched.equals(AppUtils.NOT_SET.toFloat()) && !lastLongitSearched.equals(
+                    AppUtils.NOT_SET.toFloat()
+                )
+            ) {
+                val cityEntity = citiesDao.findCityByCoords(lastLatitSearched, lastLongitSearched)
+                if (cityEntity == null) {
+                    null
+                } else {
+                    val dbData = CityDataBuilder().cityDataBuilder(listOf(cityEntity))
+                    dbData[0]
+                }
             } else {
-                val dbData = CityDataBuilder().cityDataBuilder(listOf(cityEntity))
-                dbData[0]
+                null
             }
-        } else {
-            null
         }
     }
 }
