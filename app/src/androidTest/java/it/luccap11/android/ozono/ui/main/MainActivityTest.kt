@@ -174,6 +174,28 @@ class MainActivityTest {
         onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
     }
 
+    @Test
+    fun searchNewCity_Wrong() {
+        //reset coords
+        val prefsManager = PreferencesManager()
+        prefsManager.saveLastSearchedCityLatit(AppUtils.NOT_SET.toFloat())
+        prefsManager.saveLastSearchedCityLongit(AppUtils.NOT_SET.toFloat())
+
+        launchActivity()
+
+        onView(withId(R.id.searchView)).check(matches(isDisplayed()))
+        onView(withId(R.id.searchView)).perform(TestUtil.typeSearchViewText(""))//clear
+        onView(withId(R.id.searchView)).perform(
+            TestUtil.typeSearchViewText("xxxxxxx"),
+            ViewActions.pressKey(KeyEvent.KEYCODE_ENTER)
+        )
+
+        onView(withId(R.id.weatherDataLoading)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.emptyWeatherImage)).check(matches(isDisplayed()))
+        onView(withId(R.id.listWeatherData)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.resultMessage)).check(matches(isDisplayed())).check(matches(withText(R.string.error_label)))
+    }
+
     @After
     fun after(): Unit = runBlocking {
         AppDatabase.getInstance().citiesDao().deleteCityByCoords(cityEntity)
