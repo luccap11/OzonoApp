@@ -6,6 +6,7 @@ import androidx.annotation.UiThread
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -14,9 +15,7 @@ import androidx.test.filters.LargeTest
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase
 import it.luccap11.android.ozono.infrastructure.room.entities.CityEntity
-import it.luccap11.android.ozono.utils.AppUtils
-import it.luccap11.android.ozono.utils.PreferencesManager
-import it.luccap11.android.ozono.utils.TestUtil
+import it.luccap11.android.ozono.util.*
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -32,9 +31,13 @@ import org.junit.runner.RunWith
 @LargeTest
 class MainActivityTest {
     private lateinit var cityEntity: CityEntity
+    private val dataBindingIdlingResource = DataBindingIdlingResource()
 
     @Before
     fun before(): Unit = runBlocking {
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+        IdlingRegistry.getInstance().register(dataBindingIdlingResource)
+
         cityEntity = TestUtil.createCities(1, "Budapest")[0]
         AppDatabase.getInstance().citiesDao().insertCities(cityEntity)
     }
@@ -135,6 +138,7 @@ class MainActivityTest {
     }
 
     @Test
+    //TODO spostare
     fun writeNewCity() {
         launchActivity()
 
@@ -164,13 +168,6 @@ class MainActivityTest {
 //        onView(withId(R.id.citiesDataLoading)).check(matches(isDisplayed()))
 //        onView(withId(R.id.citiesList)).check(matches(not(isDisplayed())))
 
-        onView(withId(R.id.weatherDataLoading)).check(matches(isDisplayed()))
-        onView(withId(R.id.emptyWeatherImage)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.listWeatherData)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
-
-        Thread.sleep(2000)
-
         onView(withId(R.id.weatherDataLoading)).check(matches(not(isDisplayed())))
         onView(withId(R.id.emptyWeatherImage)).check(matches(not(isDisplayed())))
         onView(withId(R.id.listWeatherData)).check(matches(isDisplayed()))
@@ -180,11 +177,15 @@ class MainActivityTest {
     @After
     fun after(): Unit = runBlocking {
         AppDatabase.getInstance().citiesDao().deleteCityByCoords(cityEntity)
+
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+        IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
     }
 
     private fun launchActivity() {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        ActivityScenario.launch<MainActivity>(intent)
+        val activityScenario = ActivityScenario.launch<MainActivity>(intent)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
     }
 }
