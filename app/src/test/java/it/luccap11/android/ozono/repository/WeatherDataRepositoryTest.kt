@@ -5,11 +5,11 @@ import it.luccap11.android.ozono.TestUtil
 import it.luccap11.android.ozono.model.data.City
 import it.luccap11.android.ozono.model.data.WeatherData
 import it.luccap11.android.ozono.network.OWMRemoteDataSource
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test

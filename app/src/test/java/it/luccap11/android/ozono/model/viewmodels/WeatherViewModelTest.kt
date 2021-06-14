@@ -14,6 +14,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -79,7 +80,7 @@ class WeatherViewModelTest {
         }
 
     @Test
-//    @Ignore("Github launches a TimeoutException")
+    @Ignore("Github launches a TimeoutException")
     fun updateWeatherDataTest_liveData_success() =
         coroutinesTestRule.testDispatcher.runBlockingTest {
             `when`(weatherRepository.fetchWeatherDataByCityName(anyString()))
@@ -109,7 +110,7 @@ class WeatherViewModelTest {
     }
 
     @Test
-//    @Ignore("Github launches a TimeoutException")
+    @Ignore("Github launches a TimeoutException")
     fun updateCityDataTest_liveData_error() = coroutinesTestRule.testDispatcher.runBlockingTest {
         `when`(cityRepository.fetchLocalCitiesData(anyString(), anyInt()))
             .thenReturn(emptyList())
@@ -142,7 +143,7 @@ class WeatherViewModelTest {
     }
 
     @Test
-//    @Ignore("Github launches a TimeoutException")
+    @Ignore("Github launches a TimeoutException")
     fun updateCityDataTest_liveData_success() = coroutinesTestRule.testDispatcher.runBlockingTest {
         `when`(cityRepository.fetchRemoteCitiesData(anyString(), anyInt()))
             .thenReturn(listOf(TestUtil().mockCityData()))
