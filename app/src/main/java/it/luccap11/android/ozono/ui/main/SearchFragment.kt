@@ -9,20 +9,22 @@ import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.databinding.SearchFragmentBinding
-import it.luccap11.android.ozono.repository.OWeatherMapRepository
-import it.luccap11.android.ozono.network.RemoteWCitiesDataSource
-import it.luccap11.android.ozono.infrastructure.Resource
-import it.luccap11.android.ozono.repository.WorldCitiesRepository
+import it.luccap11.android.ozono.model.ApiStatus
 import it.luccap11.android.ozono.infrastructure.room.AppDatabase
 import it.luccap11.android.ozono.model.data.CitiesDataCache
 import it.luccap11.android.ozono.model.data.CityData
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModel
 import it.luccap11.android.ozono.model.viewmodels.WeatherViewModelFactory
-import it.luccap11.android.ozono.utils.PreferencesManager
+import it.luccap11.android.ozono.network.AlgoliaCitiesRemoteDataSource
+import it.luccap11.android.ozono.network.OWMRemoteDataSource
+import it.luccap11.android.ozono.repository.WeatherDataRepository
+import it.luccap11.android.ozono.repository.WorldCitiesRepository
+import it.luccap11.android.ozono.util.PreferencesManager
 import java.util.*
 
 
@@ -30,14 +32,16 @@ import java.util.*
  * @author Luca Capitoli
  */
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
-    Observer<Resource<List<CityData>>>, OnItemClickListener {
+    Observer<ApiStatus>, OnItemClickListener {
     private val sharedViewModel: WeatherViewModel by activityViewModels { WeatherViewModelFactory(
-        WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), RemoteWCitiesDataSource()),
-        OWeatherMapRepository()
+        WorldCitiesRepository(CitiesDataCache, AppDatabase.getInstance().citiesDao(), AlgoliaCitiesRemoteDataSource, PreferencesManager()),
+        WeatherDataRepository(OWMRemoteDataSource)
     ) }
     private val prefs = PreferencesManager()
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
+    private var isCitySelected = false
+    private lateinit var fragmentContainerView: FragmentContainerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,13 +49,20 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     ): View {
         _binding = SearchFragmentBinding.inflate(inflater, container, false)
 
-        binding.searchView.setIconifiedByDefault(false)
-        binding.searchView.setOnQueryTextListener(this)
-        binding.searchView.findViewById<View>(androidx.appcompat.R.id.search_plate)?.setBackgroundColor(Color.TRANSPARENT)
-        val searchIcon = binding.searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
-        val searchClose = binding.searchView.findViewById<ImageView>(R.id.search_close_btn)
-        searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue))
-        searchClose.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue))
+        binding.citiesList.apply {
+            setHasFixedSize(false)
+            adapter = CitiesAdapter(this@SearchFragment)
+        }
+        binding.searchView.apply {
+            setIconifiedByDefault(false)
+            setOnQueryTextListener(this@SearchFragment)
+
+            findViewById<View>(androidx.appcompat.R.id.search_plate)?.setBackgroundColor(Color.TRANSPARENT)
+            val searchIcon = findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
+            val searchClose = findViewById<ImageView>(R.id.search_close_btn)
+            searchIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue))
+            searchClose.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue))
+        }
 
 //        binding.listWeatherData.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
         return binding.root
@@ -59,15 +70,21 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.apply {
+            viewModel = sharedViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
 
-        this.sharedViewModel.citiesLiveData.observe(viewLifecycleOwner, this)
+        sharedViewModel.citiesStatus.observe(viewLifecycleOwner, this)
 
-        this.sharedViewModel.getLastCitySearched()
-        this.sharedViewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
+        sharedViewModel.getLastCitySearched()
+        sharedViewModel.lastCitySearched.observe(viewLifecycleOwner, { lastCitySearched ->
             if (lastCitySearched != null) {
-                binding.searchView.setQuery(lastCitySearched.name, true)
+                onItemClick(lastCitySearched)
             }
         })
+
+        fragmentContainerView = requireActivity().findViewById(R.id.search_fragment)
     }
 
     override fun onDestroyView() {
@@ -75,35 +92,41 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
         _binding = null
     }
 
-    override fun onChanged(citiesData: Resource<List<CityData>>) {
-        when (citiesData) {
-            is Resource.Loading -> {
+    override fun onChanged(status: ApiStatus) {
+        when (status) {
+            ApiStatus.LOADING -> {
                 binding.citiesDataLoading.visibility = View.VISIBLE
-//                    binding.listWeatherData.visibility = View.GONE
+                fragmentContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_semitransparent_search))
             }
 
-            is Resource.Error -> {
+            ApiStatus.ERROR -> {
                 binding.citiesDataLoading.visibility = View.GONE
                 binding.citiesList.visibility = View.GONE
+                fragmentContainerView.setBackgroundColor(Color.TRANSPARENT)
             }
 
-            is Resource.Success -> {
+            ApiStatus.SUCCESS -> {
                 binding.citiesDataLoading.visibility = View.GONE
-                binding.citiesList.visibility = if (citiesData.data.isNullOrEmpty()) View.GONE else View.VISIBLE
-                binding.citiesList.adapter = CitiesAdapter(
-                    citiesData.data!!.take(
-                        resources.getInteger(
-                            R.integer.num_of_cities_result
-                        )
-                    ), this
-                )
+
+                val data = sharedViewModel.citiesData.value
+                if (data.isNullOrEmpty()) {
+                    binding.citiesList.visibility = View.GONE
+                    fragmentContainerView.setBackgroundColor(Color.TRANSPARENT)
+                } else {
+                    binding.citiesList.visibility = View.VISIBLE
+                    fragmentContainerView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.backgroud_semitransparent_search))
+                }
             }
         }
     }
 
     override fun onQueryTextSubmit(queryString: String?): Boolean {
         if (!queryString.isNullOrBlank()) {
-            this.sharedViewModel.updateWeatherData(queryString)
+            sharedViewModel.updateWeatherData(queryString)
+            binding.citiesDataLoading.visibility = View.GONE
+            binding.citiesList.visibility = View.GONE
+            fragmentContainerView.setBackgroundColor(Color.TRANSPARENT)
+            binding.searchView.clearFocus()
         }
         return false
     }
@@ -111,12 +134,12 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     override fun onQueryTextChange(queryString: String?): Boolean {
         if (queryString.isNullOrBlank()) {
             binding.citiesList.visibility = View.GONE
+            fragmentContainerView.setBackgroundColor(Color.TRANSPARENT)
         } else {
-            if (binding.searchView.isIconified) {
-                binding.searchView.isIconified = false
+            if (isCitySelected) {
+                isCitySelected = false
             } else {
-                binding.citiesList.visibility = View.VISIBLE
-                this.sharedViewModel.updateCityData(queryString.trim().split(" ").joinToString(" ") { userQuery ->
+                sharedViewModel.updateCityData(queryString.trim().split(" ").joinToString(" ") { userQuery ->
                     userQuery.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(Locale.getDefault()
                         ) else it.toString()
@@ -128,16 +151,14 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener,
     }
 
     override fun onItemClick(cityData: CityData) {
-        binding.searchView.isIconified = true //text is cleared
-        binding.searchView.isIconified = true //keyboard and search view get closed
-        binding.searchView.setQuery(cityData.name, true)
-        binding.citiesDataLoading.visibility = View.GONE
-        binding.citiesList.visibility = View.GONE
+        isCitySelected = true
+        binding.searchView.setQuery(cityData.localeNames.cityNames[0], true)
+
         savePreference(cityData)
     }
 
     private fun savePreference(cityData: CityData) {
-        prefs.saveLastSearchedCityLatit(cityData.location.latitude)
-        prefs.saveLastSearchedCityLongit(cityData.location.longitude)
+        prefs.saveLastSearchedCityLatit(cityData.geoloc.lat)
+        prefs.saveLastSearchedCityLongit(cityData.geoloc.lng)
     }
 }

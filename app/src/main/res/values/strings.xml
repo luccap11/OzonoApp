@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Ozono App</string>
-    <string name="owm_api_key">7d85604d75067f7a0da53ac8f70c5364</string>
 
     <!-- Labels -->
     <string name="city_label">Search a city</string>
     <string name="error_label">Something went wrong</string>
-    <string name="no_data_label">No data found…</string>
+    <string name="no_data_label">Oops, no data found!</string>
+    <string name="today_label">Today</string>
 
     <!-- Shared Prefereces -->
     <string name="preference_file_key">it.luccap11.android.ozono.PREFERENCE_FILE_KEY</string>

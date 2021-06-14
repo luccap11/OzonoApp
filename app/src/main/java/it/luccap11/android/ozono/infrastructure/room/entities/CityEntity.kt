@@ -23,7 +23,8 @@ data class CityEntity (
     fun cityEntityBuilder(citiesData: List<CityData>): Array<CityEntity> {
         val result = arrayListOf<CityEntity>()
         citiesData.forEach { cityData ->
-            val newCity = CityEntity(cityData.name, cityData.country.name, cityData.population, cityData.adminCode, cityData.location.latitude, cityData.location.longitude,
+            val newCity = CityEntity(cityData.localeNames.cityNames[0], cityData.country.name, -1,
+                cityData.region[0], cityData.geoloc.lat, cityData.geoloc.lng,
                 System.currentTimeMillis())
             result.add(newCity)
         }

@@ -12,11 +12,14 @@
 Good app display next 5 days weather conditions
 example: http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d85604d75067f7a0da53ac8f70c5364
 
+
+Cites API:
+https://community.algolia.com/places/api-clients.html
+
 ## Notes
 I can improve the app:
 1. introducing dagger2 for DI
 1. Introducing RxJava
-1. Introducing DataBinding
 1. Design dark/light mode (Only dark mode was considered).
 2. memory management, performance tuning and profiling tools (LeakCanary, AndroidProfiler)
 3. 
@@ -43,12 +46,14 @@ Before launching instrumented test you have to set up you test environment as de
 - Kotlin (Coroutines, completion handler)
 - MVVM
 - Dependency Injection
-- Retrofit2 and Volley - as HTTP client
+- Retrofit2 - as HTTP client
+- Moshi
 - Room - for persistence layer
 - Glide - for image loading.
 - LruCache - for caching data
 - LiveData - use LiveData to see UI update with data changes.
 - Espresso for instrumented tests (new for me)
+- DataBinding
 
 ## Application Architecture
 1. follow the rules from Architecture guidelines recommended by Google.

@@ -1,32 +1,39 @@
 package it.luccap11.android.ozono.model.data
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import it.luccap11.android.ozono.infrastructure.room.entities.CityEntity
 
-/**
- * @author Luca Capitoli
- * @since 11/jan/2021
- */
-data class CityData(@SerializedName("name") val name: String,
-                    @SerializedName("country") val country: Country,
-                    @SerializedName("population") val population: Int,
-                    @SerializedName("adminCode") val adminCode: String,
-                    @SerializedName("location") val location: Location)
+data class AlgoliaModel(
+    @Json(name = "hits") val list: List<CityData>
+)
 
-data class WorldCitiesData (@SerializedName("results") var cities: List<CityData> = emptyList())
+data class CityData(
+    @Json(name = "country") val country: Country,
+    @Json(name = "administrative") val region: List<String>,
+    @Json(name = "_geoloc") val geoloc: Geoloc,
+    @Json(name = "locale_names") val localeNames: LocaleNames
 
-data class Country(@SerializedName("name") val name: String)
+)
 
-data class Location(@SerializedName("latitude") val latitude: Float,
-                    @SerializedName("longitude") val longitude: Float)
+data class Country(
+    @Json(name = "default") val name: String
+)
+
+data class Geoloc(
+    @Json(name = "lat") val lat: Float,
+    @Json(name = "lng") val lng: Float
+)
+
+data class LocaleNames(
+    @Json(name = "default") val cityNames: List<String>
+)
 
 class CityDataBuilder {
-    fun cityDataBuilder(citiesEntity: List<CityEntity>): List<CityData> {
-        val result = mutableListOf<CityData>()
-        citiesEntity.forEach { cityEntity ->
-            val data = CityData(cityEntity.name, Country(cityEntity.country), cityEntity.population, cityEntity.adminCode,
-                Location(cityEntity.latitude, cityEntity.longitude))
-            result.add(data)
+    fun cityDataBuilder(entities: List<CityEntity>): List<CityData> {
+        var result = listOf<CityData>()
+        entities.forEach {
+            result = result.plusElement(CityData(Country(it.country), listOf(it.adminCode), Geoloc(it.latitude, it.longitude),
+                LocaleNames(listOf(it.name))))
         }
         return result
     }

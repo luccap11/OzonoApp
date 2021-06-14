@@ -1,8 +1,7 @@
 package it.luccap11.android.ozono.model.data
 
-import it.luccap11.android.ozono.model.WeatherDataJsonResponseExample
+import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
-import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,7 +28,7 @@ class ExpirableWeatherDataCacheTest {
 
         ExpirableWeatherDataCache.addCachedWeatherData(weatherData)
         val weatherDataCached = ExpirableWeatherDataCache.getCachedWeatherData(selectedCity)
-        assertThat(weatherDataCached!![0].city, `is`(selectedCity))
+        assertThat(weatherDataCached!!.city.name, `is`(selectedCity))
         assertTrue(ExpirableWeatherDataCache.isWeatherDataInCache(selectedCity))
     }
 
@@ -52,9 +51,10 @@ class ExpirableWeatherDataCacheTest {
         assertFalse(ExpirableWeatherDataCache.isWeatherDataInCache("London"))
     }
 
-    private fun getWeatherData(timeInMillis: Long): List<WeatherData> {
-        val jsonResponse = WeatherDataJsonResponseExample.fetchJson(timeInMillis / 1000)
-        val jsonObject = JSONObject(jsonResponse)
-        return WeatherDataParser.getWeatherLiveData(jsonObject)
+    private fun getWeatherData(timeInMillis: Long): WeatherData {
+        return WeatherData(listOf(ListData(
+            timeInMillis, listOf(Weather("icon")), Main(23.5f))),
+            City("London")
+        )
     }
 }

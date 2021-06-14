@@ -1,13 +1,11 @@
 package it.luccap11.android.ozono.model.viewmodels
 
 import androidx.lifecycle.*
-import it.luccap11.android.ozono.OzonoAppl
-import it.luccap11.android.ozono.R
-import it.luccap11.android.ozono.repository.OWeatherMapRepository
-import it.luccap11.android.ozono.infrastructure.Resource
+import it.luccap11.android.ozono.model.ApiStatus
+import it.luccap11.android.ozono.repository.WeatherDataRepository
 import it.luccap11.android.ozono.repository.WorldCitiesRepository
 import it.luccap11.android.ozono.model.data.CityData
-import it.luccap11.android.ozono.model.data.WeatherData
+import it.luccap11.android.ozono.model.data.ListData
 import kotlinx.coroutines.*
 
 /**
@@ -16,34 +14,54 @@ import kotlinx.coroutines.*
  */
 class WeatherViewModel(
     private val cityRepository: WorldCitiesRepository,
-    private val weatherRepository: OWeatherMapRepository
+    private val weatherRepository: WeatherDataRepository
 ) : ViewModel() {
-    private val resources = OzonoAppl.instance.resources
-    val weatherLiveData = MutableLiveData<Resource<List<WeatherData>>>()
-    val citiesLiveData = MutableLiveData<Resource<List<CityData>>>()
+    private val numOfCitiesResults = 3
     val lastCitySearched = MutableLiveData<CityData>()
 
+    val citiesStatus = MutableLiveData<ApiStatus>()
+    private val _citiesData = MutableLiveData<List<CityData>>()
+    val citiesData: LiveData<List<CityData>> = _citiesData
+
+    val weatherStatus = MutableLiveData<ApiStatus>()
+    private val _weatherData = MutableLiveData<List<ListData>>()
+    val weatherData: LiveData<List<ListData>> = _weatherData
+
     fun updateWeatherData(selectedCity: String) {
-        weatherLiveData.postValue(Resource.Loading())
+        weatherStatus.postValue(ApiStatus.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
-            weatherRepository.fetchWeatherData(selectedCity) { weatherData ->
-                weatherLiveData.postValue(weatherData)
+            val fiveDaysWeather = weatherRepository.fetchWeatherDataByCityName(selectedCity)
+            if (fiveDaysWeather == null) {
+                return@launch weatherStatus.postValue(ApiStatus.ERROR)
+            } else {
+                _weatherData.postValue(temp_filterData(fiveDaysWeather))
+                return@launch weatherStatus.postValue(ApiStatus.SUCCESS)
             }
         }
     }
 
+    private fun temp_filterData(original: List<ListData>): List<ListData> {
+        val result = mutableListOf<ListData>()
+        for (index in original.indices step 8) {
+            result.add(original[index])
+        }
+        return result
+    }
+
     fun updateCityData(userQuery: String) {
-        citiesLiveData.postValue(Resource.Loading())
+        citiesStatus.postValue(ApiStatus.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
-            val localCities = cityRepository.fetchLocalCitiesData(userQuery)
+            val localCities = cityRepository.fetchLocalCitiesData(userQuery, numOfCitiesResults)
             if (localCities.isNotEmpty()) {
-                citiesLiveData.postValue(Resource.Success(localCities))
+                _citiesData.postValue(localCities)
+                citiesStatus.postValue(ApiStatus.SUCCESS)
             } else {
-                val remoteCities = cityRepository.fetchRemoteCitiesData(userQuery)
+                val remoteCities = cityRepository.fetchRemoteCitiesData(userQuery, numOfCitiesResults)
                 if (remoteCities == null) {
-                    citiesLiveData.postValue(Resource.Error(resources.getString(R.string.error_label)))
+                    citiesStatus.postValue(ApiStatus.ERROR)
                 } else {
-                    citiesLiveData.postValue(Resource.Success(remoteCities))
+                    _citiesData.postValue(remoteCities.take(numOfCitiesResults))
+                    citiesStatus.postValue(ApiStatus.SUCCESS)
                 }
             }
         }
@@ -59,7 +77,7 @@ class WeatherViewModel(
 
 class WeatherViewModelFactory(
     private val cityRepository: WorldCitiesRepository,
-    private val weatherRepository: OWeatherMapRepository
+    private val weatherRepository: WeatherDataRepository
 ) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = WeatherViewModel(cityRepository, weatherRepository) as T
