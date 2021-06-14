@@ -23,6 +23,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            versionNameSuffix 'release'
         }
     }
     compileOptions {
@@ -64,7 +65,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$androidxLifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidxLifecycle"
-    debugImplementation "androidx.fragment:fragment-testing:$androidxFragment"
+    implementation "androidx.fragment:fragment-ktx:$androidxFragment"
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'javax.annotation:javax.annotation-api:1.3.2'//JDK9 haven't javax.annotation. In the next future.
 
@@ -84,13 +85,14 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
 
     //Instrumented Tests
+    debugImplementation "androidx.fragment:fragment-testing:$androidxFragment"
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test:rules:1.3.0'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.2'
     // Espresso
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"//to perform actions on a RecyclerView
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test:rules:1.3.0'
-    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.2'
 
     // Tests
     // AndroidX Test - JVM testing
