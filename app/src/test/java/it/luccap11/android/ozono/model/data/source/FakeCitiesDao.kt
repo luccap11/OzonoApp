@@ -26,4 +26,8 @@ class FakeCitiesDao(var cities: MutableList<CityEntity> = mutableListOf()): Citi
             listOf(1, 2, 3, 4)
         }
     }
+
+    override suspend fun deleteCityByCoords(vararg city: CityEntity) {
+        TODO("Not yet implemented")
+    }
 }
