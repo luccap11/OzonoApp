@@ -21,6 +21,8 @@ https://community.algolia.com/places/api-clients.html
 ![splash screen](/art/screenshots/search.png)
 ![splash screen](/art/screenshots/results.png)
 
+## Credits
+Designed by [Chiara Giorgiutti](https://chiaragiorgiutti.com/)
 
 ## Notes
 I can improve the app:
