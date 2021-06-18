@@ -16,6 +16,12 @@ example: http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d8560
 Cites API:
 https://community.algolia.com/places/api-clients.html
 
+
+![splash screen](/art/screenshots/splash_screen.jpg)
+![splash screen](/art/screenshots/search.jpg)
+![splash screen](/art/screenshots/results.jpg)
+
+
 ## Notes
 I can improve the app:
 1. introducing dagger2 for DI
