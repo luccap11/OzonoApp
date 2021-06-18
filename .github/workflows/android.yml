@@ -29,10 +29,10 @@ jobs:
 #        arch: x86
 #        profile: Nexus 9
 #        script: ./gradlew connectedCheck --stacktrace
-    ## Sign our artifact##
+    ## Sign our APK##
     - name: Sign app APK
       id: signArtifact
-      uses: r0adkll/sign-android-release@v1.0.1
+      uses: r0adkll/sign-android-release@v1
       with:
         releaseDirectory: app/build/outputs/apk/release
         alias: ${{ secrets.ANDROID_ALIAS }}
@@ -40,11 +40,11 @@ jobs:
         keyStorePassword: ${{ secrets.KEY_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
 
-    #- name: Upload our APK
-    #  uses: actions/upload-artifact@v2.2.0
-    #  with:
-    #    name: Release artifact
-    #    path: app/build/outputs/apk/release/app-artifact-*.apk
+    - name: Upload our APK
+      uses: actions/upload-artifact@v2.2.0
+      with:
+        name: Release artifact
+        path: app/build/outputs/apk/release/ozonoApp-*.apk
     ## Create new release
     #- name: Create Release
     #  id: create_release
