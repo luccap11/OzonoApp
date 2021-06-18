@@ -3,12 +3,13 @@ package it.luccap11.android.ozono.infrastructure.room
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import it.luccap11.android.ozono.infrastructure.room.daos.CitiesDao
-import it.luccap11.android.ozono.utils.TestUtil
+import it.luccap11.android.ozono.util.TestUtil
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,7 +40,7 @@ class CityEntityTest {
 
     @Test
     @Throws(Exception::class)
-    fun insertOneCityTest() {
+    fun insertOneCityTest() = runBlocking {
         val city = TestUtil.createCities(1).apply {
             get(0).name = "Tokio"
             get(0).country = "Japan"
@@ -53,7 +54,7 @@ class CityEntityTest {
 
     @Test
     @Throws(Exception::class)
-    fun insertMultipleCityTest() {
+    fun insertMultipleCityTest() = runBlocking {
         val city = TestUtil.createCities(2).apply {
             get(0).name = "Tokio"
             get(0).country = "Japan"
@@ -69,7 +70,7 @@ class CityEntityTest {
 
     @Test
     @Throws(Exception::class)
-    fun findCitiesStartWithTest() {
+    fun findCitiesStartWithTest() = runBlocking {
         val city = TestUtil.createCities(5).apply {
             get(0).name = "Tokio"
             get(1).name = "Toronto"

@@ -16,13 +16,19 @@ example: http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=7d8560
 Cites API:
 https://community.algolia.com/places/api-clients.html
 
+
+![splash screen](/art/screenshots/splash_screen.jpg)
+![splash screen](/art/screenshots/search.png)
+![splash screen](/art/screenshots/results.png)
+
+## Credits
+Designed by [Chiara Giorgiutti](https://chiaragiorgiutti.com/)
+
 ## Notes
 I can improve the app:
 1. introducing dagger2 for DI
 1. Introducing RxJava
-1. Design dark/light mode (Only dark mode was considered).
 2. memory management, performance tuning and profiling tools (LeakCanary, AndroidProfiler)
-3. 
 
 ### Build & run the app
 #### From command line
@@ -52,7 +58,7 @@ Before launching instrumented test you have to set up you test environment as de
 - Glide - for image loading.
 - LruCache - for caching data
 - LiveData - use LiveData to see UI update with data changes.
-- Espresso for instrumented tests (new for me)
+- Espresso for instrumented tests
 - DataBinding
 
 ## Application Architecture

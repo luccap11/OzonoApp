@@ -38,7 +38,9 @@ class MainActivityTest {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         IdlingRegistry.getInstance().register(dataBindingIdlingResource)
 
-        cityEntity = TestUtil.createCities(1, "Budapest")[0]
+        cityEntity = TestUtil.createCities(1).apply {
+            get(0).name = "Budapest"
+        }[0]
         AppDatabase.getInstance().citiesDao().insertCities(cityEntity)
     }
 
@@ -138,20 +140,6 @@ class MainActivityTest {
     }
 
     @Test
-    //TODO spostare
-    fun writeNewCity() {
-        launchActivity()
-
-        onView(withId(R.id.searchView)).check(matches(isDisplayed()))
-        onView(withId(R.id.searchView)).perform(TestUtil.typeSearchViewText(""))//clear
-        onView(withId(R.id.searchView)).perform(TestUtil.typeSearchViewText("Abcde"))
-        onView(withId(androidx.appcompat.R.id.search_src_text)).check(matches(withText("Abcde")))
-        Thread.sleep(100)
-        onView(withId(R.id.citiesDataLoading)).check(matches(isDisplayed()))
-        onView(withId(R.id.citiesList)).check(matches(not(isDisplayed())))
-    }
-
-    @Test
     fun searchNewCity() {
         launchActivity()
 
@@ -169,7 +157,7 @@ class MainActivityTest {
 //        onView(withId(R.id.citiesList)).check(matches(not(isDisplayed())))
 
         onView(withId(R.id.weatherDataLoading)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.emptyWeatherImage)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.emptyWeatherImage)).check(matches(not(isDisplayed())))//flaky
         onView(withId(R.id.listWeatherData)).check(matches(isDisplayed()))
         onView(withId(R.id.resultMessage)).check(matches(not(isDisplayed())))
     }
