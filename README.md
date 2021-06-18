@@ -58,7 +58,7 @@ Before launching instrumented test you have to set up you test environment as de
 - Glide - for image loading.
 - LruCache - for caching data
 - LiveData - use LiveData to see UI update with data changes.
-- Espresso for instrumented tests (new for me)
+- Espresso for instrumented tests
 - DataBinding
 
 ## Application Architecture
