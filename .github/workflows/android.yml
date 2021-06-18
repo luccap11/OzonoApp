@@ -30,18 +30,15 @@ jobs:
 #        profile: Nexus 9
 #        script: ./gradlew connectedCheck --stacktrace
     ## Sign our APK##
-    - name: Sign app APK
-      uses: r0adkll/sign-android-release@v1
-      id: sign_app
+    - name: Sign artifact
+      id: signArtifact
+      uses: r0adkll/sign-android-release@v1.0.1
       with:
-        releaseDirectory: app/build/outputs/apk/release
-        alias: ${{ secrets.ANDROID_ALIAS }}
-        signingKeyBase64: ${{ secrets.KEY_STORE }}
-        keyStorePassword: ${{ secrets.KEY_PASSWORD }}
+        releaseDirectory: app/build/outputs/apk/ourbuildtype/release
+        alias: ${{ secrets.KEYALIAS }}
+        signingKeyBase64: ${{ secrets.KEYSTORE }}
+        keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
         keyPassword: ${{ secrets.KEY_PASSWORD }}
-      env:
-        # override default build-tools version (29.0.3) -- optional
-        BUILD_TOOLS_VERSION: "30.0.2"
 
     - name: Upload our APK
       uses: actions/upload-artifact@v2.2.0
