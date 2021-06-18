@@ -20,9 +20,7 @@ https://community.algolia.com/places/api-clients.html
 I can improve the app:
 1. introducing dagger2 for DI
 1. Introducing RxJava
-1. Design dark/light mode (Only dark mode was considered).
 2. memory management, performance tuning and profiling tools (LeakCanary, AndroidProfiler)
-3. 
 
 ### Build & run the app
 #### From command line

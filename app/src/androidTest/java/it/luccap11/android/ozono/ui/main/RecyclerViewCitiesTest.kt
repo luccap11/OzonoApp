@@ -6,13 +6,13 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.PerformException
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import it.luccap11.android.ozono.R
 import it.luccap11.android.ozono.util.DataBindingIdlingResource
 import it.luccap11.android.ozono.util.EspressoIdlingResource
@@ -28,7 +28,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-//TODo flaky tests
+//flaky tests
 class RecyclerViewCitiesTest {
     private val dataBindingIdlingResource = DataBindingIdlingResource()
 
@@ -43,23 +43,38 @@ class RecyclerViewCitiesTest {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
         IdlingRegistry.getInstance().register(dataBindingIdlingResource)
 
-        onView(withId(R.id.searchView)).perform(click())
+//        onView(withId(R.id.searchView)).perform(click())
+//        onView(withId(androidx.appcompat.R.id.search_src_text)).perform(ViewActions.typeText(("Lon")))
         onView(withId(R.id.searchView)).perform(typeSearchViewText("Lon"))
     }
 
     @Test
     fun checkAllViews() {
         onView(withId(R.id.citiesList)).check(matches(isDisplayed()))
-        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(1, hasDescendant(allOf(withId(R.id.divider), isDisplayed())))))
-        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(1, hasDescendant(allOf(withId(R.id.locationImage), isDisplayed())))))
-        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(1, hasDescendant(allOf(withId(R.id.cityDescr), isDisplayed())))))
+        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(0, hasDescendant(allOf(withId(R.id.divider), isDisplayed())))))
+        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(0, hasDescendant(allOf(withId(R.id.locationImage), isDisplayed())))))
+        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(0, hasDescendant(allOf(withId(R.id.cityDescr), isDisplayed())))))
     }
 
-    @Test(expected = PerformException::class)
-    fun scrollTest_Fail() {
-        onView(withId(R.id.citiesList))
-            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(20))
+    @Test
+    fun checkAllViews_rotate() {
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
+        device.setOrientationLeft()
+        device.setOrientationNatural()
+
+        onView(withId(R.id.citiesList)).check(matches(isDisplayed()))
+        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(0, hasDescendant(allOf(withId(R.id.divider), isDisplayed())))))
+        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(0, hasDescendant(allOf(withId(R.id.locationImage), isDisplayed())))))
+        onView(withId(R.id.citiesList)).check(matches(withViewAtPosition(0, hasDescendant(allOf(withId(R.id.cityDescr), isDisplayed())))))
     }
+
+    //TODo flaky tests
+//    @Test(expected = PerformException::class)
+//    fun scrollTest_Fail() {
+//        onView(withId(R.id.citiesList))
+//            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(20))
+//    }
 
     @Test
     fun scrollTest() {

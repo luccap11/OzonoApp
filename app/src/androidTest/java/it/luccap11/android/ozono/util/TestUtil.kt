@@ -18,10 +18,10 @@ import org.hamcrest.core.AllOf
  */
 object TestUtil {
 
-    fun createCities(number: Int, vararg cityName: String): Array<CityEntity> {
+    fun createCities(number: Int): Array<CityEntity> {
         val result = mutableListOf<CityEntity>()
         for (i in 0 until number) {
-            result.add(CityEntity(cityName[i], "", i, "b", i.toFloat(), i.toFloat(), System.currentTimeMillis()))
+            result.add(CityEntity("", "", i, "b", i.toFloat(), i.toFloat(), System.currentTimeMillis()))
         }
         return result.toTypedArray()
     }
