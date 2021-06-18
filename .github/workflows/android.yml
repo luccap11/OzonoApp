@@ -44,7 +44,7 @@ jobs:
       uses: actions/upload-artifact@v2.2.0
       with:
         name: Release artifact
-        path: app/build/outputs/apk/release/ozonoApp-*.apk
+        path: app/build/outputs/apk/ourbuildtype/release/app-artifact-*.apk
     ## Create new release
     #- name: Create Release
     #  id: create_release
