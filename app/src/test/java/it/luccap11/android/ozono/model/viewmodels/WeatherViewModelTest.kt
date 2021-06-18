@@ -50,7 +50,7 @@ class WeatherViewModelTest {
         }
 
     @Test
-//    @Ignore("Github launches a TimeoutException")
+    @Ignore("Github launches a TimeoutException")
     fun updateWeatherDataTest_liveData_error() = coroutinesTestRule.testDispatcher.runBlockingTest {
         `when`(weatherRepository.fetchWeatherDataByCityName(anyString()))
             .thenReturn(null)
