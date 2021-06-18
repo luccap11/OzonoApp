@@ -21,3 +21,38 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+# Instrumented tests #
+#    - uses: reactivecircus/android-emulator-runner@v2
+#      with:
+#        api-level: 23
+#        target: default
+#        arch: x86
+#        profile: Nexus 9
+#        script: ./gradlew connectedCheck --stacktrace
+    ## Sign our artifact##
+    - name: Sign app APK
+      id: signArtifact
+      uses: r0adkll/sign-android-release@v1.0.1
+      with:
+        releaseDirectory: app/build/outputs/apk/release
+        alias: ${{ secrets.ANDROID_ALIAS }}
+        signingKeyBase64: ${{ secrets.KEYSTORE }}
+        keyStorePassword: ${{ secrets.KEY_PASSWORD }}
+        keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+    #- name: Upload our APK
+    #  uses: actions/upload-artifact@v2.2.0
+    #  with:
+    #    name: Release artifact
+    #    path: app/build/outputs/apk/release/app-artifact-*.apk
+    ## Create new release
+    #- name: Create Release
+    #  id: create_release
+    #  uses: actions/create-release@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    tag_name: ${{ github.ref }}
+    #    release_name: Release ${{ github.ref }}
+    #    draft: false
+    #    prerelease: false
