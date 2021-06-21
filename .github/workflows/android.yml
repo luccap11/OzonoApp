@@ -34,7 +34,7 @@ jobs:
       id: signArtifact
       uses: r0adkll/sign-android-release@v1.0.1
       with:
-        releaseDirectory: app/build/outputs/apk/ourbuildtype/release
+        releaseDirectory: app
         alias: ${{ secrets.ANDROID_ALIAS }}
         signingKeyBase64: ${{ secrets.KEY_STORE }}
         keyStorePassword: ${{ secrets.KEY_PASSWORD }}
@@ -44,7 +44,7 @@ jobs:
       uses: actions/upload-artifact@v2.2.0
       with:
         name: Release artifact
-        path: app/build/outputs/apk/ourbuildtype/release/app-artifact-*.apk
+        path: app/*.apk
     ## Create new release
     #- name: Create Release
     #  id: create_release
