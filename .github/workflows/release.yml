@@ -19,7 +19,7 @@ jobs:
       - name: Set release name
         run: echo ::set-env name=RELEASE_NAME::$(echo ${GITHUB_REF:11})
 
-      - name: Create Release
+      - name: Create Release 1
         id: create_release
         uses: actions/create-release@v1
         env:
