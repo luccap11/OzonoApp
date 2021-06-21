@@ -32,7 +32,7 @@ jobs:
     ## Sign our APK##
     - name: Sign artifact
       id: signArtifact
-      uses: r0adkll/sign-android-release@v1.0.1
+      uses: r0adkll/sign-android-release@v1
       with:
         releaseDirectory: app
         alias: ${{ secrets.ANDROID_ALIAS }}
