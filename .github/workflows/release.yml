@@ -26,6 +26,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
+          run: |
+            echo "pippo"
+            echo `echo ${{ github.ref }}`
           release_name: 'release name'
           body: |
             What is new :
