@@ -6,8 +6,7 @@ on:
     branches:
       - master
     tags:
-      - '*'
-      #- 'v*'
+      - 'v*'
 
 jobs:
 
